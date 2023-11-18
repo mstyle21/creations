@@ -38,6 +38,13 @@ main {
     padding: 100px 0;
     color: #fff;
 }
+.admin-page-banner {
+    background: none;
+}
+.admin-page-banner .page-title {
+    padding: 20px 0;
+    color: #000;
+}
 
 /** Header Style */
 header {

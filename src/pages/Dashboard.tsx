@@ -1,5 +1,11 @@
+import PageBanner from "../components/PageBanner";
+
 const Dashboard = () => {
-  return <div>Admin dashboard</div>;
+  return (
+    <>
+      <PageBanner pageTitle="Admin dashboard" admin />
+    </>
+  );
 };
 
 export default Dashboard;

@@ -6,6 +6,10 @@ import Package from "./pages/Package";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import ManageCategory from "./pages/ManageCategory";
+import ManageProduct from "./pages/ManageProduct";
+import ManagePackage from "./pages/ManagePackage";
+import Dashboard from "./pages/Dashboard";
 
 const routes: RouteObject[] = [
   {
@@ -35,7 +39,35 @@ const routes: RouteObject[] = [
       },
       {
         path: "dashboard",
-        element: <ProtectedRoute allowedRoles={["admin"]}></ProtectedRoute>,
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "manage-categories",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <ManageCategory />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "manage-products",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <ManageProduct />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "manage-packages",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <ManagePackage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "*",
