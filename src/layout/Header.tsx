@@ -31,7 +31,7 @@ const Header = ({ menuItems }: HeaderProps) => {
   return (
     <header ref={headerRef}>
       <div className="main-menu">
-        <Navbar expand="lg" className="main-box">
+        <Navbar expand="lg" className="main-box" collapseOnSelect>
           <Container>
             <Link to={"/"} className="header-logo">
               <img src={logo} />
@@ -43,23 +43,23 @@ const Header = ({ menuItems }: HeaderProps) => {
                 {menuItems.map((item) => {
                   return (
                     <Nav.Item key={item.path} className={location.pathname === item.path ? "active" : ""}>
-                      <Link to={item.path} className="nav-link">
+                      <Nav.Link as={Link} to={item.path} className="nav-link" eventKey={item.path}>
                         {item.name}
-                      </Link>
+                      </Nav.Link>
                     </Nav.Item>
                   );
                 })}
                 {user ? (
                   <Nav.Item>
-                    <Link className="nav-link" to={"/"} onClick={() => logout()}>
+                    <Nav.Link as={Link} className="nav-link" to={"/"} onClick={() => logout()} eventKey={"/logout"}>
                       Log out
-                    </Link>
+                    </Nav.Link>
                   </Nav.Item>
                 ) : (
                   <Nav.Item>
-                    <Link className="nav-link" to={"/login"}>
+                    <Nav.Link as={Link} className="nav-link" to={"/login"} eventKey={"/login"}>
                       Log in
-                    </Link>
+                    </Nav.Link>
                   </Nav.Item>
                 )}
               </Nav>

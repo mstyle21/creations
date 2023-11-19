@@ -19,6 +19,30 @@ body {
 main {
     flex-grow: 1;
 }
+.loading-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 0;
+}
+.loading-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.loading-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 30;
+    color: white;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+}
 
 /** Layout style */
 .banner-area {
@@ -258,6 +282,43 @@ footer .container {
     }
 }
 /***** End Home page style **********/
+
+/** Admin styles */
+.table-responsive {
+    background-clip: padding-box;
+    box-shadow: 0 0px 10px 0 rgba(0,0,0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+}
+.table-toolbar, .table-pagination {
+    padding: 10px 0;
+}
+.results-table {
+    border: 1px solid #d9dee3;
+    border-left: none;
+    border-right: none;
+    padding: 10px 0;
+}
+.table-head, .table-row {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr 1fr 1fr 1fr;
+    text-align: center;
+}
+.table-head span:nth-child(1),
+.table-row span:nth-child(1),
+.table-head span:nth-child(2),
+.table-row span:nth-child(2) {
+    text-align: left;
+}
+
+.table-head {
+    font-weight: bold;
+}
+.table-row {
+    padding: 10px 0;
+}
+
+/** End manage category */
 
 /** Media queries */
 @media (max-width: 991px) {
