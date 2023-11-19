@@ -7,6 +7,7 @@ import useAxios from "../hooks/useAxios";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Paginator from "../components/Paginator";
 import PaginatorInfo from "../components/PaginatorInfo";
+import { debounce } from "lodash";
 
 export type CategoryDetails = {
   id: number;
@@ -27,7 +28,7 @@ const ManageCategory = () => {
   const [perPage, setPerPage] = useState(10);
 
   const { data, error, loading, refreshData } = useAxios<ApiCategoryResponse>({
-    url: `/api/categories?page=${page}&perPage=${perPage}`,
+    url: `/api/categories?page=${page}&perPage=${perPage}&search=${search}`,
     method: "get",
   });
   const count = data?.count ?? 0;
@@ -41,41 +42,46 @@ const ManageCategory = () => {
     }
   };
 
+  const debouncedSetSearch = debounce((value) => {
+    setSearch(value);
+  }, 500);
+
   return (
     <>
       <PageBanner pageTitle="Manage categories" admin />
       <Container>
         <Row>
           <div className="table-responsive" style={{ minHeight: "200px" }}>
-            <Row className="table-toolbar justify-content-between">
-              <Col md={1}>
-                <Form.Select onChange={(e) => setPerPage(parseInt(e.target.value))}>
+            <Row className="table-toolbar justify-content-between gap-2">
+              <Col lg={5} xs={12}>
+                <Form.Select onChange={(e) => setPerPage(parseInt(e.target.value))} style={{ width: "80px" }}>
                   <option value="10">10</option>
                   <option value="20">20</option>
                   <option value="50">50</option>
                   <option value="100">100</option>
                 </Form.Select>
               </Col>
-              <Col md={5} className="d-flex justify-content-between">
-                <Col md={7}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Search..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  ></Form.Control>
-                </Col>
-                <Col md={4}>
-                  <Button
-                    className="btn-success form-control"
-                    onClick={() => {
-                      setItemToEdit(null);
-                      setShowModal(true);
-                    }}
-                  >
-                    Add new category
-                  </Button>
-                </Col>
+              <Col lg={6} xs={12} className="">
+                <Row className="justify-content-end">
+                  <Col sm={7} xs={12}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Search..."
+                      onChange={(e) => debouncedSetSearch(e.target.value)}
+                    ></Form.Control>
+                  </Col>
+                  <Col sm={5} xs={6}>
+                    <Button
+                      className="btn-success form-control"
+                      onClick={() => {
+                        setItemToEdit(null);
+                        setShowModal(true);
+                      }}
+                    >
+                      Add new category
+                    </Button>
+                  </Col>
+                </Row>
               </Col>
             </Row>
             <Row className="position-relative">
