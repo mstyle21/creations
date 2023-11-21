@@ -1,19 +1,19 @@
 import { Pagination } from "react-bootstrap";
 
 type PaginatorProps = {
-  currentPage: number;
+  page: number;
   pages: number;
-  handleClick: (nr: number) => void;
+  handlePageChange: (nr: number) => void;
 };
 
-const Paginator = ({ currentPage, pages, handleClick }: PaginatorProps) => {
+const Paginator = ({ page, pages, handlePageChange }: PaginatorProps) => {
   const paginationItems = [];
   const paginationRange = 2;
   if (pages > 1) {
     for (let nr = 2; nr < pages; nr++) {
-      if (nr >= currentPage - paginationRange && nr <= currentPage + paginationRange) {
+      if (nr >= page - paginationRange && nr <= page + paginationRange) {
         paginationItems.push(
-          <Pagination.Item key={nr} active={nr === currentPage} onClick={() => handleClick(nr)}>
+          <Pagination.Item key={nr} active={nr === page} onClick={() => handlePageChange(nr)}>
             {nr}
           </Pagination.Item>
         );
@@ -23,25 +23,25 @@ const Paginator = ({ currentPage, pages, handleClick }: PaginatorProps) => {
 
   return (
     <Pagination style={{ gap: "10px" }}>
-      {currentPage > 1 && (
+      {page > 1 && (
         <>
-          <Pagination.Prev onClick={() => handleClick(currentPage - 1)} />
+          <Pagination.Prev onClick={() => handlePageChange(page - 1)} />
         </>
       )}
-      <Pagination.Item active={currentPage === 1} onClick={() => handleClick(1)}>
+      <Pagination.Item active={page === 1} onClick={() => handlePageChange(1)}>
         1
       </Pagination.Item>
-      {currentPage > 2 + paginationRange && <Pagination.Ellipsis disabled />}
+      {page > 2 + paginationRange && <Pagination.Ellipsis disabled />}
       {paginationItems}
-      {currentPage < pages - paginationRange - 1 && <Pagination.Ellipsis disabled />}
+      {page < pages - paginationRange - 1 && <Pagination.Ellipsis disabled />}
       {pages > 1 && (
-        <Pagination.Item active={currentPage === pages} onClick={() => handleClick(pages)}>
+        <Pagination.Item active={page === pages} onClick={() => handlePageChange(pages)}>
           {pages}
         </Pagination.Item>
       )}
-      {currentPage < pages && (
+      {page < pages && (
         <>
-          <Pagination.Next onClick={() => handleClick(currentPage + 1)} />
+          <Pagination.Next onClick={() => handlePageChange(page + 1)} />
         </>
       )}
     </Pagination>

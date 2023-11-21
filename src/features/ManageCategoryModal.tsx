@@ -1,15 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { CategoryDetails } from "../pages/ManageCategory";
 import { axiosInstance } from "../services/AxiosService";
+import { CategoryDetails, GeneralModalProps } from "../interfaces";
 
-type ManageCategoryModalProps = {
-  show: boolean;
-  closeModal: (refresh?: boolean) => void;
-  itemToEdit: CategoryDetails | null;
-};
-
-const ManageCategoryModal = ({ show, closeModal, itemToEdit }: ManageCategoryModalProps) => {
+const ManageCategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
   const [name, setName] = useState("");
   const [active, setActive] = useState(true);
 
@@ -24,9 +18,13 @@ const ManageCategoryModal = ({ show, closeModal, itemToEdit }: ManageCategoryMod
   };
 
   const handleSaveCategory = () => {
+    const data = {
+      name: name,
+      status: active ? "active" : "inactive",
+    };
     if (!itemToEdit) {
       axiosInstance
-        .post(`/api/categories`, { name: name, status: active ? "active" : "inactive" })
+        .post(`/api/categories`, data)
         .then((response) => {
           if (response.status === 201) {
             resetModal();
@@ -38,7 +36,7 @@ const ManageCategoryModal = ({ show, closeModal, itemToEdit }: ManageCategoryMod
         });
     } else {
       axiosInstance
-        .put(`/api/categories/${itemToEdit.id}`, { name: name, status: active ? "active" : "inactive" })
+        .put(`/api/categories/${itemToEdit.id}`, data)
         .then((response) => {
           if (response.status === 201) {
             resetModal();

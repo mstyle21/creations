@@ -5,9 +5,12 @@ type PaginatorInfoProps = {
 };
 
 const PaginatorInfo = ({ page, perPage, count }: PaginatorInfoProps) => {
+  const from = count > 0 ? (page - 1) * perPage + 1 : count;
+  const to = page * perPage < count ? page * perPage : count;
+
   return (
     <p>
-      Showing {(page - 1) * perPage + 1} to {page * perPage < count ? page * perPage : count} of {count} entries
+      Showing {from} to {to} of {count} entries
     </p>
   );
 };

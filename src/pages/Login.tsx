@@ -3,7 +3,7 @@ import PageBanner from "../components/PageBanner";
 import { Link, Navigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { CONFIG } from "../config";
+import { BACKEND_URL } from "../config";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      await fetch(`${CONFIG.backendUrl}/api/user/login`, {
+      await fetch(`${BACKEND_URL}/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

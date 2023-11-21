@@ -54,3 +54,18 @@ export function displayRemainingTokenTime(expireTime: number): string {
 export function capitalize(string: string): string {
   return string.slice(0, 1).toUpperCase() + string.slice(1);
 }
+
+export function previewImage(file: File) {
+  return new Promise<string | null>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target && e.target.result) {
+        resolve(e.target.result as string);
+      }
+    };
+    reader.onerror = () => {
+      reject(null);
+    };
+    reader.readAsDataURL(file);
+  });
+}

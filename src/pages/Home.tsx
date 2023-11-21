@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import figImg from "../assets/fig.jpg";
+import noImage from "../assets/no-image.jpg";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -99,7 +99,7 @@ const LatestProducts = () => {
         <div className="row">
           <div className="col-lg-3 col-md-6">
             <div className="product-box">
-              <img src={figImg} alt="" />
+              <img src={noImage} alt="" />
               <div className="product-details">
                 <h6>Product title</h6>
                 <div className="product-price">
@@ -121,7 +121,7 @@ const LatestProducts = () => {
           </div>
           <div className="col-lg-3 col-md-6">
             <div className="product-box">
-              <img src={figImg} alt="" />
+              <img src={noImage} alt="" />
               <div className="product-details">
                 <h6>Product title</h6>
                 <div className="product-price">

@@ -8,26 +8,16 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import Paginator from "../components/Paginator";
 import PaginatorInfo from "../components/PaginatorInfo";
 import { debounce } from "lodash";
-
-export type CategoryDetails = {
-  id: number;
-  name: string;
-  status: "active" | "inactive";
-};
-type ApiCategoryResponse = {
-  items: CategoryDetails[];
-  count: number;
-  pages: number;
-};
+import PerPageFilter from "../components/filters/PerPage";
+import { useFilters } from "../hooks/useFilters";
+import { ApiPaginatedResponse, CategoryDetails } from "../interfaces";
 
 const ManageCategory = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<CategoryDetails | null>(null);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const { page, perPage, search, setPage, setPerPage, setSearch } = useFilters();
 
-  const { data, error, loading, refreshData } = useAxios<ApiCategoryResponse>({
+  const { data, error, loading, refreshData } = useAxios<ApiPaginatedResponse<CategoryDetails>>({
     url: `/api/categories?page=${page}&perPage=${perPage}&search=${search}`,
     method: "get",
   });
@@ -54,12 +44,7 @@ const ManageCategory = () => {
           <div className="table-responsive" style={{ minHeight: "200px" }}>
             <Row className="table-toolbar justify-content-between gap-2">
               <Col lg={5} xs={12}>
-                <Form.Select onChange={(e) => setPerPage(parseInt(e.target.value))} style={{ width: "80px" }}>
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </Form.Select>
+                <PerPageFilter perPage={perPage} onChange={setPerPage} />
               </Col>
               <Col lg={6} xs={12} className="">
                 <Row className="justify-content-end">
@@ -72,7 +57,7 @@ const ManageCategory = () => {
                   </Col>
                   <Col sm={5} xs={6}>
                     <Button
-                      className="btn-success form-control"
+                      className="btn-success"
                       onClick={() => {
                         setItemToEdit(null);
                         setShowModal(true);
@@ -130,7 +115,7 @@ const ManageCategory = () => {
                         <PaginatorInfo page={page} perPage={perPage} count={count} />
                       </Col>
                       <Col md={6} sm={12} className="d-flex justify-content-end">
-                        <Paginator currentPage={page} pages={pages} handleClick={setPage} />
+                        <Paginator page={page} pages={pages} handlePageChange={setPage} />
                       </Col>
                     </Row>
                   </>
