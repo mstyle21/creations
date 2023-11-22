@@ -1,17 +1,11 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import routes from "./routes";
-import { useAuth } from "./hooks/useAuth";
-import { AuthContext } from "./context/AuthContext";
-
-const router = createBrowserRouter(routes);
+import AppProviders from "./providers";
+import AppRoutes from "./routes";
 
 function App() {
-  const { user, loginRedirect, login, logout } = useAuth();
-
   return (
-    <AuthContext.Provider value={{ user, loginRedirect, login, logout }}>
-      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
-    </AuthContext.Provider>
+    <AppProviders>
+      <AppRoutes />
+    </AppProviders>
   );
 }
 

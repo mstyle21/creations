@@ -1,9 +1,9 @@
 import { Col, Container, Row } from "react-bootstrap";
-import PageBanner from "../components/PageBanner";
+import PageBanner from "../../../components/PageBanner";
 import { Link, Navigate } from "react-router-dom";
 import { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { BACKEND_URL } from "../config";
+import { AuthContext } from "../../../context/AuthContext";
+import { BACKEND_URL } from "../../../config";
 
 const Login = () => {
   const [email, setEmail] = useState("");

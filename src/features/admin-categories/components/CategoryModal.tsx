@@ -1,9 +1,9 @@
 import { Button, Form, Modal } from "react-bootstrap";
-import { axiosInstance } from "../services/AxiosService";
-import { CategoryDetails, GeneralModalProps } from "../types";
-import { useManageCategory } from "../hooks/useManageCategory";
+import { axiosInstance } from "../../../services/AxiosService";
+import { CategoryDetails, GeneralModalProps } from "../../../types";
+import { useManageCategory } from "../../../hooks/useManageCategory";
 
-const ManageCategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
+const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
   const { name, active, setName, setActive, resetValues } = useManageCategory(itemToEdit);
 
   const handleSaveCategory = () => {
@@ -75,4 +75,4 @@ const ManageCategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps
   );
 };
 
-export default ManageCategoryModal;
+export default CategoryModal;

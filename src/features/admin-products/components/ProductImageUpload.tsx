@@ -1,19 +1,19 @@
 import React, { useRef, useState } from "react";
-import { ProductImage, ProductImageReducerAction } from "../types";
+import { ProductImage, ProductImageReducerAction } from "../../../types";
 import { Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { axiosInstance } from "../services/AxiosService";
-import { previewImage, randomHash } from "../utils";
-import { MAX_UPLOAD_IMAGES } from "../hooks/useManageProduct";
-import { BACKEND_URL } from "../config";
+import { axiosInstance } from "../../../services/AxiosService";
+import { previewImage, randomHash } from "../../../utils";
+import { MAX_UPLOAD_IMAGES } from "../../../hooks/useManageProduct";
+import { BACKEND_URL } from "../../../config";
 
 type ManageProductImageProps = {
   images: ProductImage[];
   dispatchImages: React.Dispatch<ProductImageReducerAction>;
 };
 
-const ManageProductImage = ({ images, dispatchImages }: ManageProductImageProps) => {
+const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps) => {
   const [dragActive, setDragActive] = useState(false);
   const inputFile = useRef<HTMLInputElement>(null);
   const imgList = useRef<HTMLDivElement>(null);
@@ -167,4 +167,4 @@ const ManageProductImage = ({ images, dispatchImages }: ManageProductImageProps)
   );
 };
 
-export default ManageProductImage;
+export default ProductImageUpload;

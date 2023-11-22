@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import noImage from "../assets/no-image.jpg";
+import noImage from "../../../assets/no-image.jpg";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

@@ -1,4 +1,4 @@
-import PageBanner from "../components/PageBanner";
+import PageBanner from "../../../components/PageBanner";
 
 const ManagePackage = () => {
   return (

@@ -1,12 +1,12 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import { CategoryDetails, GeneralModalProps, ProductDetails } from "../types";
-import { useManageProduct } from "../hooks/useManageProduct";
-import useAxios from "../hooks/useAxios";
-import LoadingSpinner from "../components/LoadingSpinner";
-import ManageProductImage from "./ManageProductImage";
-import { axiosInstance } from "../services/AxiosService";
+import { CategoryDetails, GeneralModalProps, ProductDetails } from "../../../types";
+import { useManageProduct } from "../../../hooks/useManageProduct";
+import useAxios from "../../../hooks/useAxios";
+import LoadingSpinner from "../../../components/LoadingSpinner";
+import ProductImageUpload from "./ProductImageUpload";
+import { axiosInstance } from "../../../services/AxiosService";
 
-const ManageProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<ProductDetails>) => {
+const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<ProductDetails>) => {
   const {
     name,
     width,
@@ -195,7 +195,7 @@ const ManageProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<
                 </div>
               </Form.Group>
             </div>
-            <ManageProductImage images={images} dispatchImages={dispatchImages} />
+            <ProductImageUpload images={images} dispatchImages={dispatchImages} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleSaveProduct}>
@@ -216,4 +216,4 @@ const ManageProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<
     </Modal>
   );
 };
-export default ManageProductModal;
+export default ProductModal;
