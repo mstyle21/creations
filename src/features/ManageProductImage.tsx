@@ -16,6 +16,7 @@ type ManageProductImageProps = {
 const ManageProductImage = ({ images, dispatchImages }: ManageProductImageProps) => {
   const [dragActive, setDragActive] = useState(false);
   const inputFile = useRef<HTMLInputElement>(null);
+  const imgList = useRef<HTMLDivElement>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -46,6 +47,8 @@ const ManageProductImage = ({ images, dispatchImages }: ManageProductImageProps)
 
   const handleUploadedFiles = async (files: FileList) => {
     if (files.length > 0) {
+      let order = imgList.current ? imgList.current.children.length + 1 : 1;
+
       const filesArray: ProductImage[] = [];
       for (let i = 0; i < files.length && i < MAX_UPLOAD_IMAGES; i++) {
         const path = await previewImage(files[i]);
@@ -54,8 +57,9 @@ const ManageProductImage = ({ images, dispatchImages }: ManageProductImageProps)
             id: randomHash(),
             filename: path,
             file: files[i],
-            order: i + 1,
+            order: order,
           });
+          order++;
         }
       }
 
@@ -70,7 +74,7 @@ const ManageProductImage = ({ images, dispatchImages }: ManageProductImageProps)
   const handleDeleteImage = (image: ProductImage) => {
     if (confirm("Are you sure you want to delete this image?")) {
       axiosInstance
-        .delete(`${BACKEND_URL}/api/expenditures/image/${image.id}`)
+        .delete(`${BACKEND_URL}/api/products/image/${image.id}`)
         .then((response) => {
           if (response.status === 204) {
             handleRemoveImage(image);
@@ -116,14 +120,14 @@ const ManageProductImage = ({ images, dispatchImages }: ManageProductImageProps)
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
         />
       </div>
-      <div className="manage-product-img-list">
+      <div className="manage-product-img-list" ref={imgList}>
         {orderedImages.length > 0 &&
           orderedImages.map((image, index) => {
             return (
               <div key={index} className="manage-product-img-item">
                 <Form.Control
                   className="product-img-order"
-                  type="number"
+                  type="text"
                   min={1}
                   max={MAX_UPLOAD_IMAGES}
                   value={index + 1}
@@ -142,7 +146,7 @@ const ManageProductImage = ({ images, dispatchImages }: ManageProductImageProps)
                       : image.filename
                   }
                 />
-                <span>{image.productId !== undefined ? image.filename : image.file?.name}</span>
+                <span>{image.productId !== undefined ? image.filename : image.file?.name.slice(0, 10) + "..."}</span>
                 <FontAwesomeIcon
                   icon={faCircleXmark}
                   className="remove-image"

@@ -33,9 +33,10 @@ const deleteImage = (state: ProductImage[], payloadImage: ProductImage) => {
   const indexToDelete = state.findIndex((item) => item.id === payloadImage.id);
 
   if (indexToDelete !== -1) {
+    const copyState = [...state].sort((a, b) => a.order - b.order);
     return [
-      ...state.slice(0, indexToDelete),
-      ...state.slice(indexToDelete + 1).map((item) => ({ ...item, order: item.order - 1 })),
+      ...copyState.slice(0, indexToDelete),
+      ...copyState.slice(indexToDelete + 1).map((item) => ({ ...item, order: item.order - 1 })),
     ];
   }
 

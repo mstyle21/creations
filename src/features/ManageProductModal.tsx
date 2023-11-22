@@ -157,7 +157,7 @@ const ManageProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<
                     onChange={(e) => setStock(parseInt(e.target.value))}
                   />
                 </FloatingLabel>
-                <Form.Group controlId="formCheck">
+                <Form.Group controlId="formCheck" className="m-auto">
                   <Form.Check
                     type="switch"
                     label={active ? "Active" : "Inactive"}
