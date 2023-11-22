@@ -7,6 +7,8 @@ export type CategoryDetails = {
   id: number;
   name: string;
   status: "active" | "inactive";
+  products: ProductDetails[];
+  packages: [];
 };
 export type ProductDetails = {
   id: number;

@@ -1,52 +1,34 @@
-import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { axiosInstance } from "../services/AxiosService";
-import { CategoryDetails, GeneralModalProps } from "../interfaces";
+import { CategoryDetails, GeneralModalProps } from "../types";
+import { useManageCategory } from "../hooks/useManageCategory";
 
 const ManageCategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
-  const [name, setName] = useState("");
-  const [active, setActive] = useState(true);
-
-  useEffect(() => {
-    setName(itemToEdit ? itemToEdit.name : "");
-    setActive(itemToEdit ? itemToEdit.status === "active" : true);
-  }, [itemToEdit]);
-
-  const resetModal = () => {
-    setName("");
-    setActive(true);
-  };
+  const { name, active, setName, setActive, resetValues } = useManageCategory(itemToEdit);
 
   const handleSaveCategory = () => {
     const data = {
       name: name,
       status: active ? "active" : "inactive",
     };
-    if (!itemToEdit) {
-      axiosInstance
-        .post(`/api/categories`, data)
-        .then((response) => {
-          if (response.status === 201) {
-            resetModal();
-            closeModal(true);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      axiosInstance
-        .put(`/api/categories/${itemToEdit.id}`, data)
-        .then((response) => {
-          if (response.status === 201) {
-            resetModal();
-            closeModal(true);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+
+    const url = `/api/categories/${itemToEdit ? itemToEdit.id : ""}`;
+
+    axiosInstance
+      .request({
+        method: itemToEdit ? "put" : "post",
+        url: url,
+        data: data,
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          resetValues();
+          closeModal(true);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -55,7 +37,7 @@ const ManageCategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps
         closeButton
         onHide={() => {
           closeModal();
-          resetModal();
+          resetValues();
         }}
       >
         <Modal.Title>{itemToEdit ? "Edit" : "Add"} category</Modal.Title>
@@ -83,7 +65,7 @@ const ManageCategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps
           variant="secondary"
           onClick={() => {
             closeModal();
-            resetModal();
+            resetValues();
           }}
         >
           Close

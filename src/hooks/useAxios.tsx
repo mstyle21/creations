@@ -7,6 +7,7 @@ type AxiosProps = {
   url: string;
   method: "get" | "post" | "put" | "patch" | "delete";
   body?: string | null;
+  headers?: string | null;
 };
 
 type UseAxiosReturn<T> = {

@@ -1,5 +1,5 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import { CategoryDetails, GeneralModalProps, ProductDetails } from "../interfaces";
+import { CategoryDetails, GeneralModalProps, ProductDetails } from "../types";
 import { useManageProduct } from "../hooks/useManageProduct";
 import useAxios from "../hooks/useAxios";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -175,21 +175,24 @@ const ManageProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<
                   onChange={(e) => setPrice(parseFloat(e.target.value))}
                 />
               </FloatingLabel>
-              <Form.Group className="d-grid" style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
-                {categoryList.map((category) => {
-                  return (
-                    <Form.Check
-                      name="categories"
-                      type="checkbox"
-                      value={category.id}
-                      key={category.id}
-                      label={category.name}
-                      id={`categ-${category.id}`}
-                      checked={categories.includes(category.id)}
-                      onChange={(e) => handleCategoryChange(e)}
-                    />
-                  );
-                })}
+              <Form.Group>
+                <Form.Label>Categories</Form.Label>
+                <div className="d-grid" style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
+                  {categoryList.map((category) => {
+                    return (
+                      <Form.Check
+                        name="categories"
+                        type="checkbox"
+                        value={category.id}
+                        key={category.id}
+                        label={category.name}
+                        id={`categ-${category.id}`}
+                        checked={categories.includes(category.id)}
+                        onChange={(e) => handleCategoryChange(e)}
+                      />
+                    );
+                  })}
+                </div>
               </Form.Group>
             </div>
             <ManageProductImage images={images} dispatchImages={dispatchImages} />

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { ProductImage, ProductImageReducerAction } from "../interfaces";
+import { ProductImage, ProductImageReducerAction } from "../types";
 import { Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";

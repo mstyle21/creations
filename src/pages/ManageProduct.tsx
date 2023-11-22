@@ -7,7 +7,7 @@ import SearchFilter from "../components/filters/Search";
 import { capitalize } from "../utils";
 import { useFilters } from "../hooks/useFilters";
 import useAxios from "../hooks/useAxios";
-import { ApiPaginatedResponse, ProductDetails } from "../interfaces";
+import { ApiPaginatedResponse, ProductDetails } from "../types";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useState } from "react";
 import ManageProductModal from "../features/ManageProductModal";
@@ -50,7 +50,7 @@ const ManageProduct = () => {
       <Container>
         <div className="admin-table-container">
           {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
-          <div className="admin-toolbar d-flex justify-content-between align-items-center">
+          <div className="admin-toolbar">
             <PerPageFilter perPage={perPage} onChange={setPerPage} />
             <SearchFilter onChange={setSearch} />
             <Button
@@ -64,50 +64,48 @@ const ManageProduct = () => {
             </Button>
           </div>
           <div className="admin-table">
-            <div className="results-table">
-              <div className="table-head">
-                <span></span>
-                <span>ID</span>
-                <span>Name</span>
-                <span>Stock</span>
-                <span>Price</span>
-                <span>Status</span>
-                <span>Actions</span>
-              </div>
-              <div className="table-body position-relative">
-                {loading && <LoadingSpinner />}
-                {!loading && !error && products.length === 0 && <p className="text-center pt-3">No products found!</p>}
-                {products.length > 0 &&
-                  products.map((product) => {
-                    const imgSrc =
-                      product.images.length > 0
-                        ? `${BACKEND_URL}/products/${product.id}/${product.images[0].filename}`
-                        : noImage;
-                    return (
-                      <div className="table-row" key={product.id}>
-                        <span>
-                          <img height="50px" src={imgSrc} />
-                        </span>
-                        <span>{product.id}</span>
-                        <span>{product.name}</span>
-                        <span>{product.stock}</span>
-                        <span>{product.price}</span>
-                        <span style={{ fontWeight: "bold", color: product.status === "active" ? "green" : "red" }}>
-                          {capitalize(product.status)}
-                        </span>
-                        <span>
-                          <Button
-                            onClick={() => {
-                              handleEditProduct(product);
-                            }}
-                          >
-                            Edit
-                          </Button>
-                        </span>
-                      </div>
-                    );
-                  })}
-              </div>
+            <div className="table-head">
+              <span></span>
+              <span>ID</span>
+              <span>Name</span>
+              <span>Stock</span>
+              <span>Price</span>
+              <span>Status</span>
+              <span>Actions</span>
+            </div>
+            <div className="table-body">
+              {loading && <LoadingSpinner />}
+              {!loading && !error && products.length === 0 && <p className="text-center pt-3">No products found!</p>}
+              {products.length > 0 &&
+                products.map((product) => {
+                  const imgSrc =
+                    product.images.length > 0
+                      ? `${BACKEND_URL}/products/${product.id}/${product.images[0].filename}`
+                      : noImage;
+                  return (
+                    <div className="table-row" key={product.id}>
+                      <span>
+                        <img height="50px" src={imgSrc} />
+                      </span>
+                      <span>{product.id}</span>
+                      <span>{product.name}</span>
+                      <span>{product.stock}</span>
+                      <span>{product.price}</span>
+                      <span style={{ fontWeight: "bold", color: product.status === "active" ? "green" : "red" }}>
+                        {capitalize(product.status)}
+                      </span>
+                      <span>
+                        <Button
+                          onClick={() => {
+                            handleEditProduct({ ...product });
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </span>
+                    </div>
+                  );
+                })}
             </div>
           </div>
           <div className="admin-pagination">

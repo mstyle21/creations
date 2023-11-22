@@ -1,4 +1,4 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import PageBanner from "../components/PageBanner";
 import { capitalize } from "../utils";
 import { useState } from "react";
@@ -7,23 +7,28 @@ import useAxios from "../hooks/useAxios";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Paginator from "../components/Paginator";
 import PaginatorInfo from "../components/PaginatorInfo";
-import { debounce } from "lodash";
 import PerPageFilter from "../components/filters/PerPage";
 import { useFilters } from "../hooks/useFilters";
-import { ApiPaginatedResponse, CategoryDetails } from "../interfaces";
+import { ApiPaginatedResponse, CategoryDetails } from "../types";
+import SearchFilter from "../components/filters/Search";
 
 const ManageCategory = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<CategoryDetails | null>(null);
-  const { page, perPage, search, setPage, setPerPage, setSearch } = useFilters();
+  const { page, perPage, filterLink, setPage, setPerPage, setSearch } = useFilters();
 
   const { data, error, loading, refreshData } = useAxios<ApiPaginatedResponse<CategoryDetails>>({
-    url: `/api/categories?page=${page}&perPage=${perPage}&search=${search}`,
+    url: `/api/categories?${filterLink}`,
     method: "get",
   });
-  const count = data?.count ?? 0;
   const categories = data?.items ?? [];
+  const count = data?.count ?? 0;
   const pages = data?.pages ?? 1;
+
+  const handleOpenModal = (itemToEdit = null) => {
+    setItemToEdit(itemToEdit);
+    setShowModal(true);
+  };
 
   const handleCloseModal = (refresh = false) => {
     setShowModal(false);
@@ -32,98 +37,62 @@ const ManageCategory = () => {
     }
   };
 
-  const debouncedSetSearch = debounce((value) => {
-    setSearch(value);
-  }, 500);
-
   return (
     <>
       <PageBanner pageTitle="Manage categories" admin />
       <Container>
-        <Row>
-          <div className="table-responsive" style={{ minHeight: "200px" }}>
-            <Row className="table-toolbar justify-content-between gap-2">
-              <Col lg={5} xs={12}>
-                <PerPageFilter perPage={perPage} onChange={setPerPage} />
-              </Col>
-              <Col lg={6} xs={12} className="">
-                <Row className="justify-content-end">
-                  <Col sm={7} xs={12}>
-                    <Form.Control
-                      type="text"
-                      placeholder="Search..."
-                      onChange={(e) => debouncedSetSearch(e.target.value)}
-                    ></Form.Control>
-                  </Col>
-                  <Col sm={5} xs={6}>
-                    <Button
-                      className="btn-success"
-                      onClick={() => {
-                        setItemToEdit(null);
-                        setShowModal(true);
-                      }}
-                    >
-                      Add new category
-                    </Button>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-            <Row className="position-relative">
-              <Col md={12}>
-                {loading && <LoadingSpinner />}
-                {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
-                {!loading && !error && categories.length === 0 && <p className="text-center">No categories found!</p>}
-                {categories.length > 0 && (
-                  <>
-                    <div className="results-table">
-                      <div className="table-head">
-                        <span>ID</span>
-                        <span>Name</span>
-                        <span>Products</span>
-                        <span>Packages</span>
-                        <span>Status</span>
-                        <span>Actions</span>
-                      </div>
-
-                      {categories.map((category) => {
-                        return (
-                          <div className="table-row" key={category.id}>
-                            <span>{category.id}</span>
-                            <span>{category.name}</span>
-                            <span>0</span>
-                            <span>0</span>
-                            <span style={{ fontWeight: "bold", color: category.status === "active" ? "green" : "red" }}>
-                              {capitalize(category.status)}
-                            </span>
-                            <span>
-                              <Button
-                                onClick={() => {
-                                  setItemToEdit(category);
-                                  setShowModal(true);
-                                }}
-                              >
-                                Edit
-                              </Button>
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <Row className="table-pagination align-items-center">
-                      <Col md={6} sm={12}>
-                        <PaginatorInfo page={page} perPage={perPage} count={count} />
-                      </Col>
-                      <Col md={6} sm={12} className="d-flex justify-content-end">
-                        <Paginator page={page} pages={pages} handlePageChange={setPage} />
-                      </Col>
-                    </Row>
-                  </>
-                )}
-              </Col>
-            </Row>
+        <div className="admin-table-container">
+          {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
+          <div className="admin-toolbar">
+            <PerPageFilter perPage={perPage} onChange={setPerPage} />
+            <SearchFilter onChange={setSearch} />
+            <Button className="btn-success" onClick={() => handleOpenModal()}>
+              Add new category
+            </Button>
           </div>
-        </Row>
+          <div className="admin-table">
+            <div className="table-head">
+              <span>ID</span>
+              <span>Name</span>
+              <span>Products</span>
+              <span>Packages</span>
+              <span>Status</span>
+              <span>Actions</span>
+            </div>
+            <div className="table-body">
+              {loading && <LoadingSpinner />}
+              {!loading && !error && categories.length === 0 && <p className="text-center">No categories found!</p>}
+              {categories.length > 0 &&
+                categories.map((category) => {
+                  return (
+                    <div className="table-row" key={category.id}>
+                      <span>{category.id}</span>
+                      <span>{category.name}</span>
+                      <span>{category.products.length}</span>
+                      <span>{category.packages.length}</span>
+                      <span style={{ fontWeight: "bold", color: category.status === "active" ? "green" : "red" }}>
+                        {capitalize(category.status)}
+                      </span>
+                      <span>
+                        <Button
+                          onClick={() => {
+                            setShowModal(true);
+                            setItemToEdit({ ...category });
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </span>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+          <div className="admin-pagination">
+            <PaginatorInfo perPage={perPage} page={page} count={count} />
+            <Paginator page={page} pages={pages} handlePageChange={setPage} />
+          </div>
+        </div>
       </Container>
       <ManageCategoryModal show={showModal} closeModal={handleCloseModal} itemToEdit={itemToEdit} />
     </>
