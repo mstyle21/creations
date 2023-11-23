@@ -74,7 +74,7 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
   const handleDeleteImage = (image: ProductImage) => {
     if (confirm("Are you sure you want to delete this image?")) {
       axiosInstance
-        .delete(`${BACKEND_URL}/api/products/image/${image.id}`)
+        .delete(`${BACKEND_URL}/api/products/${image.productId}/image/${image.id}`)
         .then((response) => {
           if (response.status === 204) {
             handleRemoveImage(image);
