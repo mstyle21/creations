@@ -1,20 +1,21 @@
+import React from "react";
 import { Form } from "react-bootstrap";
 
 type PerPageFilterProps = {
-  perPage: number;
+  perPageOptions: number[];
   onChange: (page: number) => void;
+  style?: React.CSSProperties;
+  className?: string;
 };
 
-const perPageOptions = [10, 20, 50, 100];
-
-const PerPageFilter = ({ perPage, onChange }: PerPageFilterProps) => {
+const PerPageFilter = ({ perPageOptions, onChange, style, className }: PerPageFilterProps) => {
   return (
     <Form.Select
       onChange={(e) => {
         onChange(parseInt(e.target.value));
       }}
-      value={perPage}
-      className="admin-per-page"
+      className={`per-page-selector ${className ?? ""}`}
+      style={style}
     >
       {perPageOptions.map((option, index) => {
         return (

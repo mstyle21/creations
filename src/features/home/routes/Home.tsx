@@ -1,15 +1,8 @@
 import { Container } from "react-bootstrap";
-import noImage from "../../../assets/no-image.jpg";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrows,
-  faArrowsRotate,
-  faBagShopping,
-  faHeadset,
-  faMoneyCheck,
-  faTruck,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faHeadset, faMoneyCheck, faTruck } from "@fortawesome/free-solid-svg-icons";
+import ItemBox from "../../../components/ItemBox";
 
 const BannerSection = () => {
   return (
@@ -98,48 +91,16 @@ const LatestProducts = () => {
         </div>
         <div className="row">
           <div className="col-lg-3 col-md-6">
-            <div className="product-box">
-              <img src={noImage} alt="" />
-              <div className="product-details">
-                <h6>Product title</h6>
-                <div className="product-price">
-                  <h6>$150.00</h6>
-                  <h6 className="text-decoration-line-through">$210.00</h6>
-                </div>
-              </div>
-              <div className="product-actions">
-                <div className="prod-act">
-                  <FontAwesomeIcon icon={faBagShopping} size="xl" />
-                  <p>Add to cart</p>
-                </div>
-                <div className="prod-act">
-                  <FontAwesomeIcon icon={faArrows} size="xl" />
-                  <p>View item</p>
-                </div>
-              </div>
-            </div>
+            <ItemBox id={1} title="Produs 1" price={100} />
           </div>
           <div className="col-lg-3 col-md-6">
-            <div className="product-box">
-              <img src={noImage} alt="" />
-              <div className="product-details">
-                <h6>Product title</h6>
-                <div className="product-price">
-                  <h6>$150.00</h6>
-                  <h6 className="text-decoration-line-through">$210.00</h6>
-                </div>
-              </div>
-              <div className="product-actions">
-                <div className="prod-act">
-                  <FontAwesomeIcon icon={faBagShopping} size="xl" />
-                  <p>Add to cart</p>
-                </div>
-                <div className="prod-act">
-                  <FontAwesomeIcon icon={faArrows} size="xl" />
-                  <p>View item</p>
-                </div>
-              </div>
-            </div>
+            <ItemBox id={2} title="Produs 2" price={45} />
+          </div>
+          <div className="col-lg-3 col-md-6">
+            <ItemBox id={3} title="Produs 3" price={10} />
+          </div>
+          <div className="col-lg-3 col-md-6">
+            <ItemBox id={4} title="Produs 4" price={129.9} />
           </div>
         </div>
       </Container>

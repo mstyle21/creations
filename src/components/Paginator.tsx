@@ -4,9 +4,11 @@ type PaginatorProps = {
   page: number;
   pages: number;
   handlePageChange: (nr: number) => void;
+  style?: React.CSSProperties;
+  className?: string;
 };
 
-const Paginator = ({ page, pages, handlePageChange }: PaginatorProps) => {
+const Paginator = ({ page, pages, handlePageChange, style, className }: PaginatorProps) => {
   const paginationItems = [];
   const paginationRange = 2;
   if (pages > 1) {
@@ -22,7 +24,7 @@ const Paginator = ({ page, pages, handlePageChange }: PaginatorProps) => {
   }
 
   return (
-    <Pagination style={{ gap: "10px" }}>
+    <Pagination style={{ ...style, gap: "10px" }} className={`${className ?? ""} paginator`}>
       {page > 1 && (
         <>
           <Pagination.Prev onClick={() => handlePageChange(page - 1)} />

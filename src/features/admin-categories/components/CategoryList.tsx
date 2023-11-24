@@ -11,6 +11,8 @@ import useAxios from "../../../hooks/useAxios";
 import { CategoryDetails, ApiPaginatedResponse } from "../../../types";
 import CategoryModal from "./CategoryModal";
 
+const perPageOptions = [10, 20, 50, 100];
+
 const CategoryList = () => {
   const { page, perPage, filterLink, setPage, setPerPage, setSearch } = useFilters();
   const [showModal, setShowModal] = useState(false);
@@ -40,7 +42,7 @@ const CategoryList = () => {
       <div className="admin-table-container">
         {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
         <div className="admin-toolbar">
-          <PerPageFilter perPage={perPage} onChange={setPerPage} />
+          <PerPageFilter perPageOptions={perPageOptions} onChange={setPerPage} />
           <SearchFilter onChange={setSearch} />
           <Button className="btn-success" onClick={() => handleOpenModal()}>
             Add new category

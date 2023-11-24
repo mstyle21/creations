@@ -69,3 +69,35 @@ export function previewImage(file: File) {
     reader.readAsDataURL(file);
   });
 }
+
+export function generateRandomDataArray<T>(prototype: T, count: number = 10): T[] {
+  const length = Math.max(0, count);
+
+  return length > 0 ? Array.from(Array(length), () => generateRandomData(prototype)) : [];
+}
+
+export function generateRandomData<T>(prototype: T): T {
+  switch (typeof prototype) {
+    default:
+      return prototype;
+    case "string":
+      return `${prototype} ${randomHash()}` as T;
+    case "number":
+      return (prototype + Math.round(Math.random() * 100) + 1) as T;
+    case "boolean":
+      return (Math.random() - 0.5 > 0 ? true : false) as T;
+    case "object": {
+      if (prototype) {
+        const rndObj: Record<string, T> = {};
+
+        Object.entries(prototype).forEach((item) => {
+          rndObj[item[0]] = generateRandomData(item[1]);
+        });
+
+        return rndObj as T;
+      }
+
+      return prototype;
+    }
+  }
+}

@@ -13,6 +13,8 @@ import { ProductDetails, ApiPaginatedResponse } from "../../../types";
 import ProductModal from "./ProductModal";
 import noImage from "../../../assets/no-image.jpg";
 
+const perPageOptions = [10, 20, 50, 100];
+
 const ProductList = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<ProductDetails | null>(null);
@@ -48,7 +50,7 @@ const ProductList = () => {
       <div className="admin-table-container">
         {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
         <div className="admin-toolbar">
-          <PerPageFilter perPage={perPage} onChange={setPerPage} />
+          <PerPageFilter perPageOptions={perPageOptions} onChange={setPerPage} />
           <SearchFilter onChange={setSearch} />
           <Button
             className="btn-success"
