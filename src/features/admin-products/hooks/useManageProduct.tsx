@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from "react";
-import { ProductDetails } from "../types";
-import { productImagesReducer } from "../reducers/productImagesReducer";
+import { ProductDetails } from "../../../types";
+import { productImagesReducer } from "../../../reducers/productImagesReducer";
 
 export const MAX_UPLOAD_IMAGES = 5;
 

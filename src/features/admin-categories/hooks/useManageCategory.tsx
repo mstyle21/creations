@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CategoryDetails } from "../types";
+import { CategoryDetails } from "../../../types";
 
 export const useManageCategory = (itemToEdit: CategoryDetails | null) => {
   const [name, setName] = useState("");

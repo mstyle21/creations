@@ -1,4 +1,4 @@
-import { MAX_UPLOAD_IMAGES } from "../hooks/useManageProduct";
+import { MAX_UPLOAD_IMAGES } from "../features/admin-products/hooks/useManageProduct";
 import { ProductImage, ProductImageReducerAction } from "../types";
 
 const reorderImages = (state: ProductImage[], payloadImage: ProductImage & { newOrder: number }) => {

@@ -1,7 +1,7 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { axiosInstance } from "../../../services/AxiosService";
 import { CategoryDetails, GeneralModalProps } from "../../../types";
-import { useManageCategory } from "../../../hooks/useManageCategory";
+import { useManageCategory } from "../hooks/useManageCategory";
 
 const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
   const { name, active, setName, setActive, resetValues } = useManageCategory(itemToEdit);
@@ -42,12 +42,12 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
       >
         <Modal.Title>{itemToEdit ? "Edit" : "Add"} category</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form.Group className="mb-3" controlId="formText">
+      <Modal.Body className="d-grid gap-3">
+        <Form.Group controlId="formText">
           <Form.Label>Category name</Form.Label>
           <Form.Control type="text" placeholder="categ..." value={name} onChange={(e) => setName(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formCheck">
+        <Form.Group controlId="formCheck">
           <Form.Label>Status</Form.Label>
           <Form.Check
             type="switch"

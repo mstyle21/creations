@@ -1,6 +1,6 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
 import { CategoryDetails, GeneralModalProps, ProductDetails } from "../../../types";
-import { useManageProduct } from "../../../hooks/useManageProduct";
+import { useManageProduct } from "../hooks/useManageProduct";
 import useAxios from "../../../hooks/useAxios";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import ProductImageUpload from "./ProductImageUpload";

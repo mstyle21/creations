@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { axiosInstance } from "../../../services/AxiosService";
 import { previewImage, randomHash } from "../../../utils";
-import { MAX_UPLOAD_IMAGES } from "../../../hooks/useManageProduct";
+import { MAX_UPLOAD_IMAGES } from "../hooks/useManageProduct";
 import { BACKEND_URL } from "../../../config";
 
 type ManageProductImageProps = {
