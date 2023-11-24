@@ -4,12 +4,13 @@ import PerPageFilter from "../../../components/filters/PerPage";
 import { useProductContext } from "../hooks/useProductContext";
 
 const sortByList = {
+  recent: "Most recent",
   name: "Name",
   priceAsc: "Price asc",
   priceDesc: "Price desc",
 };
 
-const perPageOptions = [2, 5, 10, 20, 50, 100];
+const perPageOptions = [10, 20, 50, 100];
 
 const ActionToolbar = () => {
   const { state, dispatch } = useProductContext();

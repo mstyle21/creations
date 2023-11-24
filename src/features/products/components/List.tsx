@@ -12,8 +12,14 @@ const List = () => {
     const abortController = new AbortController();
 
     axiosInstance
-      .get<ApiPaginatedResponse<ProductDetails>>(`/api/products?page=${state.page}&perPage=${state.perPage}`, {
+      .get<ApiPaginatedResponse<ProductDetails>>("/api/products", {
         signal: abortController.signal,
+        params: {
+          page: state.page,
+          perPage: state.perPage,
+          categories: state.categoryFilter,
+          orderBy: state.orderBy,
+        },
       })
       .then((response) => {
         dispatch({ type: "setProductList", payload: response.data.items });
@@ -23,7 +29,7 @@ const List = () => {
 
     return () => abortController.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.page, state.perPage]);
+  }, [state.page, state.perPage, state.categoryFilter, state.orderBy]);
 
   const products = state.products;
 

@@ -4,7 +4,7 @@ export const initialState: ProductContextState = {
   categories: [],
   products: [],
   categoryFilter: [],
-  orderBy: "name",
+  orderBy: "recent",
   page: 1,
   perPage: 10,
   pages: 0,

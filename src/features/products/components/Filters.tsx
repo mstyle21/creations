@@ -20,13 +20,23 @@ const Filters = () => {
 
   const categories = state.categories;
 
+  const handleCategoryChange = (categoryId: number) => {
+    dispatch({ type: "setCategoryFilter", payload: categoryId });
+  };
+
   return (
     <div className="category-filter">
       <div className="category-filter-top">Filters</div>
       <ul className="category-filter-list">
         {categories.map((category) => (
           <li key={category.id}>
-            <Form.Check type="checkbox" label={category.name} id={`category${category.id}`} />
+            <Form.Check
+              type="checkbox"
+              label={category.name}
+              id={`category${category.id}`}
+              value={category.id}
+              onChange={(e) => handleCategoryChange(parseInt(e.target.value))}
+            />
           </li>
         ))}
       </ul>
