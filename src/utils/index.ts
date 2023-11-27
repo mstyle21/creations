@@ -11,7 +11,11 @@ export const COLORS = [
   "#FF7F50",
   "#6A5ACD",
 ];
+export function stockColor(stock: number) {
+  const STOCK_REQUIREMENT = 10;
 
+  return stock < STOCK_REQUIREMENT * 0.5 ? "red" : stock > STOCK_REQUIREMENT * 1.5 ? "green" : "orange";
+}
 /**
  * Generates an array of numbers between start and end incremented by step
  * Step default value is 1

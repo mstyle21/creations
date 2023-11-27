@@ -6,12 +6,13 @@ import Paginator from "../../../components/Paginator";
 import PaginatorInfo from "../../../components/PaginatorInfo";
 import PerPageFilter from "../../../components/filters/PerPage";
 import SearchFilter from "../../../components/filters/Search";
-import { BACKEND_URL } from "../../../config";
+import { BACKEND_URL, CURRENCY_SIGN } from "../../../config";
 import useAxios from "../../../hooks/useAxios";
 import { useFilters } from "../../../hooks/useFilters";
 import { ProductDetails, ApiPaginatedResponse } from "../../../types";
 import ProductModal from "./ProductModal";
 import noImage from "../../../assets/no-image.jpg";
+import { stockColor } from "../../../utils";
 
 const perPageOptions = [10, 20, 50, 100];
 
@@ -65,7 +66,6 @@ const ProductList = () => {
         <div className="admin-table">
           <div className="table-head">
             <span></span>
-            <span>ID</span>
             <span>Name</span>
             <span>Stock</span>
             <span>Price</span>
@@ -86,10 +86,11 @@ const ProductList = () => {
                     <span>
                       <img height="50px" src={imgSrc} />
                     </span>
-                    <span>{product.id}</span>
                     <span>{product.name}</span>
-                    <span>{product.stock}</span>
-                    <span>{product.price}</span>
+                    <span style={{ color: stockColor(product.stock), fontWeight: "bold" }}>{product.stock}</span>
+                    <span>
+                      {product.price} {CURRENCY_SIGN}
+                    </span>
                     <span style={{ fontWeight: "bold", color: product.status === "active" ? "green" : "red" }}>
                       {capitalize(product.status)}
                     </span>

@@ -13,8 +13,7 @@ import { Tooltip } from "chart.js";
 import useAxios from "../../../hooks/useAxios";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { ProductDetails } from "../../../types";
-
-const STOCK_REQUIREMENT = 10;
+import { stockColor } from "../../../utils";
 
 const StockStatistics = () => {
   const { data, error, loading } = useAxios<ProductDetails[]>({
@@ -30,9 +29,7 @@ const StockStatistics = () => {
     data.forEach((product) => {
       labels.push(product.name.length < 30 ? product.name : product.name.split(" "));
       values.push(product.stock);
-      colors.push(
-        product.stock < STOCK_REQUIREMENT * 0.5 ? "red" : product.stock > STOCK_REQUIREMENT * 1.5 ? "green" : "orange"
-      );
+      colors.push(stockColor(product.stock));
     });
   }
   const chartData: ChartData<"bar"> = {
