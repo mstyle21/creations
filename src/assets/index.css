@@ -398,7 +398,6 @@ button.add-to-cart:focus {
     padding: 10px 0;
     border-bottom: 1px solid #d9dee3;
 }
-
 .admin-table {
     min-height: 100px;
     padding: 10px 0;
@@ -437,6 +436,15 @@ button.add-to-cart:focus {
 }
 .drag-active {
     background-color: grey;
+}
+.stock-statistics {
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+}
+.stock-graph {
+    height: 400px;
 }
 
 .manage-product-img-list {

@@ -1,3 +1,17 @@
+export const COLORS = [
+  "#4dc9f6",
+  "#f67019",
+  "#f53794",
+  "#537bc4",
+  "#acc236",
+  "#166a8f",
+  "#00a950",
+  "#58595b",
+  "#8549ba",
+  "#FF7F50",
+  "#6A5ACD",
+];
+
 /**
  * Generates an array of numbers between start and end incremented by step
  * Step default value is 1
