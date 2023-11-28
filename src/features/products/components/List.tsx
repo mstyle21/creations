@@ -35,11 +35,9 @@ const List = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams.get("categories"), queryParams.get("page"), queryParams.get("perPage"), queryParams.get("order")]);
 
-  const products = state.products;
-
   return (
     <div className="item-list">
-      {products.map((item) => (
+      {state.products.map((item) => (
         <ItemBox
           key={item.id}
           id={item.id}

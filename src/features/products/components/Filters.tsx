@@ -19,7 +19,9 @@ const Filters = () => {
       .then((response) => {
         dispatch({ type: "setCategoryList", payload: response.data });
       })
-      .catch(() => {});
+      .catch(() => {
+        //hide category filter
+      });
 
     return () => abortController.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,23 +51,25 @@ const Filters = () => {
   return (
     <div className="product-filters">
       <div className="product-filters-top">Filters</div>
-      <div className="filter category-filter">
-        <h6 className="ps-3">Categories</h6>
-        <ul className="category-filter-list">
-          {categories.map((category) => (
-            <li key={category.id}>
-              <Form.Check
-                type="checkbox"
-                label={category.name}
-                id={`category${category.id}`}
-                checked={selectedCategories.includes(category.id.toString())}
-                value={category.id}
-                onChange={(e) => handleCategoryChange(e.target.value)}
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
+      {categories.length > 0 && (
+        <div className="filter category-filter">
+          <h6 className="ps-3">Categories</h6>
+          <ul className="category-filter-list">
+            {categories.map((category) => (
+              <li key={category.id}>
+                <Form.Check
+                  type="checkbox"
+                  label={category.name}
+                  id={`category${category.id}`}
+                  checked={selectedCategories.includes(category.id.toString())}
+                  value={category.id}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="filter stock-filter">
         <h6 className="ps-3">Availability</h6>
         <ul className="stock-filter-list">
