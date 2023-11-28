@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import Paginator from "../../../components/Paginator";
 import SortList from "../../../components/SortList";
 import PerPageFilter from "../../../components/filters/PerPage";
@@ -10,29 +11,45 @@ const sortByList = {
   priceDesc: "Price desc",
 };
 
-const perPageOptions = [10, 20, 50, 100];
+const perPageOptions = [15, 30, 60, 90];
 
 const ActionToolbar = () => {
-  const { state, dispatch } = useProductContext();
+  const { state } = useProductContext();
+  const [queryParams, setQueryParams] = useSearchParams();
 
   const handleSortBy = (sortBy: string) => {
-    dispatch({ type: "setOrderBy", payload: sortBy });
+    queryParams.set("order", sortBy);
+    setQueryParams(queryParams);
   };
 
   const handlePerPageChange = (perPage: number) => {
-    dispatch({ type: "setPerPage", payload: perPage });
+    queryParams.set("perPage", perPage.toString());
+    setQueryParams(queryParams);
   };
 
   const handlePageChange = (page: number) => {
-    dispatch({ type: "setPage", payload: page });
+    queryParams.set("page", page.toString());
+    setQueryParams(queryParams);
   };
+
+  const queryPage = queryParams.get("page");
+  const page = queryPage !== null ? parseInt(queryPage) : 1;
 
   return (
     <div className="action-toolbar">
-      <SortList className="toolbar-sort-by" sortByList={sortByList} onSortByChange={handleSortBy} />
+      <SortList
+        className="toolbar-sort-by"
+        defaultValue={queryParams.get("order") ?? undefined}
+        sortByList={sortByList}
+        onSortByChange={handleSortBy}
+      />
       <div className="toolbar-paginator">
-        <PerPageFilter perPageOptions={perPageOptions} onChange={handlePerPageChange} />
-        <Paginator page={state.page} pages={state.pages} handlePageChange={handlePageChange} />
+        <PerPageFilter
+          defaultValue={queryParams.get("perPage") ?? "10"}
+          perPageOptions={perPageOptions}
+          onChange={handlePerPageChange}
+        />
+        <Paginator page={page} pages={state.pages} handlePageChange={handlePageChange} />
       </div>
     </div>
   );

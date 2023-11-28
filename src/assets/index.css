@@ -286,10 +286,13 @@ footer .container {
 .product-list-container {
     padding: 25px 0;
 }
-.category-filter {
+.product-filters {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
-.category-filter-top {
+.product-filters-top {
     text-align: center;
     padding: 10px 0;
     font-weight: bold;
@@ -299,6 +302,18 @@ footer .container {
     color: var(--primary-color);
 }
 .category-filter-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.product-filters .filter {
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgb(240, 240, 240);
+}
+.product-filters .filter:last-child {
+    padding-bottom: 10px;
+    border-bottom: none;
+}
+.category-filter-list, .stock-filter-list {
     list-style: none;
     margin: 0;
 }
@@ -328,11 +343,11 @@ footer .container {
 .item-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    margin: 20px 0;
     gap: 20px;
 }
 .item-box {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
     padding: 20px;
 }
 .item-box:hover {
@@ -363,6 +378,7 @@ footer .container {
     font-weight: bold;
     font-size: 16px;  
     padding: 10px 0;
+    justify-content: space-between;
 }
 .current-price {
     color: var(--primary-color);

@@ -9,10 +9,11 @@ type ItemBoxProps = {
   price: number;
   slug: string;
   type: "product" | "package";
+  stock?: number;
   img?: string;
 };
 
-const ItemBox = ({ id, title, price, slug, type, img }: ItemBoxProps) => {
+const ItemBox = ({ id, title, price, slug, type, stock, img }: ItemBoxProps) => {
   const imgSrc = img ? `${BACKEND_URL}/${type}s/${id}/${img}` : noImage;
 
   return (
@@ -23,14 +24,17 @@ const ItemBox = ({ id, title, price, slug, type, img }: ItemBoxProps) => {
       <div className="item-details">
         <span className="item-name">{capitalize(title)}</span>
         <div className="item-price">
-          <span className="current-price">
-            {price} {CURRENCY_SIGN}
-          </span>
-          {price < 25 && (
-            <div>
-              (<span className="old-price">25 {CURRENCY_SIGN}</span>)
-            </div>
+          {stock !== undefined && (
+            <span style={{ color: stock === 0 ? "red" : "green", display: "inline" }}>
+              {stock === 0 ? "Out of stock" : "In stock"}
+            </span>
           )}
+          <div>
+            <span className="current-price">
+              {price} {CURRENCY_SIGN}
+            </span>
+            <div>{price < 20 ? <span className="old-price">20 {CURRENCY_SIGN}</span> : <span>&nbsp;</span>}</div>
+          </div>
         </div>
         <Link to={`/${type}/${slug}`} className="btn add-to-cart">
           <span>View item</span>

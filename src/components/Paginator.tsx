@@ -21,6 +21,8 @@ const Paginator = ({ page, pages, handlePageChange, style, className }: Paginato
         );
       }
     }
+  } else {
+    return <></>;
   }
 
   return (

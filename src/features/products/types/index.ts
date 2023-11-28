@@ -25,10 +25,6 @@ export type ProductImage = {
 export type ProductContextState = {
   categories: ProductCategory[];
   products: ProductDetails[];
-  categoryFilter: number[];
-  orderBy: string;
-  perPage: number;
-  page: number;
   pages: number;
   productCount: number;
 };
