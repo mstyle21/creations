@@ -1,24 +1,27 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import noImage from "../assets/no-image.jpg";
-import { faBagShopping } from "@fortawesome/free-solid-svg-icons";
 import { BACKEND_URL, CURRENCY_SIGN } from "../config";
-import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { capitalize } from "../utils";
 
 type ItemBoxProps = {
   id: number;
   title: string;
   price: number;
+  slug: string;
+  type: "product" | "package";
   img?: string;
 };
 
-const ItemBox = ({ id, title, price, img }: ItemBoxProps) => {
-  const imgSrc = img ? `${BACKEND_URL}/products/${id}/${img}` : noImage;
+const ItemBox = ({ id, title, price, slug, type, img }: ItemBoxProps) => {
+  const imgSrc = img ? `${BACKEND_URL}/${type}s/${id}/${img}` : noImage;
 
   return (
     <div className="item-box">
-      <img src={imgSrc} className="item-image" />
+      <Link to={`/${type}/${slug}`}>
+        <img src={imgSrc} className="item-image" />
+      </Link>
       <div className="item-details">
-        <span className="item-name">{title}</span>
+        <span className="item-name">{capitalize(title)}</span>
         <div className="item-price">
           <span className="current-price">
             {price} {CURRENCY_SIGN}
@@ -29,10 +32,9 @@ const ItemBox = ({ id, title, price, img }: ItemBoxProps) => {
             </div>
           )}
         </div>
-        <Button className="add-to-cart">
-          <FontAwesomeIcon icon={faBagShopping} size="xl" />
-          <span>Add to cart</span>
-        </Button>
+        <Link to={`/${type}/${slug}`} className="btn add-to-cart">
+          <span>View item</span>
+        </Link>
       </div>
     </div>
   );

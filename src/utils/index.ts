@@ -1,3 +1,6 @@
+import noImage from "../assets/no-image.jpg";
+export const DEFAULT_IMAGE = noImage;
+
 export const COLORS = [
   "#4dc9f6",
   "#f67019",

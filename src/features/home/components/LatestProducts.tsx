@@ -1,13 +1,21 @@
+import { Carousel } from "react-bootstrap";
 import ItemBox from "../../../components/ItemBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import useAxios from "../../../hooks/useAxios";
-import { ProductDetails } from "../../../types";
+import { ProductDetails } from "../../products/types";
 
 const LatestProducts = () => {
   const { data, loading } = useAxios<ProductDetails[]>({
     url: "/api/products/latest",
     method: "get",
   });
+
+  const latestProducts = [];
+  if (data) {
+    for (let i = 0; i < data.length; i = i + 4) {
+      latestProducts.push(data.slice(i, i + 4));
+    }
+  }
 
   return (
     <section className="latest-products">
@@ -24,16 +32,24 @@ const LatestProducts = () => {
       </div>
       {data && (
         <div className="row">
-          {data.map((product) => (
-            <div key={product.id} className="col-lg-3 col-md-6">
-              <ItemBox
-                id={product.id}
-                title={product.name}
-                price={product.price}
-                img={product.images?.at(0)?.filename}
-              />
-            </div>
-          ))}
+          <Carousel interval={null}>
+            {latestProducts.map((latestProductsBunch, index) => (
+              <Carousel.Item key={index} className="row">
+                {latestProductsBunch.map((product) => (
+                  <div key={product.id} className="col-md-3">
+                    <ItemBox
+                      id={product.id}
+                      title={product.name}
+                      price={product.price}
+                      type="product"
+                      slug={product.slug}
+                      img={product.images?.at(0)?.filename}
+                    />
+                  </div>
+                ))}
+              </Carousel.Item>
+            ))}
+          </Carousel>
         </div>
       )}
     </section>

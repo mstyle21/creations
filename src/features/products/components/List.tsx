@@ -36,7 +36,15 @@ const List = () => {
   return (
     <div className="item-list">
       {products.map((item) => (
-        <ItemBox key={item.id} id={item.id} title={item.name} price={item.price} img={item.images.at(0)?.filename} />
+        <ItemBox
+          key={item.id}
+          id={item.id}
+          title={item.name}
+          price={item.price}
+          slug={item.slug}
+          type="product"
+          img={item.images.at(0)?.filename}
+        />
       ))}
     </div>
   );

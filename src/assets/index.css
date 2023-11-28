@@ -81,6 +81,9 @@ main {
     padding: 100px 0;
     color: #000;
 }
+.page-banner .page-title {
+    padding: 50px 0;
+}
 .admin-page-banner {
     background: none;
 }
@@ -275,6 +278,8 @@ footer .container {
 .latest-products {
     padding: 50px 0;
 }
+
+
 /***** End Home page style **********/
 
 /*** Product list page */
@@ -330,6 +335,9 @@ footer .container {
     margin-top: 20px;
     padding: 20px;
 }
+.item-box:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
 .item-image {
     height: 250px;
     width: 250px;
@@ -363,7 +371,7 @@ footer .container {
     text-decoration: line-through;
     color: grey
 }
-button.add-to-cart {
+.add-to-cart {
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
     background-color: transparent;
@@ -372,21 +380,57 @@ button.add-to-cart {
     margin: auto;
     width: 100%;
     justify-content: center;
+    font-weight: bold;
 }
-button.add-to-cart:active,
-button.add-to-cart:hover {
+.add-to-cart:active,
+.add-to-cart:hover {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
     text-shadow: 0 0 6px #fff;
     box-shadow: 0 0 5px var(--primary-color);
 }
-button.add-to-cart:focus {
+.add-to-cart:focus {
     border-color: var(--primary-color) !important;
     background-color: transparent !important;
     color: var(--primary-color) !important;
     border-width: 2px;
     box-shadow: 0 0 5px var(--primary-color);
+}
+.product-general-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    padding: 25px 0;
+    gap: 100px;
+}
+.product-details-img {
+    height: 500px;
+    width: 100%;
+    object-fit: cover;
+}
+.product-details {
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.product-price {
+    color: var(--primary-color);
+}
+.product-details-stock {
+    font-weight: bold;
+}
+.product-specifications ul {
+    background-color: var(--pale-color);
+}
+.product-specifications ul li .nav-link {
+    color: var(--primary-color);
+    font-weight: bold;
+    border-radius: 0;
+}
+.product-specifications ul li .nav-link.active {
+    background-color: var(--primary-color);
 }
 /*** End product list page */
 

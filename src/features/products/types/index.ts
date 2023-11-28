@@ -6,6 +6,7 @@ export type ProductDetails = {
   depth: number;
   stock: number;
   price: number;
+  slug: string;
   categories: ProductCategory[];
   images: ProductImage[];
 };
