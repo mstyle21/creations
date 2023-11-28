@@ -432,6 +432,21 @@ footer .container {
 .product-specifications ul li .nav-link.active {
     background-color: var(--primary-color);
 }
+.product-specifications .tab-content {
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-top: none;
+}
+.size-spec { 
+    display: grid; 
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
+}
+.categ-spec {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 10px;
+}
 /*** End product list page */
 
 /** Admin styles */

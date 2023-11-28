@@ -50,28 +50,30 @@ const Product = () => {
 
             <div className="product-specifications">
               <Tabs variant="pills">
-                <Tab eventKey="size" title="Size" style={{ padding: "10px 0" }}>
-                  <div>
+                <Tab eventKey="size" title="Size">
+                  <div className="size-spec">
                     <span>Width:</span>
                     <span>
                       {product.width} {MEASURE_SIGN}
                     </span>
-                  </div>
-                  <div>
+
                     <span>Height:</span>
                     <span>
                       {product.height} {MEASURE_SIGN}
                     </span>
-                  </div>
-                  <div>
+
                     <span>Depth:</span>
                     <span>
                       {product.depth} {MEASURE_SIGN}
                     </span>
                   </div>
                 </Tab>
-                <Tab eventKey="category" title="Categories" style={{ padding: "10px 0" }}>
-                  {product.categories.map((category) => capitalize(category.name)).join(", ")}
+                <Tab eventKey="category" title="Categories">
+                  <div className="categ-spec">
+                    {product.categories.map((category) => (
+                      <span key={category.id}>{capitalize(category.name)}</span>
+                    ))}
+                  </div>
                 </Tab>
               </Tabs>
             </div>

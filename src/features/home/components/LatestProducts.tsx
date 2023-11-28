@@ -22,21 +22,17 @@ const LatestProducts = () => {
       {loading && <LoadingSpinner />}
 
       <div className="row justify-content-center">
-        <div className="col-lg-6 text-center mb-5">
+        <div className="col-lg-6 text-center">
           <h1>Latest products</h1>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Unde voluptatibus sint, perspiciatis ducimus,
-            labore sit maxime
-          </p>
         </div>
       </div>
       {data && (
         <div className="row">
-          <Carousel interval={null}>
+          <Carousel>
             {latestProducts.map((latestProductsBunch, index) => (
               <Carousel.Item key={index} className="row">
                 {latestProductsBunch.map((product) => (
-                  <div key={product.id} className="col-md-3">
+                  <div key={product.id} className="col-md-3" style={{ float: "left" }}>
                     <ItemBox
                       id={product.id}
                       title={product.name}
