@@ -65,9 +65,9 @@ main {
 
 /** Layout style */
 .banner-area {
-    background: url("../assets/banner-area-bg.jpg");
+    background: url("../assets/banner-area-bg2.jpg");
     background-size: cover;
-    background-position: center center;
+    /* background-position: center; */
     position: relative;
     width: 100%;
 }
@@ -79,7 +79,7 @@ main {
     align-items: center;
     justify-content: center;
     padding: 100px 0;
-    color: #fff;
+    color: #000;
 }
 .admin-page-banner {
     background: none;
@@ -226,12 +226,19 @@ footer .container {
 /** Home page styles */
 .banner-img {
     text-align: center;
+    max-height: 450px;
+    height: 100%;
+    padding: 20px 0;
 }
 .banner-img img {
-   max-height: 450px;
+   max-height: 100%;
 }
 .banner-content {
     text-align: center;
+    color: black;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
 }
 .banner-content a {
     text-decoration: none;
@@ -366,6 +373,7 @@ button.add-to-cart {
     width: 100%;
     justify-content: center;
 }
+button.add-to-cart:active,
 button.add-to-cart:hover {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
@@ -373,7 +381,6 @@ button.add-to-cart:hover {
     text-shadow: 0 0 6px #fff;
     box-shadow: 0 0 5px var(--primary-color);
 }
-button.add-to-cart:active,
 button.add-to-cart:focus {
     border-color: var(--primary-color) !important;
     background-color: transparent !important;

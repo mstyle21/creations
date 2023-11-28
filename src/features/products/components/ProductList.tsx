@@ -1,11 +1,11 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import ActionToolbar from "./ActionToolbar";
 import Filters from "./Filters";
 import List from "./List";
 
 const ProductList = () => {
   return (
-    <Container className="product-list-container">
+    <div className="product-list-container">
       <Row>
         <Col xl={3} lg={4} md={5}>
           <Filters />
@@ -15,7 +15,7 @@ const ProductList = () => {
           <List />
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 
