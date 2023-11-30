@@ -1,37 +1,48 @@
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import { axiosInstance } from "../../../services/AxiosService";
 import { ApiPaginatedResponse, ProductDetails } from "../../../types";
-import { useProductContext } from "../hooks/useProductContext";
+import { QueryClientConfig, useQuery } from "@tanstack/react-query";
+import { GenericAbortSignal } from "axios";
 
-export const useProducts = () => {
-  const { state, dispatch } = useProductContext();
-  const [queryParams] = useSearchParams();
+type ProductFilters = {
+  page?: number;
+  perPage?: number;
+  orderBy?: string;
+  categories?: string[];
+};
 
-  useEffect(() => {
-    const abortController = new AbortController();
+type GetProductsProps = ProductFilters & {
+  signal?: GenericAbortSignal;
+};
 
-    axiosInstance
-      .get<ApiPaginatedResponse<ProductDetails>>("/api/products", {
-        signal: abortController.signal,
-        params: {
-          page: queryParams.get("page") ?? 1,
-          perPage: queryParams.get("perPage") ?? 15,
-          categories: queryParams.get("categories")?.split(","),
-          orderBy: queryParams.get("order"),
-        },
-      })
-      .then((response) => {
-        dispatch({ type: "setProductList", payload: response.data.items });
-        dispatch({ type: "setProductCount", payload: response.data.count });
-        dispatch({ type: "setPages", payload: response.data.pages });
-      })
-      .catch(() => {});
+export const getProducts = async ({ page = 1, perPage = 15, orderBy, categories, signal }: GetProductsProps) => {
+  return axiosInstance
+    .get<ApiPaginatedResponse<ProductDetails>>("/api/products", {
+      signal: signal,
+      params: {
+        page,
+        perPage,
+        categories,
+        orderBy,
+      },
+    })
+    .then((response) => response.data);
+};
 
-    return () => abortController.abort();
+type UseProductsProps = ProductFilters & {
+  config?: QueryClientConfig;
+};
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams.get("categories"), queryParams.get("page"), queryParams.get("perPage"), queryParams.get("order")]);
+export const useProducts = ({ page = 1, perPage = 15, orderBy, categories, config }: UseProductsProps) => {
+  const { data } = useQuery({
+    ...config,
+    queryKey: ["products", page, perPage, orderBy, categories],
+    queryFn: ({ signal }) => getProducts({ page, perPage, orderBy, categories, signal }),
+    staleTime: 5 * 60 * 1000,
+  });
 
-  return { products: state.products };
+  const products = data?.items ?? [];
+  const count = data?.count ?? 0;
+  const pages = data?.pages ?? 0;
+
+  return { products, count, pages };
 };

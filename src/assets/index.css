@@ -508,6 +508,7 @@ footer .container {
 }
 .table-body {
     position: relative;
+    min-height: 100px;
 }
 .table-row {
     padding: 10px 0;

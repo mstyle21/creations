@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { useLocalStorage } from "./useLocalStorage";
 
-const TOKEN_KEY = "creations_tkn";
+export const TOKEN_KEY = "creations_tkn";
 
-export interface IUser {
+export type User = {
   id: number;
   email: string;
   token: string;
   role: string;
-}
+};
 
-type TTokenPayload = {
+type TokenPayload = {
   userId: number;
   email: string;
   role: string;
@@ -25,7 +24,7 @@ export type TTokenStatus = "valid" | "expired" | "expire-soon";
  * @param token
  * @returns TTokenPayload
  */
-const getTokenPayload = (token: string): TTokenPayload => {
+const getTokenPayload = (token: string): TokenPayload => {
   return JSON.parse(atob(token.split(".")[1]));
 };
 
@@ -34,7 +33,7 @@ const getTokenPayload = (token: string): TTokenPayload => {
  * @param token
  * @returns IUser
  */
-const getUserFromToken = (token: string): IUser => {
+const getUserFromToken = (token: string): User => {
   const tokenPayload = getTokenPayload(token);
   return {
     id: tokenPayload.userId,
@@ -45,9 +44,8 @@ const getUserFromToken = (token: string): IUser => {
 };
 
 export const useAuth = () => {
-  const { getItem, setItem, removeItem } = useLocalStorage();
-  const [user, setUser] = useState<IUser | null>(() => {
-    const token = getItem(TOKEN_KEY);
+  const [user, setUser] = useState<User | null>(() => {
+    const token = localStorage.getItem(TOKEN_KEY);
 
     if (token) {
       return getUserFromToken(token);
@@ -59,15 +57,16 @@ export const useAuth = () => {
 
   const login = (token: string): void => {
     const user = getUserFromToken(token);
+
     setUser(user);
-    setItem(TOKEN_KEY, token);
+    localStorage.setItem(TOKEN_KEY, token);
   };
 
   const logout = (redirectPath: string | null = null): void => {
     setLoginRedirect(redirectPath);
 
     setUser(null);
-    removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
   };
 
   const getTokenStatus = (): TTokenStatus => {

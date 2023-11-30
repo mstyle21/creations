@@ -2,27 +2,23 @@ import { useSearchParams } from "react-router-dom";
 import Paginator from "../../../components/Paginator";
 import SortList from "../../../components/SortList";
 import PerPageFilter from "../../../components/filters/PerPage";
-import { useProductContext } from "../hooks/useProductContext";
+import { PER_PAGE_OPTIONS, SORT_BY_OPTIONS } from "../../../utils";
 
-const sortByList = {
-  recent: "Most recent",
-  name: "Name",
-  priceAsc: "Price asc",
-  priceDesc: "Price desc",
+type ActionToolbarProps = {
+  pages: number;
 };
 
-const perPageOptions = [15, 30, 60, 90];
-
-const ActionToolbar = () => {
-  const { state } = useProductContext();
+const ActionToolbar = ({ pages }: ActionToolbarProps) => {
   const [queryParams, setQueryParams] = useSearchParams();
 
   const handleSortBy = (sortBy: string) => {
+    queryParams.set("page", "1");
     queryParams.set("order", sortBy);
     setQueryParams(queryParams);
   };
 
   const handlePerPageChange = (perPage: number) => {
+    queryParams.set("page", "1");
     queryParams.set("perPage", perPage.toString());
     setQueryParams(queryParams);
   };
@@ -40,16 +36,16 @@ const ActionToolbar = () => {
       <SortList
         className="toolbar-sort-by"
         defaultValue={queryParams.get("order") ?? undefined}
-        sortByList={sortByList}
+        sortByList={SORT_BY_OPTIONS}
         onSortByChange={handleSortBy}
       />
       <div className="toolbar-paginator">
         <PerPageFilter
           defaultValue={queryParams.get("perPage") ?? "10"}
-          perPageOptions={perPageOptions}
+          perPageOptions={PER_PAGE_OPTIONS}
           onChange={handlePerPageChange}
         />
-        <Paginator page={page} pages={state.pages} handlePageChange={handlePageChange} />
+        <Paginator page={page} pages={pages} handlePageChange={handlePageChange} />
       </div>
     </div>
   );

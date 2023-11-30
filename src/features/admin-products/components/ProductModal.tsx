@@ -1,10 +1,10 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import { CategoryDetails, GeneralModalProps, ProductDetails } from "../../../types";
+import { GeneralModalProps, ProductDetails } from "../../../types";
 import { useManageProduct } from "../hooks/useManageProduct";
-import useAxios from "../../../hooks/useAxios";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import ProductImageUpload from "./ProductImageUpload";
 import { axiosInstance } from "../../../services/AxiosService";
+import { useCategories } from "../api/getCategories";
 
 const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<ProductDetails>) => {
   const {
@@ -31,11 +31,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     resetValues,
   } = useManageProduct(itemToEdit);
 
-  const {
-    data: categoryList,
-    error,
-    loading,
-  } = useAxios<CategoryDetails[]>({ url: `/api/categories/all`, method: "get" });
+  const { categoryList, error, isLoading } = useCategories({});
 
   const handleSaveProduct = () => {
     const formData = new FormData();
@@ -107,7 +103,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
       >
         <Modal.Title>{itemToEdit ? "Edit" : "Add"} product</Modal.Title>
       </Modal.Header>
-      {loading && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
       {error && <p className="alert alert-danger">Something went wrong!</p>}
       {categoryList && categoryList.length && (
         <>

@@ -4,6 +4,7 @@ import { CategoryDetails } from "../../../types";
 export const useManageCategory = (itemToEdit: CategoryDetails | null) => {
   const [name, setName] = useState("");
   const [active, setActive] = useState(true);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     setName(itemToEdit ? itemToEdit.name : "");
@@ -13,7 +14,8 @@ export const useManageCategory = (itemToEdit: CategoryDetails | null) => {
   const resetValues = () => {
     setName("");
     setActive(true);
+    setErrors({});
   };
 
-  return { name, active, setName, setActive, resetValues };
+  return { name, active, errors, setName, setActive, setErrors, resetValues };
 };

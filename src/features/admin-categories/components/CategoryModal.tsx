@@ -4,9 +4,13 @@ import { CategoryDetails, GeneralModalProps } from "../../../types";
 import { useManageCategory } from "../hooks/useManageCategory";
 
 const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
-  const { name, active, setName, setActive, resetValues } = useManageCategory(itemToEdit);
+  const { name, active, errors, setName, setActive, setErrors, resetValues } = useManageCategory(itemToEdit);
 
   const handleSaveCategory = () => {
+    if (!name) {
+      setErrors((prev) => ({ ...prev, name: "Name is required." }));
+      return false;
+    }
     const data = {
       name: name,
       status: active ? "active" : "inactive",
@@ -14,6 +18,7 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
 
     const url = `/api/categories/${itemToEdit ? itemToEdit.id : ""}`;
 
+    //TODO: use react-query mutation
     axiosInstance
       .request({
         method: itemToEdit ? "put" : "post",
@@ -26,8 +31,8 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
           closeModal(true);
         }
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((error: Error) => {
+        setErrors((prev) => ({ ...prev, axios: error.message }));
       });
   };
 
@@ -42,6 +47,15 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
       >
         <Modal.Title>{itemToEdit ? "Edit" : "Add"} category</Modal.Title>
       </Modal.Header>
+      {Object.values(errors).length > 0 && (
+        <div className="alert alert-danger">
+          {Object.values(errors).map((error, index) => (
+            <p style={{ margin: 0 }} key={index}>
+              {error}
+            </p>
+          ))}
+        </div>
+      )}
       <Modal.Body className="d-grid gap-3">
         <Form.Group controlId="formText">
           <Form.Label>Category name</Form.Label>

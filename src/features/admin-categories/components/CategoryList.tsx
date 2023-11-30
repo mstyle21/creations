@@ -7,9 +7,9 @@ import PerPageFilter from "../../../components/filters/PerPage";
 import SearchFilter from "../../../components/filters/Search";
 import { useFilters } from "../../../hooks/useFilters";
 import { useState } from "react";
-import useAxios from "../../../hooks/useAxios";
-import { CategoryDetails, ApiPaginatedResponse } from "../../../types";
+import { CategoryDetails } from "../../../types";
 import CategoryModal from "./CategoryModal";
+import { useCategories } from "../api/getCategories";
 
 const perPageOptions = [10, 20, 50, 100];
 
@@ -18,13 +18,7 @@ const CategoryList = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<CategoryDetails | null>(null);
 
-  const { data, error, loading, refreshData } = useAxios<ApiPaginatedResponse<CategoryDetails>>({
-    url: `/api/categories?${filterLink}`,
-    method: "get",
-  });
-  const categories = data?.items ?? [];
-  const count = data?.count ?? 0;
-  const pages = data?.pages ?? 1;
+  const { categories, count, pages, error, isLoading, refreshData } = useCategories({ filters: filterLink });
 
   const handleOpenModal = (itemToEdit = null) => {
     setItemToEdit(itemToEdit);
@@ -37,12 +31,18 @@ const CategoryList = () => {
       refreshData();
     }
   };
+
+  const handlePerPageChange = (perPage: number) => {
+    setPerPage(perPage);
+    setPage(1);
+  };
+
   return (
     <>
       <div className="admin-table-container">
-        {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
+        {!isLoading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
         <div className="admin-toolbar">
-          <PerPageFilter perPageOptions={perPageOptions} onChange={setPerPage} />
+          <PerPageFilter perPageOptions={perPageOptions} onChange={handlePerPageChange} />
           <SearchFilter onChange={setSearch} />
           <Button className="btn-success" onClick={() => handleOpenModal()}>
             Add new category
@@ -58,8 +58,8 @@ const CategoryList = () => {
             <span>Actions</span>
           </div>
           <div className="table-body">
-            {loading && <LoadingSpinner />}
-            {!loading && !error && categories.length === 0 && <p className="text-center">No categories found!</p>}
+            {isLoading && <LoadingSpinner />}
+            {!isLoading && !error && categories.length === 0 && <p className="text-center">No categories found!</p>}
             {categories.length > 0 &&
               categories.map((category) => {
                 return (

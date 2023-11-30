@@ -1,14 +1,10 @@
 import { Carousel } from "react-bootstrap";
 import ItemBox from "../../../components/ItemBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import useAxios from "../../../hooks/useAxios";
-import { ProductDetails } from "../../../types";
+import { useLatestProducts } from "../api/getLatestProducts";
 
 const LatestProducts = () => {
-  const { data, loading } = useAxios<ProductDetails[]>({
-    url: "/api/products/latest",
-    method: "get",
-  });
+  const { data, isLoading } = useLatestProducts({});
 
   const latestProducts = [];
   if (data) {
@@ -19,7 +15,7 @@ const LatestProducts = () => {
 
   return (
     <section className="latest-products">
-      {loading && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
 
       <div className="row justify-content-center">
         <div className="col-lg-6 text-center">

@@ -3,7 +3,7 @@ import PageBanner from "../../../components/PageBanner";
 import { Link, Navigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
-import { BACKEND_URL } from "../../../config";
+import { requestToken } from "../api/login";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,32 +20,15 @@ const Login = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    try {
-      await fetch(`${BACKEND_URL}/api/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      })
-        .then(async (response) => {
-          const resp = await response.json();
 
-          if (response.ok) {
-            return resp;
-          } else {
-            throw new Error(resp.message);
-          }
-        })
-        .then((data) => {
-          login(data.token);
-        })
-        .catch((error: Error) => {
-          setError(error.message);
-        });
-    } catch (error) {
-      setError("Something went wrong!");
+    const { token, error } = await requestToken({ email, password });
+
+    if (error) {
+      setError(error);
+      return false;
     }
+
+    login(token);
   };
 
   return (

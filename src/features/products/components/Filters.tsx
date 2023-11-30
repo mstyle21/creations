@@ -1,33 +1,11 @@
 import { Form } from "react-bootstrap";
-import { useProductContext } from "../hooks/useProductContext";
-import { useEffect } from "react";
-import { axiosInstance } from "../../../services/AxiosService";
 import { useSearchParams } from "react-router-dom";
-import { ProductCategory } from "../../../types";
+import { useCategories } from "../api/getCategories";
 
 const Filters = () => {
-  const { state, dispatch } = useProductContext();
   const [queryParams, setQueryParams] = useSearchParams();
-
   const selectedCategories = queryParams.get("categories")?.split(",") ?? [];
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    axiosInstance
-      .get<ProductCategory[]>("/api/categories/all", { signal: abortController.signal })
-      .then((response) => {
-        dispatch({ type: "setCategoryList", payload: response.data });
-      })
-      .catch(() => {
-        //hide category filter
-      });
-
-    return () => abortController.abort();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const categories = state.categories;
+  const { categories } = useCategories({});
 
   const handleCategoryChange = (categoryId: string) => {
     const categoryFilter = queryParams.get("categories")?.split(",") ?? [];
@@ -45,6 +23,7 @@ const Filters = () => {
       queryParams.set("categories", categoryFilter.join(","));
     }
 
+    queryParams.set("page", "1");
     setQueryParams(queryParams);
   };
 

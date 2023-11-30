@@ -1,16 +1,20 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import { BACKEND_URL } from "../config";
+import { TOKEN_KEY } from "../hooks/useAuth";
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: BACKEND_URL,
   timeout: 30000,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
-const setAccessToken = (token: string) => {
-  axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-};
+axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const token = localStorage.getItem(TOKEN_KEY);
 
-export { axiosInstance, setAccessToken };
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  config.headers["Content-Type"] = "application/json";
+
+  return config;
+});

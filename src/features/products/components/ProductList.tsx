@@ -2,8 +2,15 @@ import { Col, Row } from "react-bootstrap";
 import ActionToolbar from "./ActionToolbar";
 import Filters from "./Filters";
 import List from "./List";
+import { useCallback, useState } from "react";
 
 const ProductList = () => {
+  const [pages, setPages] = useState(0);
+
+  const handleSetPages = useCallback((totalPages: number) => {
+    setPages(totalPages);
+  }, []);
+
   return (
     <div className="product-list-container">
       <Row>
@@ -11,8 +18,8 @@ const ProductList = () => {
           <Filters />
         </Col>
         <Col xl={9} lg={8} md={7}>
-          <ActionToolbar />
-          <List />
+          <ActionToolbar pages={pages} />
+          <List setPages={handleSetPages} />
         </Col>
       </Row>
     </div>

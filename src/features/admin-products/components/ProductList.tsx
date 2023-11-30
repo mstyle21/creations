@@ -7,12 +7,12 @@ import PaginatorInfo from "../../../components/PaginatorInfo";
 import PerPageFilter from "../../../components/filters/PerPage";
 import SearchFilter from "../../../components/filters/Search";
 import { BACKEND_URL, CURRENCY_SIGN } from "../../../config";
-import useAxios from "../../../hooks/useAxios";
 import { useFilters } from "../../../hooks/useFilters";
-import { ProductDetails, ApiPaginatedResponse } from "../../../types";
+import { ProductDetails } from "../../../types";
 import ProductModal from "./ProductModal";
 import noImage from "../../../assets/no-image.jpg";
 import { stockColor } from "../../../utils";
+import { useProducts } from "../api/getProducts";
 
 const perPageOptions = [10, 20, 50, 100];
 
@@ -21,13 +21,7 @@ const ProductList = () => {
   const [itemToEdit, setItemToEdit] = useState<ProductDetails | null>(null);
   const { page, perPage, filterLink, setPage, setPerPage, setSearch } = useFilters();
 
-  const { data, error, loading, refreshData } = useAxios<ApiPaginatedResponse<ProductDetails>>({
-    url: `/api/products?${filterLink}`,
-    method: "get",
-  });
-  const products = data?.items ?? [];
-  const count = data?.count ?? 0;
-  const pages = data?.pages ?? 1;
+  const { products, count, pages, error, loading, refreshData } = useProducts({ filters: filterLink });
 
   const handleCloseModal = (refresh = false) => {
     setShowModal(false);

@@ -19,6 +19,15 @@ export function stockColor(stock: number) {
 
   return stock < STOCK_REQUIREMENT * 0.5 ? "red" : stock > STOCK_REQUIREMENT * 1.5 ? "green" : "orange";
 }
+
+export const PER_PAGE_OPTIONS: number[] = [15, 30, 60, 90];
+export const SORT_BY_OPTIONS: Record<string, string> = {
+  recent: "Most recent",
+  name: "Name",
+  priceAsc: "Price asc",
+  priceDesc: "Price desc",
+};
+
 /**
  * Generates an array of numbers between start and end incremented by step
  * Step default value is 1

@@ -10,28 +10,12 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Tooltip } from "chart.js";
-import useAxios from "../../../hooks/useAxios";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { ProductDetails } from "../../../types";
-import { stockColor } from "../../../utils";
+import { useStockStatistics } from "../api/getStockStatistics";
 
 const StockStatistics = () => {
-  const { data, error, loading } = useAxios<ProductDetails[]>({
-    url: "/api/products/stats",
-    method: "get",
-  });
+  const { labels, values, colors, loading, error } = useStockStatistics({});
 
-  const labels: (string | string[])[] = [];
-  const values: number[] = [];
-  const colors: string[] = [];
-
-  if (data) {
-    data.forEach((product) => {
-      labels.push(product.name.length < 30 ? product.name : product.name.split(" "));
-      values.push(product.stock);
-      colors.push(stockColor(product.stock));
-    });
-  }
   const chartData: ChartData<"bar"> = {
     labels: labels,
     datasets: [
@@ -74,8 +58,8 @@ const StockStatistics = () => {
       <h1>Product stock</h1>
       <div className="stock-graph">
         {loading && <LoadingSpinner />}
-        {error && <p className="alert alert-danger">{error}</p>}
-        {data && <Bar id="stockStats" options={chartOptions} data={chartData} />}
+        {error && <p className="alert alert-danger">{error.message}</p>}
+        {!loading && !error && <Bar id="stockStats" options={chartOptions} data={chartData} />}
       </div>
     </div>
   );

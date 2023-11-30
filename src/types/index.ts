@@ -55,8 +55,6 @@ export type ProductImageReducerAction =
       payload: ProductImage & { newOrder: number };
     };
 export type ProductContextState = {
-  categories: ProductCategory[];
-  products: ProductDetails[];
   pages: number;
   productCount: number;
 };
@@ -68,12 +66,4 @@ export type ProductContextAction =
   | {
       type: "setOrderBy";
       payload: string;
-    }
-  | {
-      type: "setCategoryList";
-      payload: ProductCategory[];
-    }
-  | {
-      type: "setProductList";
-      payload: ProductDetails[];
     };

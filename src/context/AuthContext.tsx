@@ -1,8 +1,8 @@
 import { createContext } from "react";
-import { IUser } from "../hooks/useAuth";
+import { User } from "../hooks/useAuth";
 
 interface IAuthContext {
-  user: IUser | null;
+  user: User | null;
   loginRedirect: string | null;
   login: (token: string) => void;
   logout: (redirectPath?: string) => void;

@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { AxiosError } from "axios";
-import { axiosInstance, setAccessToken } from "../services/AxiosService";
-import { AuthContext } from "../context/AuthContext";
+import { axiosInstance } from "../services/AxiosService";
 
 type AxiosProps = {
   url: string;
@@ -22,10 +21,6 @@ export default function useAxios<T = unknown>({ url, method, body = null }: Axio
   const [error, setError] = useState<string | null>(null);
   const [loading, setloading] = useState(true);
   const [trigger, setTrigger] = useState(0);
-
-  const { user, logout } = useContext(AuthContext);
-
-  setAccessToken(user?.token ?? "");
 
   const refreshData = () => {
     setTrigger((prev) => prev + 1);
@@ -53,7 +48,7 @@ export default function useAxios<T = unknown>({ url, method, body = null }: Axio
           setError(err.message);
 
           if (err.response?.status === 401 && err.response.data === "Token expired!") {
-            logout();
+            // logout();
           }
 
           setloading(false);
