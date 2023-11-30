@@ -9,11 +9,12 @@ type ItemBoxProps = {
   price: number;
   slug: string;
   type: "product" | "package";
+  oldPrice?: number;
   stock?: number;
   img?: string;
 };
 
-const ItemBox = ({ id, title, price, slug, type, stock, img }: ItemBoxProps) => {
+const ItemBox = ({ id, title, price, slug, type, oldPrice, stock, img }: ItemBoxProps) => {
   const imgSrc = img ? `${BACKEND_URL}/${type}s/${id}/${img}` : noImage;
 
   return (
@@ -33,7 +34,15 @@ const ItemBox = ({ id, title, price, slug, type, stock, img }: ItemBoxProps) => 
             <span className="current-price">
               {price} {CURRENCY_SIGN}
             </span>
-            <div>{price < 20 ? <span className="old-price">20 {CURRENCY_SIGN}</span> : <span>&nbsp;</span>}</div>
+            <div>
+              {oldPrice && price < oldPrice ? (
+                <span className="old-price">
+                  {oldPrice} {CURRENCY_SIGN}
+                </span>
+              ) : (
+                <span>&nbsp;</span>
+              )}
+            </div>
           </div>
         </div>
         <Link to={`/${type}/${slug}`} className="btn add-to-cart">

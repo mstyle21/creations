@@ -11,6 +11,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
   const [depth, setDepth] = useState<number | "">("");
   const [stock, setStock] = useState<number | "">("");
   const [price, setPrice] = useState<number | "">("");
+  const [oldPrice, setOldPrice] = useState<number | "">("");
   const [active, setActive] = useState(true);
   const [categories, setCategories] = useState<number[]>([]);
   const [images, dispatchImages] = useReducer(productImagesReducer, []);
@@ -22,6 +23,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setDepth(itemToEdit ? itemToEdit.depth : "");
     setStock(itemToEdit ? itemToEdit.stock : "");
     setPrice(itemToEdit ? itemToEdit.price : "");
+    setOldPrice(itemToEdit ? itemToEdit.oldPrice : "");
     setActive(itemToEdit ? itemToEdit.status === "active" : true);
     setCategories(itemToEdit ? itemToEdit.categories.map((item) => item.id) : []);
     dispatchImages({ type: "reset" });
@@ -35,6 +37,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setDepth("");
     setStock("");
     setPrice("");
+    setOldPrice("");
     setActive(true);
     setCategories([]);
     dispatchImages({ type: "reset" });
@@ -47,6 +50,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     depth,
     stock,
     price,
+    oldPrice,
     active,
     categories,
     images,
@@ -56,6 +60,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setDepth,
     setStock,
     setPrice,
+    setOldPrice,
     setActive,
     setCategories,
     dispatchImages,

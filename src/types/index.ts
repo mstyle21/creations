@@ -3,6 +3,11 @@ export type ApiPaginatedResponse<T> = {
   count: number;
   pages: number;
 };
+export type GeneralModalProps<T> = {
+  show: boolean;
+  closeModal: (refresh?: boolean) => void;
+  itemToEdit: T | null;
+};
 export type CategoryDetails = {
   id: number;
   name: string;
@@ -18,14 +23,15 @@ export type ProductDetails = {
   depth: number;
   stock: number;
   price: number;
+  oldPrice: number;
   status: string;
+  slug: string;
   categories: CategoryDetails[];
   images: ProductImage[];
 };
-export type GeneralModalProps<T> = {
-  show: boolean;
-  closeModal: (refresh?: boolean) => void;
-  itemToEdit: T | null;
+export type ProductCategory = {
+  id: number;
+  name: string;
 };
 export type ProductImage = {
   id: string;
@@ -47,4 +53,27 @@ export type ProductImageReducerAction =
   | {
       type: "edit";
       payload: ProductImage & { newOrder: number };
+    };
+export type ProductContextState = {
+  categories: ProductCategory[];
+  products: ProductDetails[];
+  pages: number;
+  productCount: number;
+};
+export type ProductContextAction =
+  | {
+      type: "setPage" | "setPerPage" | "setCategoryFilter" | "setPages" | "setProductCount";
+      payload: number;
+    }
+  | {
+      type: "setOrderBy";
+      payload: string;
+    }
+  | {
+      type: "setCategoryList";
+      payload: ProductCategory[];
+    }
+  | {
+      type: "setProductList";
+      payload: ProductDetails[];
     };

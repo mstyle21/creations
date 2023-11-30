@@ -1,9 +1,9 @@
 import { Form } from "react-bootstrap";
-import { ProductCategory } from "../types";
 import { useProductContext } from "../hooks/useProductContext";
 import { useEffect } from "react";
 import { axiosInstance } from "../../../services/AxiosService";
 import { useSearchParams } from "react-router-dom";
+import { ProductCategory } from "../../../types";
 
 const Filters = () => {
   const { state, dispatch } = useProductContext();
@@ -74,10 +74,10 @@ const Filters = () => {
         <h6 className="ps-3">Availability</h6>
         <ul className="stock-filter-list">
           <li>
-            <Form.Check label="In stock" type="checkbox" />
+            <Form.Check label="In stock" type="checkbox" id="inStock" />
           </li>
           <li>
-            <Form.Check label="Out of stock" type="checkbox" />
+            <Form.Check label="Out of stock" type="checkbox" id="outOfStock" />
           </li>
         </ul>
       </div>

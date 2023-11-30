@@ -14,6 +14,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     depth,
     stock,
     price,
+    oldPrice,
     active,
     categories,
     images,
@@ -23,6 +24,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     setDepth,
     setStock,
     setPrice,
+    setOldPrice,
     setActive,
     setCategories,
     dispatchImages,
@@ -43,6 +45,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     formData.append("depth", depth.toString());
     formData.append("stock", stock.toString());
     formData.append("price", price.toString());
+    formData.append("oldPrice", oldPrice.toString());
     formData.append("status", active ? "active" : "inactive");
 
     categories.forEach((category) => {
@@ -166,15 +169,26 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                   />
                 </Form.Group>
               </div>
-              <FloatingLabel label="Price">
-                <Form.Control
-                  type="number"
-                  placeholder="Price..."
-                  step="0.01"
-                  value={price}
-                  onChange={(e) => setPrice(parseFloat(e.target.value))}
-                />
-              </FloatingLabel>
+              <div className="d-flex gap-3 align-items-center">
+                <FloatingLabel label="Price">
+                  <Form.Control
+                    type="number"
+                    placeholder="Price..."
+                    step="0.01"
+                    value={price}
+                    onChange={(e) => setPrice(parseFloat(e.target.value))}
+                  />
+                </FloatingLabel>
+                <FloatingLabel label="Old price">
+                  <Form.Control
+                    type="number"
+                    placeholder="Old price..."
+                    step="0.01"
+                    value={oldPrice}
+                    onChange={(e) => setOldPrice(parseFloat(e.target.value))}
+                  />
+                </FloatingLabel>
+              </div>
               <Form.Group>
                 <Form.Label>Categories</Form.Label>
                 <div className="d-grid" style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>

@@ -1,10 +1,10 @@
 import { Navigate, useLoaderData } from "react-router-dom";
 import PageBanner from "../../../components/PageBanner";
-import { ProductDetails } from "../types";
 import { Carousel, Container, Tab, Tabs } from "react-bootstrap";
 import { capitalize } from "lodash";
 import { BACKEND_URL, CURRENCY_SIGN, MEASURE_SIGN } from "../../../config";
 import { DEFAULT_IMAGE } from "../../../utils";
+import { ProductDetails } from "../../../types";
 
 const Product = () => {
   const product = useLoaderData() as ProductDetails;
@@ -44,9 +44,14 @@ const Product = () => {
               </span>
             </div>
 
-            <h3 className="product-price">
-              {product.price} {CURRENCY_SIGN}
-            </h3>
+            <div className="product-price">
+              <span>
+                {product.price} {CURRENCY_SIGN}
+              </span>
+              <span style={{ color: "grey", textDecoration: "line-through" }}>
+                {product.oldPrice} {CURRENCY_SIGN}
+              </span>
+            </div>
 
             <div className="product-specifications">
               <Tabs variant="pills">

@@ -1,4 +1,4 @@
-import { ProductContextAction, ProductContextState } from "../types";
+import { ProductContextState, ProductContextAction } from "../../../types";
 
 export const initialState: ProductContextState = {
   categories: [],

@@ -1,6 +1,6 @@
 import { Dispatch, createContext, useMemo, useReducer } from "react";
 import { initialState, productContextReducer } from "../reducers/productFilterReducer";
-import { ProductContextAction, ProductContextState } from "../types";
+import { ProductContextState, ProductContextAction } from "../../../types";
 
 export const ProductContext = createContext<[ProductContextState, Dispatch<ProductContextAction>]>([
   initialState,

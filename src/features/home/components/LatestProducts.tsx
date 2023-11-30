@@ -2,7 +2,7 @@ import { Carousel } from "react-bootstrap";
 import ItemBox from "../../../components/ItemBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import useAxios from "../../../hooks/useAxios";
-import { ProductDetails } from "../../products/types";
+import { ProductDetails } from "../../../types";
 
 const LatestProducts = () => {
   const { data, loading } = useAxios<ProductDetails[]>({

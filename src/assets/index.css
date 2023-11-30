@@ -432,7 +432,12 @@ footer .container {
     gap: 20px;
 }
 .product-price {
+    padding: 20px 0;
     color: var(--primary-color);
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    gap: 10px;
 }
 .product-details-stock {
     font-weight: bold;
