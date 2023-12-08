@@ -24,46 +24,73 @@ export type ProductDetails = {
   stock: number;
   price: number;
   oldPrice: number;
+  materialWeight: number;
   status: string;
   slug: string;
   categories: CategoryDetails[];
   images: ProductImage[];
 };
-export type ProductCategory = {
+export type GenericCategory = {
   id: number;
   name: string;
 };
-export type ProductImage = {
+export type GenericImage = {
   id: string;
   filename: string;
   order: number;
-  productId?: number;
   file?: File;
 };
-export type ProductImageReducerAction =
+export type ProductImage = GenericImage & {
+  productId?: number;
+};
+export type ImageReducerAction<T> =
   | {
       type: "add" | "delete";
-      payload: ProductImage;
+      payload: T;
     }
   | {
       type: "set" | "add";
-      payload: ProductImage[];
+      payload: T[];
     }
   | { type: "reset" }
   | {
       type: "edit";
-      payload: ProductImage & { newOrder: number };
+      payload: T & { newOrder: number };
     };
-export type ProductContextState = {
-  pages: number;
-  productCount: number;
+
+export type PackageDetails = {
+  id: number;
+  name: string;
+  stock: number;
+  price: number;
+  oldPrice: number;
+  status: string;
+  slug: string;
+  category: CategoryDetails;
+  products: PackageProductDetails[];
+  images: PackageImage[];
 };
-export type ProductContextAction =
+export type PackageImage = GenericImage & {
+  packageId?: number;
+};
+export type PackageProductDetails = {
+  id: number;
+  quantity: number;
+  product: ProductDetails;
+};
+export type PackageItem = {
+  productId: number;
+  name: string;
+  quantity: number;
+  image: string | null;
+};
+export type PackageProductReducerAction =
   | {
-      type: "setPage" | "setPerPage" | "setCategoryFilter" | "setPages" | "setProductCount";
-      payload: number;
+      type: "add" | "edit" | "delete";
+      payload: PackageItem;
     }
   | {
-      type: "setOrderBy";
-      payload: string;
-    };
+      type: "set";
+      payload: PackageItem[];
+    }
+  | { type: "reset" };

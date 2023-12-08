@@ -8,7 +8,7 @@ import Login from "../features/auth/routes/Login";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import Categories from "../features/admin-categories/routes/Categories";
 import ManageProduct from "../features/admin-products/routes/Products";
-import ManagePackage from "../features/admin-packages/routes/ManagePackage";
+import ManagePackage from "../features/admin-packages/routes/Packages";
 import Dashboard from "../features/admin-dashboard/routes/Dashboard";
 import Product from "../features/products/routes/Product";
 import { productDetailsLoader } from "../features/products/loaders/productDetailsLoader";

@@ -1,4 +1,5 @@
 import noImage from "../assets/no-image.jpg";
+import { MATERIALS_PRICES_PER_ITEM } from "../config";
 export const DEFAULT_IMAGE = noImage;
 
 export const COLORS = [
@@ -130,4 +131,12 @@ export function generateRandomData<T>(prototype: T): T {
       return prototype;
     }
   }
+}
+
+export function calculateApproximateCostPrice(materialWeight: number): string {
+  return (
+    materialWeight * MATERIALS_PRICES_PER_ITEM.plaster +
+    MATERIALS_PRICES_PER_ITEM.bubbleWrap +
+    MATERIALS_PRICES_PER_ITEM.scotch
+  ).toFixed(2);
 }

@@ -1,6 +1,6 @@
 import { QueryClientConfig, useQuery } from "@tanstack/react-query";
-import { ApiPaginatedResponse, CategoryDetails } from "../../../types";
-import { axiosInstance } from "../../../services/AxiosService";
+import { axiosInstance } from "../services/AxiosService";
+import { ApiPaginatedResponse, CategoryDetails } from "../types";
 
 export const getCategories = async ({ filters }: { filters: string }) => {
   return axiosInstance
@@ -21,7 +21,7 @@ export const useCategories = ({ filters, config }: UseCategoriesProps) => {
     refetch: refreshData,
   } = useQuery({
     ...config,
-    queryKey: ["categories", filters],
+    queryKey: ["categories-filtered", filters],
     queryFn: () => getCategories({ filters }),
     staleTime: 5 * 60 * 1000,
   });

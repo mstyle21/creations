@@ -21,7 +21,7 @@ export const useProducts = ({ config, filters }: UseProductsProps) => {
     refetch: refreshData,
   } = useQuery({
     ...config,
-    queryKey: ["products", filters],
+    queryKey: ["products-filtered", filters],
     queryFn: () => getProducts({ filters }),
     staleTime: 5 * 60 * 1000,
   });

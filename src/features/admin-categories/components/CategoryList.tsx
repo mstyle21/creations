@@ -9,7 +9,7 @@ import { useFilters } from "../../../hooks/useFilters";
 import { useState } from "react";
 import { CategoryDetails } from "../../../types";
 import CategoryModal from "./CategoryModal";
-import { useCategories } from "../api/getCategories";
+import { useCategories } from "../../../api/getCategories";
 
 const perPageOptions = [10, 20, 50, 100];
 

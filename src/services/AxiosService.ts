@@ -14,7 +14,14 @@ axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
-  config.headers["Content-Type"] = "application/json";
-
   return config;
 });
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  }
+  // (error) => {
+  //   console.log(error);
+  // }
+);

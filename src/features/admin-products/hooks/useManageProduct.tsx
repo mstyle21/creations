@@ -1,8 +1,8 @@
 import { useEffect, useReducer, useState } from "react";
 import { ProductDetails } from "../../../types";
-import { productImagesReducer } from "../../../reducers/productImagesReducer";
+import { productImagesReducer } from "../reducers/productImagesReducer";
 
-export const MAX_UPLOAD_IMAGES = 5;
+export const MAX_PRODUCT_IMAGES = 5;
 
 export const useManageProduct = (itemToEdit: ProductDetails | null) => {
   const [name, setName] = useState("");
@@ -12,6 +12,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
   const [stock, setStock] = useState<number | "">("");
   const [price, setPrice] = useState<number | "">("");
   const [oldPrice, setOldPrice] = useState<number | "">("");
+  const [materialWeight, setMaterialWeight] = useState<number | "">("");
   const [active, setActive] = useState(true);
   const [categories, setCategories] = useState<number[]>([]);
   const [images, dispatchImages] = useReducer(productImagesReducer, []);
@@ -23,7 +24,8 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setDepth(itemToEdit ? itemToEdit.depth : "");
     setStock(itemToEdit ? itemToEdit.stock : "");
     setPrice(itemToEdit ? itemToEdit.price : "");
-    setOldPrice(itemToEdit ? itemToEdit.oldPrice : "");
+    setOldPrice(itemToEdit && itemToEdit.oldPrice ? itemToEdit.oldPrice : "");
+    setMaterialWeight(itemToEdit && itemToEdit.materialWeight ? itemToEdit.materialWeight : "");
     setActive(itemToEdit ? itemToEdit.status === "active" : true);
     setCategories(itemToEdit ? itemToEdit.categories.map((item) => item.id) : []);
     dispatchImages({ type: "reset" });
@@ -38,6 +40,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setStock("");
     setPrice("");
     setOldPrice("");
+    setMaterialWeight("");
     setActive(true);
     setCategories([]);
     dispatchImages({ type: "reset" });
@@ -52,6 +55,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     price,
     oldPrice,
     active,
+    materialWeight,
     categories,
     images,
     setName,
@@ -62,6 +66,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setPrice,
     setOldPrice,
     setActive,
+    setMaterialWeight,
     setCategories,
     dispatchImages,
     resetValues,

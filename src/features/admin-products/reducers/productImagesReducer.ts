@@ -1,12 +1,12 @@
-import { MAX_UPLOAD_IMAGES } from "../features/admin-products/hooks/useManageProduct";
-import { ProductImage, ProductImageReducerAction } from "../types";
+import { MAX_PRODUCT_IMAGES } from "../hooks/useManageProduct";
+import { ImageReducerAction, ProductImage } from "../../../types";
 
 const reorderImages = (state: ProductImage[], payloadImage: ProductImage & { newOrder: number }) => {
   let newOrder = payloadImage.newOrder;
   if (isNaN(newOrder)) {
     return state;
   }
-  const maxOrder = Math.min(MAX_UPLOAD_IMAGES, state.length);
+  const maxOrder = Math.min(MAX_PRODUCT_IMAGES, state.length);
   newOrder = newOrder < 1 || newOrder > maxOrder ? maxOrder : newOrder;
   const oldOrder = payloadImage.order;
 
@@ -43,7 +43,7 @@ const deleteImage = (state: ProductImage[], payloadImage: ProductImage) => {
   return state;
 };
 
-export const productImagesReducer = (state: ProductImage[], action: ProductImageReducerAction) => {
+export const productImagesReducer = (state: ProductImage[], action: ImageReducerAction<ProductImage>) => {
   switch (action.type) {
     case "add":
       if (Array.isArray(action.payload)) {

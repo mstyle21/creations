@@ -1,19 +1,19 @@
 import React, { useRef, useState } from "react";
-import { ImageReducerAction, ProductImage } from "../../../types";
+import { ImageReducerAction, PackageImage } from "../../../types";
 import { Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { axiosInstance } from "../../../services/AxiosService";
 import { previewImage, randomHash } from "../../../utils";
-import { MAX_PRODUCT_IMAGES } from "../hooks/useManageProduct";
 import { BACKEND_URL } from "../../../config";
+import { MAX_PACKAGE_IMAGES } from "../hooks/useManagePackage";
 
-type ManageProductImageProps = {
-  images: ProductImage[];
-  dispatchImages: React.Dispatch<ImageReducerAction<ProductImage>>;
+type ManagePackageImageProps = {
+  images: PackageImage[];
+  dispatchImages: React.Dispatch<ImageReducerAction<PackageImage>>;
 };
 
-const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps) => {
+const PackageImageUpload = ({ images, dispatchImages }: ManagePackageImageProps) => {
   const [dragActive, setDragActive] = useState(false);
   const inputFile = useRef<HTMLInputElement>(null);
   const imgList = useRef<HTMLDivElement>(null);
@@ -49,8 +49,8 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
     if (files.length > 0) {
       let order = imgList.current ? imgList.current.children.length + 1 : 1;
 
-      const filesArray: ProductImage[] = [];
-      for (let i = 0; i < files.length && i < MAX_PRODUCT_IMAGES; i++) {
+      const filesArray: PackageImage[] = [];
+      for (let i = 0; i < files.length && i < MAX_PACKAGE_IMAGES; i++) {
         const path = await previewImage(files[i]);
         if (path) {
           filesArray.push({
@@ -67,14 +67,14 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
     }
   };
 
-  const handleRemoveImage = (image: ProductImage) => {
+  const handleRemoveImage = (image: PackageImage) => {
     dispatchImages({ type: "delete", payload: image });
   };
 
-  const handleDeleteImage = (image: ProductImage) => {
+  const handleDeleteImage = (image: PackageImage) => {
     if (confirm("Are you sure you want to delete this image?")) {
       axiosInstance
-        .delete(`${BACKEND_URL}/api/products/${image.productId}/image/${image.id}`)
+        .delete(`${BACKEND_URL}/api/packages/${image.packageId}/image/${image.id}`)
         .then((response) => {
           if (response.status === 204) {
             handleRemoveImage(image);
@@ -90,7 +90,7 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
 
   return (
     <div className="d-flex flex-column">
-      <h2>Images</h2>
+      <h2 className="text-center">Images</h2>
       <div
         className={`dragable-area ${dragActive ? "drag-active" : ""}`}
         onDrop={(e) => handleDrop(e)}
@@ -120,16 +120,16 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
         />
       </div>
-      <div className="manage-product-img-list" ref={imgList}>
+      <div className="manage-package-img-list" ref={imgList}>
         {orderedImages.length > 0 &&
           orderedImages.map((image, index) => {
             return (
-              <div key={index} className="manage-product-img-item">
+              <div key={index} className="manage-package-img-item">
                 <Form.Control
-                  className="product-img-order"
+                  className="package-img-order"
                   type="text"
                   min={1}
-                  max={MAX_PRODUCT_IMAGES}
+                  max={MAX_PACKAGE_IMAGES}
                   value={index + 1}
                   onChange={(e) =>
                     dispatchImages({
@@ -139,20 +139,20 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
                   }
                 />
                 <img
-                  className="manage-product-img"
+                  className="manage-package-img"
                   src={
-                    image.productId !== undefined
-                      ? `${BACKEND_URL}/products/${image.productId}/${image.filename}`
+                    image.packageId !== undefined
+                      ? `${BACKEND_URL}/packages/${image.packageId}/${image.filename}`
                       : image.filename
                   }
                 />
-                <span>{image.productId !== undefined ? image.filename : image.file?.name.slice(0, 10) + "..."}</span>
+                <span>{image.packageId !== undefined ? image.filename : image.file?.name.slice(0, 10) + "..."}</span>
                 <FontAwesomeIcon
                   icon={faCircleXmark}
                   className="remove-image"
                   size="xl"
                   onClick={() => {
-                    if (image.productId !== undefined) {
+                    if (image.packageId !== undefined) {
                       handleDeleteImage(image);
                     } else {
                       handleRemoveImage(image);
@@ -167,4 +167,4 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
   );
 };
 
-export default ProductImageUpload;
+export default PackageImageUpload;

@@ -4,7 +4,9 @@ import { useManageProduct } from "../hooks/useManageProduct";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import ProductImageUpload from "./ProductImageUpload";
 import { axiosInstance } from "../../../services/AxiosService";
-import { useCategories } from "../api/getCategories";
+import { calculateApproximateCostPrice } from "../../../utils";
+import { CURRENCY_SIGN } from "../../../config";
+import { useAllCategories } from "../../../api/getAllCategories";
 
 const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<ProductDetails>) => {
   const {
@@ -16,6 +18,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     price,
     oldPrice,
     active,
+    materialWeight,
     categories,
     images,
     setName,
@@ -26,12 +29,13 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     setPrice,
     setOldPrice,
     setActive,
+    setMaterialWeight,
     setCategories,
     dispatchImages,
     resetValues,
   } = useManageProduct(itemToEdit);
 
-  const { categoryList, error, isLoading } = useCategories({});
+  const { categoryList, error, isLoading } = useAllCategories({});
 
   const handleSaveProduct = () => {
     const formData = new FormData();
@@ -118,14 +122,14 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                   onChange={(e) => setName(e.target.value)}
                 />
               </FloatingLabel>
-              <div className="d-flex justify-content-between gap-3">
+              <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
                 <FloatingLabel label="Width">
                   <Form.Control
                     type="number"
                     placeholder="Width..."
                     step="0.1"
                     value={width}
-                    onChange={(e) => setWidth(parseFloat(e.target.value))}
+                    onChange={(e) => setWidth(e.target.value === "" ? e.target.value : parseFloat(e.target.value))}
                   />
                 </FloatingLabel>
                 <FloatingLabel label="Height">
@@ -134,7 +138,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                     placeholder="Height..."
                     step="0.1"
                     value={height}
-                    onChange={(e) => setHeight(parseFloat(e.target.value))}
+                    onChange={(e) => setHeight(e.target.value === "" ? e.target.value : parseFloat(e.target.value))}
                   />
                 </FloatingLabel>
                 <FloatingLabel label="Depth">
@@ -143,17 +147,27 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                     placeholder="Depth..."
                     step="0.1"
                     value={depth}
-                    onChange={(e) => setDepth(parseFloat(e.target.value))}
+                    onChange={(e) => setDepth(e.target.value === "" ? e.target.value : parseFloat(e.target.value))}
                   />
                 </FloatingLabel>
               </div>
-              <div className="d-flex gap-3 align-items-center">
+              <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
                 <FloatingLabel label="Stock">
                   <Form.Control
                     type="number"
                     placeholder="Stock..."
                     value={stock}
-                    onChange={(e) => setStock(parseInt(e.target.value))}
+                    onChange={(e) => setStock(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
+                  />
+                </FloatingLabel>
+                <FloatingLabel label="Material weight (g)">
+                  <Form.Control
+                    type="number"
+                    placeholder="Material weight (g)..."
+                    value={materialWeight}
+                    onChange={(e) =>
+                      setMaterialWeight(e.target.value === "" ? e.target.value : parseInt(e.target.value))
+                    }
                   />
                 </FloatingLabel>
                 <Form.Group controlId="formCheck" className="m-auto">
@@ -165,6 +179,12 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                   />
                 </Form.Group>
               </div>
+              {materialWeight && (
+                <div className="d-flex font-italic">
+                  Calculated price based on material weight: {calculateApproximateCostPrice(materialWeight)}{" "}
+                  {CURRENCY_SIGN}
+                </div>
+              )}
               <div className="d-flex gap-3 align-items-center">
                 <FloatingLabel label="Price">
                   <Form.Control
@@ -172,7 +192,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                     placeholder="Price..."
                     step="0.01"
                     value={price}
-                    onChange={(e) => setPrice(parseFloat(e.target.value))}
+                    onChange={(e) => setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value))}
                   />
                 </FloatingLabel>
                 <FloatingLabel label="Old price">
@@ -181,10 +201,11 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                     placeholder="Old price..."
                     step="0.01"
                     value={oldPrice}
-                    onChange={(e) => setOldPrice(parseFloat(e.target.value))}
+                    onChange={(e) => setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value))}
                   />
                 </FloatingLabel>
               </div>
+
               <Form.Group>
                 <Form.Label>Categories</Form.Label>
                 <div className="d-grid" style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>

@@ -11,12 +11,18 @@ const queryClient = new QueryClient();
 const router = createBrowserRouter(routes);
 
 const App = () => {
-  const { user, loginRedirect, login, logout } = useAuth();
+  const { user, loginRedirect, login, logout, getTokenStatus } = useAuth();
+
+  const tokenStatus = getTokenStatus();
+
+  if (user && tokenStatus === "expired") {
+    logout();
+  }
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <QueryClientProvider client={queryClient}>
-        <AuthContext.Provider value={{ user, loginRedirect, login, logout }}>
+        <AuthContext.Provider value={{ user, loginRedirect, login, logout, getTokenStatus }}>
           <RouterProvider router={router}></RouterProvider>
         </AuthContext.Provider>
       </QueryClientProvider>

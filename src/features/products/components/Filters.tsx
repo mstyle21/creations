@@ -1,11 +1,11 @@
 import { Form } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
-import { useCategories } from "../api/getCategories";
+import { useAllCategories } from "../../../api/getAllCategories";
 
 const Filters = () => {
   const [queryParams, setQueryParams] = useSearchParams();
   const selectedCategories = queryParams.get("categories")?.split(",") ?? [];
-  const { categories } = useCategories({});
+  const { categoryList: categories } = useAllCategories({});
 
   const handleCategoryChange = (categoryId: string) => {
     const categoryFilter = queryParams.get("categories")?.split(",") ?? [];
