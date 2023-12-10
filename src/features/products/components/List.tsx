@@ -38,8 +38,8 @@ const List = ({ setPages }: ListProps) => {
           key={item.id}
           id={item.id}
           title={item.name}
-          price={item.price}
-          oldPrice={item.oldPrice}
+          price={item.price / 100}
+          oldPrice={item.oldPrice / 100}
           slug={item.slug}
           type="product"
           stock={item.stock}

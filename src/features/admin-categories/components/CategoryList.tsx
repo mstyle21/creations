@@ -18,19 +18,14 @@ const CategoryList = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<CategoryDetails | null>(null);
 
-  const { categories, count, pages, error, isLoading, refreshData } = useCategories({ filters: filterLink });
+  const { categories, count, pages, error, isLoading } = useCategories({ filters: filterLink });
 
   const handleOpenModal = (itemToEdit = null) => {
     setItemToEdit(itemToEdit);
     setShowModal(true);
   };
 
-  const handleCloseModal = (refresh = false) => {
-    setShowModal(false);
-    if (refresh) {
-      refreshData();
-    }
-  };
+  const handleCloseModal = () => setShowModal(false);
 
   const handlePerPageChange = (perPage: number) => {
     setPerPage(perPage);

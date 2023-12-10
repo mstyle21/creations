@@ -126,8 +126,10 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
                     type="number"
                     placeholder="Price..."
                     step="0.01"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value))}
+                    value={price !== "" ? price / 100 : price}
+                    onChange={(e) =>
+                      setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)
+                    }
                   />
                 </FloatingLabel>
                 <FloatingLabel label="Old price">
@@ -135,8 +137,10 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
                     type="number"
                     placeholder="Old price..."
                     step="0.01"
-                    value={oldPrice}
-                    onChange={(e) => setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value))}
+                    value={oldPrice !== "" ? oldPrice / 100 : oldPrice}
+                    onChange={(e) =>
+                      setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)
+                    }
                   />
                 </FloatingLabel>
               </div>

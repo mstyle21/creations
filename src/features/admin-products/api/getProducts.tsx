@@ -13,6 +13,7 @@ type UseProductsProps = {
   filters: string;
   config?: AxiosRequestConfig;
 };
+
 export const useProducts = ({ config, filters }: UseProductsProps) => {
   const {
     data,

@@ -73,6 +73,7 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
 
   const handleDeleteImage = (image: ProductImage) => {
     if (confirm("Are you sure you want to delete this image?")) {
+      //TODO: mutation
       axiosInstance
         .delete(`${BACKEND_URL}/api/products/${image.productId}/image/${image.id}`)
         .then((response) => {

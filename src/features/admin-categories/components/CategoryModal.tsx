@@ -1,39 +1,35 @@
 import { Button, Form, Modal } from "react-bootstrap";
-import { axiosInstance } from "../../../services/AxiosService";
 import { CategoryDetails, GeneralModalProps } from "../../../types";
 import { useManageCategory } from "../hooks/useManageCategory";
+import { useSaveCategory } from "../api/saveCategory";
 
 const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
   const { name, active, errors, setName, setActive, setErrors, resetValues } = useManageCategory(itemToEdit);
+  const saveCategory = useSaveCategory();
 
-  const handleSaveCategory = () => {
+  const handleSaveCategory = (shouldCloseModal = false) => {
     if (!name) {
       setErrors((prev) => ({ ...prev, name: "Name is required." }));
       return false;
     }
-    const data = {
+    const data: { id?: number; name: string; status: "active" | "inactive" } = {
+      id: itemToEdit?.id,
       name: name,
       status: active ? "active" : "inactive",
     };
 
-    const url = `/api/categories/${itemToEdit ? itemToEdit.id : ""}`;
+    saveCategory.mutate(data, {
+      onSuccess: () => {
+        resetValues();
 
-    //TODO: use react-query mutation
-    axiosInstance
-      .request({
-        method: itemToEdit ? "put" : "post",
-        url: url,
-        data: data,
-      })
-      .then((response) => {
-        if (response.status === 201) {
-          resetValues();
-          closeModal(true);
+        if (shouldCloseModal) {
+          closeModal();
         }
-      })
-      .catch((error: Error) => {
+      },
+      onError: (error) => {
         setErrors((prev) => ({ ...prev, axios: error.message }));
-      });
+      },
+    });
   };
 
   return (
@@ -72,8 +68,11 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
         </Form.Group>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
-        <Button variant="primary" onClick={handleSaveCategory}>
+        <Button variant="primary" onClick={() => handleSaveCategory()}>
           Save
+        </Button>
+        <Button variant="primary" onClick={() => handleSaveCategory(true)}>
+          Save and close
         </Button>
         <Button
           variant="secondary"

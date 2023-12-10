@@ -46,10 +46,10 @@ const Product = () => {
 
             <div className="product-price">
               <span>
-                {product.price} {CURRENCY_SIGN}
+                {product.price / 100} {CURRENCY_SIGN}
               </span>
               <span style={{ color: "grey", textDecoration: "line-through" }}>
-                {product.oldPrice} {CURRENCY_SIGN}
+                {product.oldPrice / 100} {CURRENCY_SIGN}
               </span>
             </div>
 

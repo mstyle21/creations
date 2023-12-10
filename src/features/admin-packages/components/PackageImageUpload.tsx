@@ -73,6 +73,7 @@ const PackageImageUpload = ({ images, dispatchImages }: ManagePackageImageProps)
 
   const handleDeleteImage = (image: PackageImage) => {
     if (confirm("Are you sure you want to delete this image?")) {
+      //TODO: refactor to mutations
       axiosInstance
         .delete(`${BACKEND_URL}/api/packages/${image.packageId}/image/${image.id}`)
         .then((response) => {

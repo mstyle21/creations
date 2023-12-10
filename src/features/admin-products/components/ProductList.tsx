@@ -82,7 +82,7 @@ const ProductList = () => {
                     <span>{product.name}</span>
                     <span style={{ color: stockColor(product.stock), fontWeight: "bold" }}>{product.stock}</span>
                     <span>
-                      {product.price} {CURRENCY_SIGN}
+                      {product.price / 100} {CURRENCY_SIGN}
                     </span>
                     <span style={{ fontWeight: "bold", color: product.status === "active" ? "green" : "red" }}>
                       {capitalize(product.status)}

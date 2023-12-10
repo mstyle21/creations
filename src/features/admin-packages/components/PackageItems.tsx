@@ -66,20 +66,20 @@ const PackageItems = ({ packageItems, dispatchItems }: PackageItemsProps) => {
           value={selectedItem ? { value: itemId, label: selectedItem.name } : null}
           onChange={(e) => setItemId(e?.value ?? 0)}
           styles={{
-            container: (styles) => ({
-              ...styles,
-              border: validated && itemId === 0 ? "1px solid red" : "",
+            container: (baseStyles) => ({
+              ...baseStyles,
+              border: validated && itemId === 0 ? "1px solid red" : "initial",
             }),
-            control: (styles) => ({
-              ...styles,
+            control: (baseStyles) => ({
+              ...baseStyles,
               height: "58px",
             }),
-            indicatorSeparator: (styles) => ({
-              ...styles,
+            indicatorSeparator: (baseStyles) => ({
+              ...baseStyles,
               display: "none",
             }),
-            menu: (styles) => ({
-              ...styles,
+            menu: (baseStyles) => ({
+              ...baseStyles,
               zIndex: 5,
             }),
           }}

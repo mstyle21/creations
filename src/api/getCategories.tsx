@@ -21,7 +21,7 @@ export const useCategories = ({ filters, config }: UseCategoriesProps) => {
     refetch: refreshData,
   } = useQuery({
     ...config,
-    queryKey: ["categories-filtered", filters],
+    queryKey: ["categories", "filtered-categories", filters],
     queryFn: () => getCategories({ filters }),
     staleTime: 5 * 60 * 1000,
   });
