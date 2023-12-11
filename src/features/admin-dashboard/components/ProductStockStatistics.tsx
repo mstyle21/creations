@@ -11,10 +11,10 @@ import {
 } from "chart.js";
 import { Tooltip } from "chart.js";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { useStockStatistics } from "../api/getStockStatistics";
+import { useProductStockStatistics } from "../api/getProductStockStatistics";
 
-const StockStatistics = () => {
-  const { labels, values, colors, loading, error } = useStockStatistics({});
+const ProductStockStatistics = () => {
+  const { labels, values, colors, loading, error } = useProductStockStatistics({});
 
   const chartData: ChartData<"bar"> = {
     labels: labels,
@@ -34,6 +34,11 @@ const StockStatistics = () => {
       x: {
         grid: {
           display: false,
+        },
+      },
+      y: {
+        ticks: {
+          stepSize: 5,
         },
       },
     },
@@ -65,4 +70,4 @@ const StockStatistics = () => {
   );
 };
 
-export default StockStatistics;
+export default ProductStockStatistics;

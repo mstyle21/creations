@@ -16,7 +16,7 @@ export const COLORS = [
   "#6A5ACD",
 ];
 export function stockColor(stock: number) {
-  const STOCK_REQUIREMENT = 10;
+  const STOCK_REQUIREMENT = 40;
 
   return stock < STOCK_REQUIREMENT * 0.5 ? "red" : stock > STOCK_REQUIREMENT * 1.5 ? "green" : "orange";
 }
