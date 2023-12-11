@@ -1,10 +1,22 @@
 import { Form } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
-import { useAllCategories } from "../../../api/getAllCategories";
+import { useAllCategories } from "../api/getAllCategories";
 
-const Filters = () => {
+const stockOptions = [
+  {
+    label: "In stock",
+    value: "yes",
+  },
+  {
+    label: "Out of stock",
+    value: "no",
+  },
+];
+
+const ProductFilters = () => {
   const [queryParams, setQueryParams] = useSearchParams();
   const selectedCategories = queryParams.get("categories")?.split(",") ?? [];
+  const selectedAvailability = queryParams.get("available") ?? "";
   const { categoryList: categories } = useAllCategories({});
 
   const handleCategoryChange = (categoryId: string) => {
@@ -23,6 +35,12 @@ const Filters = () => {
       queryParams.set("categories", categoryFilter.join(","));
     }
 
+    queryParams.set("page", "1");
+    setQueryParams(queryParams);
+  };
+
+  const handleAvailabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    queryParams.set("available", event.target.checked ? event.target.value : "");
     queryParams.set("page", "1");
     setQueryParams(queryParams);
   };
@@ -52,16 +70,22 @@ const Filters = () => {
       <div className="filter stock-filter">
         <h6 className="ps-3">Availability</h6>
         <ul className="stock-filter-list">
-          <li>
-            <Form.Check label="In stock" type="checkbox" id="inStock" />
-          </li>
-          <li>
-            <Form.Check label="Out of stock" type="checkbox" id="outOfStock" />
-          </li>
+          {stockOptions.map((stock, index) => (
+            <li key={index}>
+              <Form.Check
+                label={stock.label}
+                type="checkbox"
+                id={stock.value}
+                checked={selectedAvailability === stock.value}
+                value={stock.value}
+                onChange={(e) => handleAvailabilityChange(e)}
+              />
+            </li>
+          ))}
         </ul>
       </div>
     </div>
   );
 };
 
-export default Filters;
+export default ProductFilters;

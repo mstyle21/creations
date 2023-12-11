@@ -1,14 +1,7 @@
 import { axiosInstance } from "../../../services/AxiosService";
-import { ApiPaginatedResponse, ProductDetails } from "../../../types";
+import { ApiPaginatedResponse, ProductDetails, ProductFilters } from "../../../types";
 import { QueryClientConfig, useQuery } from "@tanstack/react-query";
 import { GenericAbortSignal } from "axios";
-
-type ProductFilters = {
-  page?: number;
-  perPage?: number;
-  orderBy?: string;
-  categories?: string[];
-};
 
 type GetProductsProps = ProductFilters & {
   signal?: GenericAbortSignal;

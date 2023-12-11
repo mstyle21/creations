@@ -1,10 +1,10 @@
 import { Col, Row } from "react-bootstrap";
 import ActionToolbar from "../../../components/ActionToolbar";
+import { useCallback, useState } from "react";
 import ProductFilters from "../../../components/ProductFilters";
 import List from "./List";
-import { useCallback, useState } from "react";
 
-const ProductList = () => {
+const PackageList = () => {
   const [pages, setPages] = useState(0);
 
   const handleSetPages = useCallback((totalPages: number) => {
@@ -12,7 +12,7 @@ const ProductList = () => {
   }, []);
 
   return (
-    <div className="product-list-container">
+    <div className="package-list-container">
       <Row>
         <Col xl={3} lg={4} md={5}>
           <ProductFilters />
@@ -26,4 +26,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default PackageList;

@@ -1,7 +1,6 @@
-import noImage from "../assets/no-image.jpg";
 import { BACKEND_URL, CURRENCY_SIGN } from "../config";
 import { Link } from "react-router-dom";
-import { capitalize } from "../utils";
+import { DEFAULT_IMAGE, capitalize } from "../utils";
 
 type ItemBoxProps = {
   id: number;
@@ -15,7 +14,7 @@ type ItemBoxProps = {
 };
 
 const ItemBox = ({ id, title, price, slug, type, oldPrice, stock, img }: ItemBoxProps) => {
-  const imgSrc = img ? `${BACKEND_URL}/${type}s/${id}/${img}` : noImage;
+  const imgSrc = img ? `${BACKEND_URL}/${type}s/${id}/${img}` : DEFAULT_IMAGE;
 
   return (
     <div className="item-box">
@@ -32,12 +31,12 @@ const ItemBox = ({ id, title, price, slug, type, oldPrice, stock, img }: ItemBox
           )}
           <div>
             <span className="current-price">
-              {price} {CURRENCY_SIGN}
+              {price / 100} {CURRENCY_SIGN}
             </span>
             <div>
               {oldPrice && price < oldPrice ? (
                 <span className="old-price">
-                  {oldPrice} {CURRENCY_SIGN}
+                  {oldPrice / 100} {CURRENCY_SIGN}
                 </span>
               ) : (
                 <span>&nbsp;</span>

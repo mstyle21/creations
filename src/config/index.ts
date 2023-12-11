@@ -1,4 +1,4 @@
-export const BACKEND_URL = "http://192.168.100.27:7000";
+export const BACKEND_URL = "http://localhost:7000";
 export const CURRENCY_SIGN = "RON";
 export const MEASURE_SIGN = "cm";
 //estimated material costs

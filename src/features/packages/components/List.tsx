@@ -1,7 +1,7 @@
-import ItemBox from "../../../components/ItemBox";
-import { useProducts } from "../api/getProducts";
 import { useEffect } from "react";
 import { useFilterParams } from "../../../hooks/useFilterParams";
+import { usePackages } from "../api/getPackages";
+import ItemBox from "../../../components/ItemBox";
 
 type ListProps = {
   setPages: (pages: number) => void;
@@ -10,7 +10,7 @@ type ListProps = {
 const List = ({ setPages }: ListProps) => {
   const { page, perPage, orderBy, categories } = useFilterParams();
 
-  const { products, pages } = useProducts({
+  const { packages, pages } = usePackages({
     page,
     perPage,
     orderBy,
@@ -21,7 +21,7 @@ const List = ({ setPages }: ListProps) => {
 
   return (
     <div className="item-list">
-      {products.map((item) => (
+      {packages.map((item) => (
         <ItemBox
           key={item.id}
           id={item.id}
@@ -29,7 +29,7 @@ const List = ({ setPages }: ListProps) => {
           price={item.price}
           oldPrice={item.oldPrice}
           slug={item.slug}
-          type="product"
+          type="package"
           stock={item.stock}
           img={item.images.at(0)?.filename}
         />

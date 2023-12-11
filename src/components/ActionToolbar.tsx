@@ -1,8 +1,8 @@
 import { useSearchParams } from "react-router-dom";
-import Paginator from "../../../components/Paginator";
-import SortList from "../../../components/SortList";
-import PerPageFilter from "../../../components/filters/PerPage";
-import { PER_PAGE_OPTIONS, SORT_BY_OPTIONS } from "../../../utils";
+import Paginator from "./Paginator";
+import SortList from "./SortList";
+import PerPageFilter from "./filters/PerPage";
+import { PER_PAGE_OPTIONS, SORT_BY_OPTIONS } from "../utils";
 
 type ActionToolbarProps = {
   pages: number;
@@ -12,15 +12,15 @@ const ActionToolbar = ({ pages }: ActionToolbarProps) => {
   const [queryParams, setQueryParams] = useSearchParams();
 
   const handleSortBy = (sortBy: string) => {
-    queryParams.set("page", "1");
     queryParams.set("order", sortBy);
     setQueryParams(queryParams);
+    handlePageChange(1);
   };
 
   const handlePerPageChange = (perPage: number) => {
-    queryParams.set("page", "1");
     queryParams.set("perPage", perPage.toString());
     setQueryParams(queryParams);
+    handlePageChange(1);
   };
 
   const handlePageChange = (page: number) => {

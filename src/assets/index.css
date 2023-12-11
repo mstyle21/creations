@@ -320,9 +320,15 @@ footer .container {
 .category-filter-list li {
     padding: 10px 0;
 }
+.stock-filter-list li .form-check-input:checked,
 .category-filter-list li .form-check-input:checked {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
+}
+.stock-filter-list li .form-check-input:focus,
+.category-filter-list li .form-check-input:focus {
+    border-color: var(--pale-color);
+    box-shadow: 0 0 0 0.25rem var(--pale-color)
 }
 .action-toolbar {
     display: flex;

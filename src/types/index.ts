@@ -57,7 +57,6 @@ export type ImageReducerAction<T> =
       type: "edit";
       payload: T & { newOrder: number };
     };
-
 export type PackageDetails = {
   id: number;
   name: string;
@@ -94,3 +93,9 @@ export type PackageProductReducerAction =
       payload: PackageItem[];
     }
   | { type: "reset" };
+export type ProductFilters = {
+  page?: number;
+  perPage?: number;
+  orderBy?: string;
+  categories?: string[];
+};
