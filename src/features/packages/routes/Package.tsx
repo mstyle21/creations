@@ -1,7 +1,7 @@
 import { Navigate, useLoaderData } from "react-router-dom";
 import { PackageDetails } from "../../../types";
 import PageBanner from "../../../components/PageBanner";
-import { Carousel, Container, Tab, Tabs } from "react-bootstrap";
+import { Carousel, Container } from "react-bootstrap";
 import { capitalize } from "lodash";
 import { BACKEND_URL, CURRENCY_SIGN } from "../../../config";
 import { DEFAULT_IMAGE } from "../../../utils";

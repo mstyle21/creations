@@ -1,20 +1,24 @@
 import { RouteObject } from "react-router-dom";
 import Layout from "../layout/Layout";
-import Home from "../features/home/routes/Home";
-import Products from "../features/products/routes/Products";
-import Packages from "../features/packages/routes/Packages";
-import Contact from "../features/contact/routes/Contact";
-import Login from "../features/auth/routes/Login";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import Categories from "../features/admin-categories/routes/Categories";
-import ManageProduct from "../features/admin-products/routes/Products";
-import ManagePackage from "../features/admin-packages/routes/Packages";
-import Dashboard from "../features/admin-dashboard/routes/Dashboard";
-import Product from "../features/products/routes/Product";
 import { productDetailsLoader } from "../features/products/loaders/productDetailsLoader";
-import Package from "../features/packages/routes/Package";
 import { packageDetailsLoader } from "../features/packages/loaders/packageDetailsLoader";
-import Error from "../components/Error";
+import { lazy } from "react";
+
+const Home = lazy(() => import("../features/home/routes/Home"));
+const Products = lazy(() => import("../features/products/routes/Products"));
+const Product = lazy(() => import("../features/products/routes/Product"));
+const Packages = lazy(() => import("../features/packages/routes/Packages"));
+const Package = lazy(() => import("../features/packages/routes/Package"));
+const Contact = lazy(() => import("../features/contact/routes/Contact"));
+const Login = lazy(() => import("../features/auth/routes/Login"));
+
+const Dashboard = lazy(() => import("../features/admin-dashboard/routes/Dashboard"));
+const Categories = lazy(() => import("../features/admin-categories/routes/Categories"));
+const ManageProduct = lazy(() => import("../features/admin-products/routes/Products"));
+const ManagePackage = lazy(() => import("../features/admin-packages/routes/Packages"));
+
+const Error = lazy(() => import("../components/Error"));
 
 const routes: RouteObject[] = [
   {
