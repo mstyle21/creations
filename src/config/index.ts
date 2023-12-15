@@ -1,6 +1,7 @@
 export const BACKEND_URL = "http://localhost:7000";
 export const CURRENCY_SIGN = "RON";
 export const MEASURE_SIGN = "cm";
+export const THUMBNAIL_PREFIX = "thumbnail_";
 //estimated material costs
 export const MATERIALS_PRICES_PER_ITEM = {
   //material cost per 1g

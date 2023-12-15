@@ -6,7 +6,7 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { axiosInstance } from "../../../services/AxiosService";
 import { previewImage, randomHash } from "../../../utils";
 import { MAX_PRODUCT_IMAGES } from "../hooks/useManageProduct";
-import { BACKEND_URL } from "../../../config";
+import { BACKEND_URL, THUMBNAIL_PREFIX } from "../../../config";
 
 type ManageProductImageProps = {
   images: ProductImage[];
@@ -143,7 +143,7 @@ const ProductImageUpload = ({ images, dispatchImages }: ManageProductImageProps)
                   className="manage-product-img"
                   src={
                     image.productId !== undefined
-                      ? `${BACKEND_URL}/products/${image.productId}/${image.filename}`
+                      ? `${BACKEND_URL}/products/${image.productId}/${THUMBNAIL_PREFIX}${image.filename}`
                       : image.filename
                   }
                 />

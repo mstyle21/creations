@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL, THUMBNAIL_PREFIX } from "../config";
 import { DEFAULT_IMAGE, capitalize } from "../utils";
 
 type PackageItemBoxProps = {
@@ -11,7 +11,7 @@ type PackageItemBoxProps = {
 };
 
 const PackageItemBox = ({ id, title, quantity, slug, img }: PackageItemBoxProps) => {
-  const imgSrc = img ? `${BACKEND_URL}/products/${id}/${img}` : DEFAULT_IMAGE;
+  const imgSrc = img ? `${BACKEND_URL}/products/${id}/${THUMBNAIL_PREFIX}${img}` : DEFAULT_IMAGE;
 
   return (
     <div className="item-box">

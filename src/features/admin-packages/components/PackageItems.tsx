@@ -7,7 +7,7 @@ import { useState } from "react";
 import ReactSelect from "react-select";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { DEFAULT_IMAGE } from "../../../utils";
-import { BACKEND_URL } from "../../../config";
+import { BACKEND_URL, THUMBNAIL_PREFIX } from "../../../config";
 
 type PackageItemsProps = {
   packageItems: PackageItem[];
@@ -107,7 +107,11 @@ const PackageItems = ({ packageItems, dispatchItems }: PackageItemsProps) => {
           >
             <img
               style={{ height: "50px" }}
-              src={item.image ? `${BACKEND_URL}/products/${item.productId}/${item.image}` : DEFAULT_IMAGE}
+              src={
+                item.image
+                  ? `${BACKEND_URL}/products/${item.productId}/${THUMBNAIL_PREFIX}${item.image}`
+                  : DEFAULT_IMAGE
+              }
             />
             <span>{item.name}</span>
             <input

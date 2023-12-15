@@ -8,7 +8,7 @@ import Paginator from "../../../components/Paginator";
 import PaginatorInfo from "../../../components/PaginatorInfo";
 import PerPageFilter from "../../../components/filters/PerPage";
 import SearchFilter from "../../../components/filters/Search";
-import { BACKEND_URL, CURRENCY_SIGN } from "../../../config";
+import { BACKEND_URL, CURRENCY_SIGN, THUMBNAIL_PREFIX } from "../../../config";
 import { DEFAULT_IMAGE, stockColor } from "../../../utils";
 import { PackageDetails } from "../../../types";
 import PackageModal from "./PackageModal";
@@ -72,7 +72,7 @@ const PackageList = () => {
               packages.map((packageDetails) => {
                 const imgSrc =
                   packageDetails.images.length > 0
-                    ? `${BACKEND_URL}/packages/${packageDetails.id}/${packageDetails.images[0].filename}`
+                    ? `${BACKEND_URL}/packages/${packageDetails.id}/${THUMBNAIL_PREFIX}${packageDetails.images[0].filename}`
                     : DEFAULT_IMAGE;
                 return (
                   <div className="table-row" key={packageDetails.id}>

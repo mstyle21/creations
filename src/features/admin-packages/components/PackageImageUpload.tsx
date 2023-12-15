@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { axiosInstance } from "../../../services/AxiosService";
 import { previewImage, randomHash } from "../../../utils";
-import { BACKEND_URL } from "../../../config";
+import { BACKEND_URL, THUMBNAIL_PREFIX } from "../../../config";
 import { MAX_PACKAGE_IMAGES } from "../hooks/useManagePackage";
 
 type ManagePackageImageProps = {
@@ -143,7 +143,7 @@ const PackageImageUpload = ({ images, dispatchImages }: ManagePackageImageProps)
                   className="manage-package-img"
                   src={
                     image.packageId !== undefined
-                      ? `${BACKEND_URL}/packages/${image.packageId}/${image.filename}`
+                      ? `${BACKEND_URL}/packages/${image.packageId}/${THUMBNAIL_PREFIX}${image.filename}`
                       : image.filename
                   }
                 />

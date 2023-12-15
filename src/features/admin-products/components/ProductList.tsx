@@ -6,7 +6,7 @@ import Paginator from "../../../components/Paginator";
 import PaginatorInfo from "../../../components/PaginatorInfo";
 import PerPageFilter from "../../../components/filters/PerPage";
 import SearchFilter from "../../../components/filters/Search";
-import { BACKEND_URL, CURRENCY_SIGN } from "../../../config";
+import { BACKEND_URL, CURRENCY_SIGN, THUMBNAIL_PREFIX } from "../../../config";
 import { useFilters } from "../../../hooks/useFilters";
 import { ProductDetails } from "../../../types";
 import ProductModal from "./ProductModal";
@@ -72,7 +72,7 @@ const ProductList = () => {
               products.map((product) => {
                 const imgSrc =
                   product.images.length > 0
-                    ? `${BACKEND_URL}/products/${product.id}/${product.images[0].filename}`
+                    ? `${BACKEND_URL}/products/${product.id}/${THUMBNAIL_PREFIX}${product.images[0].filename}`
                     : DEFAULT_IMAGE;
                 return (
                   <div className="table-row" key={product.id}>

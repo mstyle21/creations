@@ -1,4 +1,4 @@
-import { BACKEND_URL, CURRENCY_SIGN } from "../config";
+import { BACKEND_URL, CURRENCY_SIGN, THUMBNAIL_PREFIX } from "../config";
 import { Link } from "react-router-dom";
 import { DEFAULT_IMAGE, capitalize } from "../utils";
 
@@ -14,7 +14,7 @@ type ItemBoxProps = {
 };
 
 const ItemBox = ({ id, title, price, slug, type, oldPrice, stock, img }: ItemBoxProps) => {
-  const imgSrc = img ? `${BACKEND_URL}/${type}s/${id}/${img}` : DEFAULT_IMAGE;
+  const imgSrc = img ? `${BACKEND_URL}/${type}s/${id}/${THUMBNAIL_PREFIX}${img}` : DEFAULT_IMAGE;
 
   return (
     <div className="item-box">
