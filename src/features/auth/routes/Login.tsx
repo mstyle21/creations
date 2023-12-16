@@ -4,6 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { requestToken } from "../api/login";
+import { routesConfig } from "../../../routes";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ const Login = () => {
   const { user, loginRedirect, login } = useContext(AuthContext);
 
   if (user) {
-    const defaultRedirect = user.role === "admin" ? "/dashboard" : "/";
+    const defaultRedirect = user.role === "admin" ? routesConfig.dashboard : routesConfig.home;
     return <Navigate to={loginRedirect ?? defaultRedirect} replace />;
   }
 
@@ -33,7 +34,7 @@ const Login = () => {
 
   return (
     <>
-      <PageBanner pageTitle="Login" />
+      <PageBanner pageTitle="Autentificare" />
       <section className="login-box">
         <Container>
           <Row className="justify-content-center">
@@ -56,18 +57,18 @@ const Login = () => {
                       type="password"
                       className="form-control"
                       name="password"
-                      placeholder="Password..."
+                      placeholder="Parola..."
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </Col>
                   <Col md={12} className="form-group forgot-password">
-                    <Link to={"/forgot-password"}>Forgot password?</Link>
+                    <Link to={routesConfig.forgotPassword}>Ai uitat parola?</Link>
                   </Col>
                   <Col md={12} className="form-group action-btn">
-                    <button className="primary-btn" disabled={isDisabled}>
-                      LOG IN
+                    <button className="primary-btn prim-btn" disabled={isDisabled}>
+                      Autentificare
                     </button>
-                    <Link to={"/register"}>New? Create an account</Link>
+                    <Link to={routesConfig.register}>Nou pe site? Inregistreaza-te.</Link>
                   </Col>
                 </form>
               </div>

@@ -3,7 +3,9 @@ import { axiosInstance } from "../../../services/AxiosService";
 import { ProductDetails } from "../../../types";
 
 export const getLatestProducts = async () => {
-  return axiosInstance.get<ProductDetails[]>(`/api/products/latest`).then((response) => response.data);
+  return axiosInstance
+    .get<(ProductDetails & { type: "product" | "package" })[]>(`/api/products/latest`)
+    .then((response) => response.data);
 };
 
 type UseLatestProductsProps = {

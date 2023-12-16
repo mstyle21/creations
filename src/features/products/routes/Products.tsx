@@ -5,7 +5,7 @@ import ProductList from "../components/ProductList";
 const Products = () => {
   return (
     <>
-      <PageBanner pageTitle="Products" />
+      <PageBanner pageTitle="Figurine" />
       <Container>
         <ProductList />
       </Container>

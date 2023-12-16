@@ -22,15 +22,15 @@ const List = ({ setPages }: ListProps) => {
 
   return (
     <div className="item-list">
-      {products.map((item) => (
+      {products.map((item, index) => (
         <ItemBox
-          key={item.id}
+          key={index}
           id={item.id}
           title={item.name}
           price={item.price}
           oldPrice={item.oldPrice}
           slug={item.slug}
-          type="product"
+          type={item.type}
           stock={item.stock}
           img={item.images.at(0)?.filename}
         />

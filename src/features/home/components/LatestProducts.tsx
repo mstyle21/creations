@@ -1,4 +1,4 @@
-import { Carousel } from "react-bootstrap";
+import { Carousel, Col, Row } from "react-bootstrap";
 import ItemBox from "../../../components/ItemBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useLatestProducts } from "../api/getLatestProducts";
@@ -19,30 +19,30 @@ const LatestProducts = () => {
 
       <div className="row justify-content-center">
         <div className="col-lg-6 text-center">
-          <h1>Latest products</h1>
+          <h1>Ultimele produse</h1>
         </div>
       </div>
       {data && (
-        <div className="row">
+        <Row>
           <Carousel variant="dark" indicators={false} className="col-md-12">
             {latestProducts.map((latestProductsBunch, index) => (
               <Carousel.Item key={index} className="row">
-                {latestProductsBunch.map((product) => (
-                  <div key={product.id} className="col-3" style={{ float: "left" }}>
+                {latestProductsBunch.map((product, index) => (
+                  <Col key={index} lg={3} md={4} sm={1} style={{ float: "left" }}>
                     <ItemBox
                       id={product.id}
                       title={product.name}
                       price={product.price}
-                      type="product"
+                      type={product.type}
                       slug={product.slug}
                       img={product.images?.at(0)?.filename}
                     />
-                  </div>
+                  </Col>
                 ))}
               </Carousel.Item>
             ))}
           </Carousel>
-        </div>
+        </Row>
       )}
     </section>
   );

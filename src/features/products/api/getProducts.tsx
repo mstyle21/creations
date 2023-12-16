@@ -16,7 +16,7 @@ export const getProducts = async ({
   signal,
 }: GetProductsProps) => {
   return axiosInstance
-    .get<ApiPaginatedResponse<ProductDetails>>("/api/products", {
+    .get<ApiPaginatedResponse<ProductDetails & { type: "package" | "product" }>>("/api/products/figurine", {
       signal: signal,
       params: {
         page,

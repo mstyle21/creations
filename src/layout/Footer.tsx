@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { routesConfig } from "../routes";
 
 const Footer = () => {
   return (
@@ -44,7 +45,7 @@ const Footer = () => {
         </div>
         <div className="d-flex justify-content-center align-items-center flex-wrap">
           <p className="copyright-text m-0">
-            Copyright © {new Date().getFullYear()} <Link to={"/"}>Pamy's Creations</Link>
+            Copyright © {new Date().getFullYear()} <Link to={routesConfig.home}>Pamy's Creations</Link>
           </p>
         </div>
       </div>

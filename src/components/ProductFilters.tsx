@@ -4,11 +4,11 @@ import { useAllCategories } from "../api/getAllCategories";
 
 const stockOptions = [
   {
-    label: "In stock",
+    label: "In stoc",
     value: "yes",
   },
   {
-    label: "Out of stock",
+    label: "Stoc epuizat",
     value: "no",
   },
 ];
@@ -52,10 +52,10 @@ const ProductFilters = () => {
 
   return (
     <div className="product-filters">
-      <div className="product-filters-top">Filters</div>
+      <div className="product-filters-top">Filtre</div>
       {categories.length > 0 && (
         <div className="filter category-filter">
-          <h6 className="ps-3">Categories</h6>
+          <h6 className="ps-3">Categorii</h6>
           <ul className="category-filter-list">
             {categories.map((category) => (
               <li key={category.id}>
@@ -73,7 +73,7 @@ const ProductFilters = () => {
         </div>
       )}
       <div className="filter stock-filter">
-        <h6 className="ps-3">Availability</h6>
+        <h6 className="ps-3">Disponibilitate</h6>
         <ul className="stock-filter-list">
           {stockOptions.map((stock, index) => (
             <li key={index}>

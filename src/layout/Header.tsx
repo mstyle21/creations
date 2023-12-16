@@ -3,6 +3,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { AuthContext } from "../context/AuthContext";
+import { routesConfig } from "../routes";
 
 type HeaderProps = {
   menuItems: { path: string; name: string }[];
@@ -33,7 +34,7 @@ const Header = ({ menuItems }: HeaderProps) => {
       <div className="main-menu">
         <Navbar expand="lg" className="main-box" collapseOnSelect>
           <Container>
-            <Link to={"/"} className="header-logo">
+            <Link to={routesConfig.home} className="header-logo">
               <img src={logo} />
               <h2>Pamy's creations</h2>
             </Link>
@@ -51,17 +52,23 @@ const Header = ({ menuItems }: HeaderProps) => {
                 })}
                 {user ? (
                   <Nav.Item>
-                    <Nav.Link as={Link} className="nav-link" to={"/"} onClick={() => logout()} eventKey={"/logout"}>
+                    <Nav.Link
+                      as={Link}
+                      className="nav-link"
+                      to={routesConfig.home}
+                      onClick={() => logout()}
+                      eventKey={"/logout"}
+                    >
                       Log out
                     </Nav.Link>
                   </Nav.Item>
-                ) : (
-                  <Nav.Item>
-                    <Nav.Link as={Link} className="nav-link" to={"/login"} eventKey={"/login"}>
-                      Log in
-                    </Nav.Link>
-                  </Nav.Item>
-                )}
+                ) : null
+                // <Nav.Item>
+                //   <Nav.Link as={Link} className="nav-link" to={routesConfig.login} eventKey={"/login"}>
+                //     Log in
+                //   </Nav.Link>
+                // </Nav.Item>
+                }
               </Nav>
             </Navbar.Collapse>
           </Container>

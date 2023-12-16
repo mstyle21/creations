@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { routesConfig } from "../routes";
 
 type ProtectedRouteProps = {
   allowedRoles?: string[];
@@ -13,10 +14,10 @@ export const ProtectedRoute = ({ allowedRoles = [], children }: ProtectedRoutePr
 
   if (allowedRoles.length && !allowedRoles.includes(userRole)) {
     if (userRole === "user" || userRole === "guest") {
-      return <Navigate to="/" replace />;
+      return <Navigate to={routesConfig.home} replace />;
     }
     if (userRole === "admin") {
-      return <Navigate to="/dashboard" replace />;
+      return <Navigate to={routesConfig.dashboard} replace />;
     }
   }
 

@@ -3,19 +3,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-
-const USER_MENU_ITEMS = [
-  { path: "/", name: "Home" },
-  { path: "/products", name: "Products" },
-  { path: "/packages", name: "Packages" },
-  { path: "/contact", name: "Contact" },
-];
-const ADMIN_MENU_ITEMS = [
-  { path: "/dashboard", name: "Dashboard" },
-  { path: "/manage-categories", name: "Categories" },
-  { path: "/manage-products", name: "Products" },
-  { path: "/manage-packages", name: "Packages" },
-];
+import { USER_MENU_ITEMS, ADMIN_MENU_ITEMS } from "../routes";
+import { ScrollRestoration } from "react-router-dom";
 
 const Layout = () => {
   const { user } = useContext(AuthContext);
@@ -28,6 +17,7 @@ const Layout = () => {
         <Outlet />
       </main>
       {user?.role !== "admin" && <Footer />}
+      <ScrollRestoration />
     </>
   );
 };

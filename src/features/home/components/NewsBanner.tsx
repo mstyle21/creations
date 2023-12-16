@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import fig from "../../../assets/figurine.png";
+import { routesConfig } from "../../../routes";
+import { Col, Row } from "react-bootstrap";
 
 const NewsBanner = () => {
   return (
     <section className="banner-area">
       <div className="container">
-        <div className="row align-items-center justify-content-start">
-          <div className="col-lg-12">
+        <Row className="align-items-center justify-content-start">
+          <Col sm={12}>
             <div className="banner-slider">
               <div className="row slider-item single-slide">
-                <div className="col-lg-6 d-flex align-items-center">
+                <Col md={6} className="d-flex align-items-center">
                   <div className="banner-content">
                     <h1>Figurine noi</h1>
                     <p>
@@ -17,18 +19,20 @@ const NewsBanner = () => {
                       fuga, tempora odit atque sequi saepe quos nemo animi facilis aperiam aspernatur natus nostrum,
                       libero rerum deleniti ducimus.
                     </p>
-                    <Link to={"/"}>Vezi figurine</Link>
+                    <Link to={routesConfig.products} className="prim-btn">
+                      Vezi figurine
+                    </Link>
                   </div>
-                </div>
-                <div className="col-lg-6">
+                </Col>
+                <Col md={6}>
                   <div className="banner-img">
                     <img src={fig} alt="" />
                   </div>
-                </div>
+                </Col>
               </div>
             </div>
-          </div>
-        </div>
+          </Col>
+        </Row>
       </div>
     </section>
   );

@@ -15,10 +15,11 @@ type ItemBoxProps = {
 
 const ItemBox = ({ id, title, price, slug, type, oldPrice, stock, img }: ItemBoxProps) => {
   const imgSrc = img ? `${BACKEND_URL}/${type}s/${id}/${THUMBNAIL_PREFIX}${img}` : DEFAULT_IMAGE;
+  const link = `/${type === "product" ? "figurine" : "figurine-set"}/${slug}`;
 
   return (
     <div className="item-box">
-      <Link to={`/${type}/${slug}`}>
+      <Link to={link}>
         <img src={imgSrc} className="item-image" />
       </Link>
       <div className="item-details">
@@ -26,7 +27,7 @@ const ItemBox = ({ id, title, price, slug, type, oldPrice, stock, img }: ItemBox
         <div className="item-price">
           {stock !== undefined && (
             <span style={{ color: stock === 0 ? "red" : "green", display: "inline" }}>
-              {stock === 0 ? "Out of stock" : "In stock"}
+              {stock === 0 ? "Stoc epuizat" : "In stoc"}
             </span>
           )}
           <div>
@@ -44,8 +45,8 @@ const ItemBox = ({ id, title, price, slug, type, oldPrice, stock, img }: ItemBox
             </div>
           </div>
         </div>
-        <Link to={`/${type}/${slug}`} className="btn add-to-cart">
-          <span>View item</span>
+        <Link to={link} className="btn add-to-cart">
+          <span>Vezi produs</span>
         </Link>
       </div>
     </div>

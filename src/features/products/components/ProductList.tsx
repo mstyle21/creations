@@ -14,10 +14,10 @@ const ProductList = () => {
   return (
     <div className="product-list-container">
       <Row>
-        <Col xl={3} lg={4} md={5}>
+        <Col lg={3} md={12}>
           <ProductFilters />
         </Col>
-        <Col xl={9} lg={8} md={7}>
+        <Col lg={9} md={12}>
           <ActionToolbar pages={pages} />
           <List setPages={handleSetPages} />
         </Col>

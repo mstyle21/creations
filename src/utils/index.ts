@@ -23,10 +23,11 @@ export function stockColor(stock: number) {
 
 export const PER_PAGE_OPTIONS: number[] = [15, 30, 60, 90];
 export const SORT_BY_OPTIONS: Record<string, string> = {
-  recent: "Most recent",
-  name: "Name",
-  priceAsc: "Price asc",
-  priceDesc: "Price desc",
+  recent: "Cele mai noi",
+  name: "Denumire",
+  priceAsc: "Pret crescator",
+  priceDesc: "Pret descrescator",
+  // popularity: "Popularitate",
 };
 
 /**
