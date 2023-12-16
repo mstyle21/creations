@@ -7,7 +7,14 @@ type GetProductsProps = ProductFilters & {
   signal?: GenericAbortSignal;
 };
 
-export const getProducts = async ({ page = 1, perPage = 15, orderBy, categories, signal }: GetProductsProps) => {
+export const getProducts = async ({
+  page = 1,
+  perPage = 15,
+  orderBy,
+  categories,
+  availability,
+  signal,
+}: GetProductsProps) => {
   return axiosInstance
     .get<ApiPaginatedResponse<ProductDetails>>("/api/products", {
       signal: signal,
@@ -15,6 +22,7 @@ export const getProducts = async ({ page = 1, perPage = 15, orderBy, categories,
         page,
         perPage,
         categories,
+        availability,
         orderBy,
       },
     })
@@ -25,11 +33,18 @@ type UseProductsProps = ProductFilters & {
   config?: QueryClientConfig;
 };
 
-export const useProducts = ({ page = 1, perPage = 15, orderBy, categories, config }: UseProductsProps) => {
+export const useProducts = ({
+  page = 1,
+  perPage = 15,
+  orderBy,
+  categories,
+  availability,
+  config,
+}: UseProductsProps) => {
   const { data } = useQuery({
     ...config,
-    queryKey: ["products", page, perPage, orderBy, categories],
-    queryFn: ({ signal }) => getProducts({ page, perPage, orderBy, categories, signal }),
+    queryKey: ["products", page, perPage, orderBy, categories, availability],
+    queryFn: ({ signal }) => getProducts({ page, perPage, orderBy, categories, availability, signal }),
     staleTime: 5 * 60 * 1000,
   });
 

@@ -40,7 +40,12 @@ const ProductFilters = () => {
   };
 
   const handleAvailabilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    queryParams.set("available", event.target.checked ? event.target.value : "");
+    if (event.target.checked) {
+      queryParams.set("available", event.target.value);
+    } else {
+      queryParams.delete("available");
+    }
+
     queryParams.set("page", "1");
     setQueryParams(queryParams);
   };

@@ -98,4 +98,5 @@ export type ProductFilters = {
   perPage?: number;
   orderBy?: string;
   categories?: string[];
+  availability?: string;
 };

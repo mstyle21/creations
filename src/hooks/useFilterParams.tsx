@@ -13,6 +13,8 @@ export const useFilterParams = () => {
     .get("categories")
     ?.split(",")
     .filter((item) => !isNaN(parseInt(item)));
+  const availabilityQuery = queryParams.get("available");
+  const availability = availabilityQuery && ["yes", "no"].includes(availabilityQuery) ? availabilityQuery : undefined;
 
-  return { page, perPage, orderBy, categories };
+  return { page, perPage, orderBy, categories, availability };
 };
