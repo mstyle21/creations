@@ -24,11 +24,11 @@ const LatestProducts = () => {
       </div>
       {data && (
         <div className="row">
-          <Carousel>
+          <Carousel variant="dark" indicators={false} className="col-md-12">
             {latestProducts.map((latestProductsBunch, index) => (
               <Carousel.Item key={index} className="row">
                 {latestProductsBunch.map((product) => (
-                  <div key={product.id} className="col-md-3" style={{ float: "left" }}>
+                  <div key={product.id} className="col-3" style={{ float: "left" }}>
                     <ItemBox
                       id={product.id}
                       title={product.name}

@@ -91,6 +91,16 @@ main {
     padding: 20px 0;
     color: #000;
 }
+.latest-products .carousel-item {
+    margin-left: 0;
+    padding: 10px;
+}
+.carousel-control-prev {
+    left: -100px;
+}
+.carousel-control-next {
+    right: -100px;
+}
 
 /** Header Style */
 header {
