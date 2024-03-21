@@ -4,9 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ApiPaginatedResponse, ProductDetails } from "../../../types";
 
 export const getProducts = async ({ filters }: { filters: string }) => {
-  return axiosInstance
-    .get<ApiPaginatedResponse<ProductDetails>>(`/api/products?${filters}`)
-    .then((response) => response.data);
+  return axiosInstance.get<ApiPaginatedResponse<ProductDetails>>(`/products?${filters}`).then((response) => response.data);
 };
 
 type UseProductsProps = {

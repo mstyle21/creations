@@ -8,10 +8,8 @@ type GetProductsProps = ProductFilters & {
 };
 
 export const getProducts = async ({ page = 1, perPage = 15, orderBy, categories, availability, type, signal }: GetProductsProps) => {
-  console.log(type);
-
   return axiosInstance
-    .get<ApiPaginatedResponse<ProductDetails & { type: "package" | "product" }>>("/api/products/figurine", {
+    .get<ApiPaginatedResponse<ProductDetails & { type: "package" | "product" }>>("/products/figurine", {
       signal: signal,
       params: {
         page,
@@ -43,7 +41,7 @@ export const useProducts = ({ page = 1, perPage = 15, orderBy, categories, avail
         type,
         signal,
       }),
-    // staleTime: 5 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
   });
 
   const products = data?.items ?? [];

@@ -53,7 +53,7 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
 
     formData.append("imagesOrder", JSON.stringify(imagesOrder));
 
-    const url = `/api/packages/${itemToEdit ? itemToEdit.id : ""}`;
+    const url = `/packages/${itemToEdit ? itemToEdit.id : ""}`;
 
     axiosInstance
       .request({
@@ -94,12 +94,7 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
             <div className="d-flex flex-column gap-3">
               <h2 className="text-center">Details</h2>
               <FloatingLabel label="Package name">
-                <Form.Control
-                  type="text"
-                  placeholder="Name..."
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+                <Form.Control type="text" placeholder="Name..." value={name} onChange={(e) => setName(e.target.value)} />
               </FloatingLabel>
               <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
                 <FloatingLabel label="Stock">
@@ -127,9 +122,7 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
                     placeholder="Price..."
                     step="0.01"
                     value={price !== "" ? price / 100 : price}
-                    onChange={(e) =>
-                      setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)
-                    }
+                    onChange={(e) => setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)}
                   />
                 </FloatingLabel>
                 <FloatingLabel label="Old price">
@@ -138,9 +131,7 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
                     placeholder="Old price..."
                     step="0.01"
                     value={oldPrice !== "" ? oldPrice / 100 : oldPrice}
-                    onChange={(e) =>
-                      setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)
-                    }
+                    onChange={(e) => setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)}
                   />
                 </FloatingLabel>
               </div>

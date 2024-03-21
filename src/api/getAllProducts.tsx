@@ -3,7 +3,7 @@ import { axiosInstance } from "../services/AxiosService";
 import { ProductDetails } from "../types";
 
 export const getAllProducts = async () => {
-  return axiosInstance.get<ProductDetails[]>(`/api/products/all`).then((response) => response.data);
+  return axiosInstance.get<ProductDetails[]>(`/products/all`).then((response) => response.data);
 };
 
 type UseProductsProps = {

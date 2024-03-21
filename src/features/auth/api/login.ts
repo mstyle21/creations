@@ -8,7 +8,7 @@ type RequestTokenProps = {
 
 export const requestToken = async ({ email, password }: RequestTokenProps) => {
   try {
-    const response = await axiosInstance.post("/api/user/login", { email, password });
+    const response = await axiosInstance.post("/user/login", { email, password });
 
     return { token: response.data.token, error: null };
   } catch (err) {

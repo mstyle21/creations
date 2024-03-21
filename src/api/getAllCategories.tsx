@@ -3,7 +3,7 @@ import { axiosInstance } from "../services/AxiosService";
 import { GenericCategory } from "../types";
 
 export const getAllCategories = async () => {
-  return axiosInstance.get<GenericCategory[]>(`/api/categories/all`).then((response) => response.data);
+  return axiosInstance.get<GenericCategory[]>(`/categories/all`).then((response) => response.data);
 };
 
 type UseCategoriesProps = {

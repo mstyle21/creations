@@ -1,7 +1,7 @@
-export const BACKEND_URL = "http://localhost:7000";
-export const CURRENCY_SIGN = "RON";
-export const MEASURE_SIGN = "cm";
-export const THUMBNAIL_PREFIX = "thumbnail_";
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+export const CURRENCY_SIGN = import.meta.env.VITE_CURRENCY_SIGN;
+export const MEASURE_SIGN = import.meta.env.VITE_MEASURE_SIGN;
+export const THUMBNAIL_PREFIX = import.meta.env.VITE_THUMBNAIL_PREFIX;
 //estimated material costs
 export const MATERIALS_PRICES_PER_ITEM = {
   //material cost per 1g

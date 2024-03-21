@@ -63,7 +63,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     });
     formData.append("imagesOrder", JSON.stringify(imagesOrder));
 
-    const url = `/api/products/${itemToEdit ? itemToEdit.id : ""}`;
+    const url = `/products/${itemToEdit ? itemToEdit.id : ""}`;
 
     //TODO: mutation
     axiosInstance
@@ -116,12 +116,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
             <div className="d-flex flex-column gap-3">
               <h2>Details</h2>
               <FloatingLabel label="Product name">
-                <Form.Control
-                  type="text"
-                  placeholder="Name..."
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+                <Form.Control type="text" placeholder="Name..." value={name} onChange={(e) => setName(e.target.value)} />
               </FloatingLabel>
               <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
                 <FloatingLabel label="Width">
@@ -166,9 +161,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                     type="number"
                     placeholder="Material weight (g)..."
                     value={materialWeight}
-                    onChange={(e) =>
-                      setMaterialWeight(e.target.value === "" ? e.target.value : parseInt(e.target.value))
-                    }
+                    onChange={(e) => setMaterialWeight(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
                   />
                 </FloatingLabel>
                 <Form.Group controlId="formCheck" className="m-auto">
@@ -182,8 +175,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
               </div>
               {materialWeight && (
                 <div className="d-flex font-italic">
-                  Calculated price based on material weight: {calculateApproximateCostPrice(materialWeight)}{" "}
-                  {CURRENCY_SIGN}
+                  Calculated price based on material weight: {calculateApproximateCostPrice(materialWeight)} {CURRENCY_SIGN}
                 </div>
               )}
               <div className="d-flex gap-3 align-items-center">
@@ -193,9 +185,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                     placeholder="Price..."
                     step="0.01"
                     value={price !== "" ? price / 100 : price}
-                    onChange={(e) =>
-                      setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)
-                    }
+                    onChange={(e) => setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)}
                   />
                 </FloatingLabel>
                 <FloatingLabel label="Old price">
@@ -204,9 +194,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                     placeholder="Old price..."
                     step="0.01"
                     value={oldPrice !== "" ? oldPrice / 100 : oldPrice}
-                    onChange={(e) =>
-                      setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)
-                    }
+                    onChange={(e) => setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)}
                   />
                 </FloatingLabel>
               </div>

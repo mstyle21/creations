@@ -4,7 +4,7 @@ import { PackageDetails } from "../../../types";
 import { stockColor } from "../../../utils";
 
 export const getPackageStockStatistics = async () => {
-  return axiosInstance.get<PackageDetails[]>("/api/packages/stats").then((response) => response.data);
+  return axiosInstance.get<PackageDetails[]>("/packages/stats").then((response) => response.data);
 };
 
 type UsePackageStockStatisticsProps = {

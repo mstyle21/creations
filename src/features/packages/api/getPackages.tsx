@@ -7,16 +7,9 @@ type GetPackagesProps = ProductFilters & {
   signal?: GenericAbortSignal;
 };
 
-export const getPackages = async ({
-  page = 1,
-  perPage = 15,
-  orderBy,
-  categories,
-  availability,
-  signal,
-}: GetPackagesProps) => {
+export const getPackages = async ({ page = 1, perPage = 15, orderBy, categories, availability, signal }: GetPackagesProps) => {
   return axiosInstance
-    .get<ApiPaginatedResponse<PackageDetails>>("/api/packages", {
+    .get<ApiPaginatedResponse<PackageDetails>>("/packages", {
       signal: signal,
       params: {
         page,
@@ -33,14 +26,7 @@ type UsePackagesProps = ProductFilters & {
   config?: QueryClientConfig;
 };
 
-export const usePackages = ({
-  page = 1,
-  perPage = 15,
-  orderBy,
-  categories,
-  availability,
-  config,
-}: UsePackagesProps) => {
+export const usePackages = ({ page = 1, perPage = 15, orderBy, categories, availability, config }: UsePackagesProps) => {
   const { data } = useQuery({
     ...config,
     queryKey: ["packages", page, perPage, orderBy, categories, availability],

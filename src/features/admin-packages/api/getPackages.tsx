@@ -4,9 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ApiPaginatedResponse, PackageDetails } from "../../../types";
 
 export const getPackages = async ({ filters }: { filters: string }) => {
-  return axiosInstance
-    .get<ApiPaginatedResponse<PackageDetails>>(`/api/packages?${filters}`)
-    .then((response) => response.data);
+  return axiosInstance.get<ApiPaginatedResponse<PackageDetails>>(`/packages?${filters}`).then((response) => response.data);
 };
 
 type UsePackagesProps = {

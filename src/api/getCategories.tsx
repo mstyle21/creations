@@ -3,9 +3,7 @@ import { axiosInstance } from "../services/AxiosService";
 import { ApiPaginatedResponse, CategoryDetails } from "../types";
 
 export const getCategories = async ({ filters }: { filters: string }) => {
-  return axiosInstance
-    .get<ApiPaginatedResponse<CategoryDetails>>(`/api/categories?${filters}`)
-    .then((response) => response.data);
+  return axiosInstance.get<ApiPaginatedResponse<CategoryDetails>>(`/categories?${filters}`).then((response) => response.data);
 };
 
 type UseCategoriesProps = {

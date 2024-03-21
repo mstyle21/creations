@@ -3,7 +3,7 @@ import { axiosInstance } from "../../../services/AxiosService";
 import { PackageDetails } from "../../../types";
 
 export const getPackage = async (packageSlug: string) => {
-  return axiosInstance.get<PackageDetails>(`/api/packages/${packageSlug}`).then((response) => response.data);
+  return axiosInstance.get<PackageDetails>(`/packages/${packageSlug}`).then((response) => response.data);
 };
 
 type UsePackageProps = {
