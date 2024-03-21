@@ -4,7 +4,7 @@ import { ProductDetails } from "../../../types";
 import { stockColor } from "../../../utils";
 
 const getProductStockStatistics = async () => {
-  return axiosInstance.get<ProductDetails[]>("api/products/stats").then((response) => response.data);
+  return axiosInstance.get<ProductDetails[]>("/products/stats").then((response) => response.data);
 };
 
 type UseProductStockStatistics = {
