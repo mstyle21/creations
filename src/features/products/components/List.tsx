@@ -8,7 +8,7 @@ type ListProps = {
 };
 
 const List = ({ setPages }: ListProps) => {
-  const { page, perPage, orderBy, categories, availability } = useFilterParams();
+  const { page, perPage, orderBy, categories, availability, type } = useFilterParams();
 
   const { products, pages } = useProducts({
     page,
@@ -16,6 +16,7 @@ const List = ({ setPages }: ListProps) => {
     orderBy,
     categories,
     availability,
+    type,
   });
 
   useEffect(() => setPages(pages), [pages, setPages]);

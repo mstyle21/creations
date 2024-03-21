@@ -7,14 +7,9 @@ type GetProductsProps = ProductFilters & {
   signal?: GenericAbortSignal;
 };
 
-export const getProducts = async ({
-  page = 1,
-  perPage = 15,
-  orderBy,
-  categories,
-  availability,
-  signal,
-}: GetProductsProps) => {
+export const getProducts = async ({ page = 1, perPage = 15, orderBy, categories, availability, type, signal }: GetProductsProps) => {
+  console.log(type);
+
   return axiosInstance
     .get<ApiPaginatedResponse<ProductDetails & { type: "package" | "product" }>>("/api/products/figurine", {
       signal: signal,
@@ -23,6 +18,7 @@ export const getProducts = async ({
         perPage,
         categories,
         availability,
+        type,
         orderBy,
       },
     })
@@ -33,19 +29,21 @@ type UseProductsProps = ProductFilters & {
   config?: QueryClientConfig;
 };
 
-export const useProducts = ({
-  page = 1,
-  perPage = 15,
-  orderBy,
-  categories,
-  availability,
-  config,
-}: UseProductsProps) => {
+export const useProducts = ({ page = 1, perPage = 15, orderBy, categories, availability, type, config }: UseProductsProps) => {
   const { data } = useQuery({
     ...config,
-    queryKey: ["products", page, perPage, orderBy, categories, availability],
-    queryFn: ({ signal }) => getProducts({ page, perPage, orderBy, categories, availability, signal }),
-    staleTime: 5 * 60 * 1000,
+    queryKey: ["products", page, perPage, orderBy, categories, availability, type],
+    queryFn: ({ signal }) =>
+      getProducts({
+        page,
+        perPage,
+        orderBy,
+        categories,
+        availability,
+        type,
+        signal,
+      }),
+    // staleTime: 5 * 60 * 1000,
   });
 
   const products = data?.items ?? [];

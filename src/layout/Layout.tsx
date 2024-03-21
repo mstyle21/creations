@@ -17,7 +17,16 @@ const Layout = () => {
         <Outlet />
       </main>
       {user?.role !== "admin" && <Footer />}
-      <ScrollRestoration />
+      <ScrollRestoration
+        getKey={(location) => {
+          //this prevents browser scroll up when updating link with setQueryParams
+          if (location.search.length !== 0) {
+            return location.pathname;
+          }
+
+          return location.key;
+        }}
+      />
     </>
   );
 };
