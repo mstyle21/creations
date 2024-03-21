@@ -37,7 +37,7 @@ const LatestProducts = () => {
       </div>
       {data && (
         <Row>
-          <Carousel variant="dark" indicators={false} interval={null} className="col-md-12">
+          <Carousel variant="dark" indicators={false} className="col-md-12">
             {latestProducts.map((latestProductsBunch, index) => (
               <Carousel.Item key={index} className="row">
                 {latestProductsBunch.map((product, index) => (

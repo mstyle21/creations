@@ -173,15 +173,32 @@ footer .container {
 .footer-box h6 {
     color: #fff;
     margin-bottom: 20px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
+}
+.footer-menu {
+    list-style-type: none;
+    text-align: center;
+}
+.footer-menu a {
+    color: var(--primary-color);
+}
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+.footer-social a {
+    color: var(--pale-color);
 }
 .copyright-text {
     padding-top: 50px;
 }
 .copyright-text a {
     text-decoration: none;
-    color: #ffba00;
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--primary-color);
 }
 /****** End footer style ***/
 
@@ -279,6 +296,10 @@ footer .container {
     box-shadow: var(--box-shadow);
     padding: 40px 0;
 }
+.features-list .carousel-control-prev span, .features-list .carousel-control-next span {
+    color: lightgrey;
+}
+
 .feature-box {
     display: flex;
     flex-direction: column;

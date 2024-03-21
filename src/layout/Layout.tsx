@@ -16,7 +16,7 @@ const Layout = () => {
       <main>
         <Outlet />
       </main>
-      {user?.role !== "admin" && <Footer />}
+      {user?.role !== "admin" && <Footer menuItems={menuItems} />}
       <ScrollRestoration
         getKey={(location) => {
           //this prevents browser scroll up when updating link with setQueryParams
