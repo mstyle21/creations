@@ -471,7 +471,7 @@ footer .container {
 .product-details-img {
     width: 100%;
     object-fit: cover;
-    aspect-ratio: 1;
+    /* aspect-ratio: 1; */
 }
 .product-details {
     color: #000;

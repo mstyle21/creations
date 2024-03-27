@@ -59,21 +59,18 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
         </Form.Group>
         <Form.Group controlId="formCheck">
           <Form.Label>Status</Form.Label>
-          <Form.Check
-            type="switch"
-            label={active ? "Active" : "Inactive"}
-            checked={active}
-            onChange={() => setActive((prev) => !prev)}
-          />
+          <Form.Check type="switch" label={active ? "Active" : "Inactive"} checked={active} onChange={() => setActive((prev) => !prev)} />
         </Form.Group>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
-        <Button variant="primary" onClick={() => handleSaveCategory()}>
+        <Button variant="primary" onClick={() => handleSaveCategory(!!itemToEdit)}>
           Save
         </Button>
-        <Button variant="primary" onClick={() => handleSaveCategory(true)}>
-          Save and close
-        </Button>
+        {!itemToEdit && (
+          <Button variant="primary" onClick={() => handleSaveCategory(true)}>
+            Save and close
+          </Button>
+        )}
         <Button
           variant="secondary"
           onClick={() => {

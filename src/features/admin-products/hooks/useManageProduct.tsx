@@ -16,6 +16,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
   const [active, setActive] = useState(true);
   const [categories, setCategories] = useState<number[]>([]);
   const [images, dispatchImages] = useReducer(productImagesReducer, []);
+  const [manageErrors, setManageErrors] = useState<string[]>([]);
 
   useEffect(() => {
     setName(itemToEdit ? itemToEdit.name : "");
@@ -30,6 +31,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setCategories(itemToEdit ? itemToEdit.categories.map((item) => item.id) : []);
     dispatchImages({ type: "reset" });
     dispatchImages({ type: "set", payload: itemToEdit ? itemToEdit.images : [] });
+    setManageErrors([]);
   }, [itemToEdit]);
 
   const resetValues = () => {
@@ -44,6 +46,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setActive(true);
     setCategories([]);
     dispatchImages({ type: "reset" });
+    setManageErrors([]);
   };
 
   return {
@@ -58,6 +61,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     materialWeight,
     categories,
     images,
+    manageErrors,
     setName,
     setWidth,
     setHeight,
@@ -69,6 +73,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setMaterialWeight,
     setCategories,
     dispatchImages,
+    setManageErrors,
     resetValues,
   };
 };

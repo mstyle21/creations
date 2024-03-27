@@ -21,3 +21,19 @@ export const requestToken = async ({ email, password }: RequestTokenProps) => {
     return { token: null, error: error };
   }
 };
+
+export const refreshToken = async () => {
+  try {
+    const response = await axiosInstance.post("/user/refresh-token");
+
+    return { token: response.data.token, error: null };
+  } catch (err) {
+    let error = "Something went wrong";
+
+    if (err instanceof AxiosError) {
+      error = err.response?.data.message || err.message;
+    }
+
+    return { token: null, error: error };
+  }
+};

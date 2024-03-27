@@ -93,6 +93,7 @@ export type PackageProductReducerAction =
       payload: PackageItem[];
     }
   | { type: "reset" };
+
 export type ProductFilters = {
   page?: number;
   perPage?: number;
@@ -101,3 +102,12 @@ export type ProductFilters = {
   availability?: string;
   type?: string;
 };
+
+export type ErrorResponse = {
+  error: string | { msg: string }[];
+};
+
+export const TOKEN_VALID = "valid";
+export const TOKEN_EXPIRED = "expired";
+export const TOKEN_EXPIRE_SOON = "expire-soon";
+export type TTokenStatus = "valid" | "expired" | "expire-soon";

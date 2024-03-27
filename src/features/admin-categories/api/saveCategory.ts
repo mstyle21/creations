@@ -10,7 +10,7 @@ type CategoryDetails = {
 export const saveCategory = async (data: CategoryDetails) => {
   return axiosInstance.request({
     method: data.id ? "PUT" : "POST",
-    url: data.id ? `/categories${data.id}` : "/categories",
+    url: data.id ? `/categories/${data.id}` : "/categories",
     data: data,
   });
 };

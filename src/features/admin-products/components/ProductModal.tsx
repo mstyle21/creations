@@ -1,5 +1,5 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import { GeneralModalProps, ProductDetails } from "../../../types";
+import { ErrorResponse, GeneralModalProps, ProductDetails } from "../../../types";
 import { useManageProduct } from "../hooks/useManageProduct";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import ProductImageUpload from "./ProductImageUpload";
@@ -7,6 +7,7 @@ import { axiosInstance } from "../../../services/AxiosService";
 import { calculateApproximateCostPrice } from "../../../utils";
 import { CURRENCY_SIGN } from "../../../config";
 import { useAllCategories } from "../../../api/getAllCategories";
+import { AxiosError } from "axios";
 
 const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<ProductDetails>) => {
   const {
@@ -21,6 +22,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     materialWeight,
     categories,
     images,
+    manageErrors,
     setName,
     setWidth,
     setHeight,
@@ -32,6 +34,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     setMaterialWeight,
     setCategories,
     dispatchImages,
+    setManageErrors,
     resetValues,
   } = useManageProduct(itemToEdit);
 
@@ -63,6 +66,8 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     });
     formData.append("imagesOrder", JSON.stringify(imagesOrder));
 
+    setManageErrors([]);
+
     const url = `/products/${itemToEdit ? itemToEdit.id : ""}`;
 
     //TODO: mutation
@@ -79,10 +84,23 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
         if (response.status === 201) {
           resetValues();
           closeModal(true);
+        } else {
+          setManageErrors(response.data.errors);
         }
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((error: AxiosError<ErrorResponse>) => {
+        if (error.response?.data.error) {
+          let msg = error.response.data.error;
+          if (Array.isArray(msg)) {
+            msg.map((error) => {
+              setManageErrors((prev) => [...prev, error.msg]);
+            });
+          } else {
+            setManageErrors((prev) => [...prev, msg.toString()]);
+          }
+        } else {
+          setManageErrors((prev) => [...prev, "Something went wrong!"]);
+        }
       });
   };
 
@@ -112,6 +130,17 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
       {error && <p className="alert alert-danger">Something went wrong!</p>}
       {categoryList && categoryList.length && (
         <>
+          {manageErrors.length > 0 && (
+            <div className="alert alert-danger mb-0">
+              {manageErrors.map((msg, index) => {
+                return (
+                  <p className="m-0" key={index}>
+                    {msg}
+                  </p>
+                );
+              })}
+            </div>
+          )}
           <Modal.Body className="d-grid gap-3" style={{ gridTemplateColumns: "1fr 1fr" }}>
             <div className="d-flex flex-column gap-3">
               <h2>Details</h2>
