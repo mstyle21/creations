@@ -22,7 +22,7 @@ export const usePackages = ({ config, filters }: UsePackagesProps) => {
     ...config,
     queryKey: ["packages-filtered", filters],
     queryFn: () => getPackages({ filters }),
-    staleTime: 5 * 60 * 1000,
+    // staleTime: 5 * 60 * 1000,
   });
 
   const packages = data?.items ?? [];

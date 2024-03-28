@@ -22,7 +22,7 @@ export const useProducts = ({ config, filters }: UseProductsProps) => {
     ...config,
     queryKey: ["products-filtered", filters],
     queryFn: () => getProducts({ filters }),
-    staleTime: 5 * 60 * 1000,
+    // staleTime: 5 * 60 * 1000,
   });
 
   const products = data?.items ?? [];
