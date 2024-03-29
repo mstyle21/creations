@@ -12,13 +12,14 @@ import { BACKEND_URL, CURRENCY_SIGN, THUMBNAIL_PREFIX } from "../../../config";
 import { DEFAULT_IMAGE, stockColor } from "../../../utils";
 import { PackageDetails } from "../../../types";
 import PackageModal from "./PackageModal";
+import { SortableColumn } from "../../../components/SortableColumn";
 
 const perPageOptions = [10, 20, 50, 100];
 
 const PackageList = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<PackageDetails | null>(null);
-  const { page, perPage, filterLink, setPage, setPerPage, setSearch } = useFilters();
+  const { page, perPage, filterLink, sort, setPage, setPerPage, setSearch, handleSort } = useFilters();
 
   const { packages, count, pages, error, loading, refreshData } = usePackages({ filters: filterLink });
 
@@ -59,9 +60,10 @@ const PackageList = () => {
         <div className="admin-table">
           <div className="table-head">
             <span></span>
-            <span>Name</span>
-            <span>Stock</span>
-            <span>Price</span>
+            <SortableColumn title="Id" value="id" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Name" value="name" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Stock" value="stock" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Price" value="price" sortOptions={sort} handleSort={handleSort} />
             <span>Status</span>
             <span>Actions</span>
           </div>
@@ -79,10 +81,9 @@ const PackageList = () => {
                     <span>
                       <img height="50px" src={imgSrc} />
                     </span>
+                    <span>{packageDetails.id}</span>
                     <span>{packageDetails.name}</span>
-                    <span style={{ color: stockColor(packageDetails.stock), fontWeight: "bold" }}>
-                      {packageDetails.stock}
-                    </span>
+                    <span style={{ color: stockColor(packageDetails.stock), fontWeight: "bold" }}>{packageDetails.stock}</span>
                     <span>
                       {packageDetails.price / 100} {CURRENCY_SIGN}
                     </span>

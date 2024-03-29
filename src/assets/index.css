@@ -569,6 +569,9 @@ footer .container {
 .table-head {
   font-weight: bold;
 }
+.sortable-table {
+  padding: 5px 0;
+}
 .sortable-column {
   cursor: pointer;
 }

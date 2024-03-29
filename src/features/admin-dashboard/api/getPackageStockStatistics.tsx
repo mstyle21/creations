@@ -20,7 +20,7 @@ export const usePackageStockStatistics = ({ config }: UsePackageStockStatisticsP
     ...config,
     queryKey: ["packages", "package-stock-stats"],
     queryFn: () => getPackageStockStatistics(),
-    staleTime: 5 * 60 * 1000,
+    // staleTime: 5 * 60 * 1000,
   });
 
   const labels: (string | string[])[] = [];

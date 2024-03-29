@@ -12,15 +12,14 @@ import { ProductDetails } from "../../../types";
 import ProductModal from "./ProductModal";
 import { DEFAULT_IMAGE, stockColor } from "../../../utils";
 import { useProducts } from "../api/getProducts";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { SortableColumn } from "../../../components/SortableColumn";
 
 const perPageOptions = [10, 20, 50, 100];
 
 const ProductList = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<ProductDetails | null>(null);
-  const { page, perPage, sort, filterLink, setPage, setPerPage, setSearch, setSort } = useFilters();
+  const { page, perPage, sort, filterLink, setPage, setPerPage, setSearch, handleSort } = useFilters();
 
   const { products, count, pages, error, loading, refreshData } = useProducts({ filters: filterLink });
 
@@ -39,16 +38,6 @@ const ProductList = () => {
     });
 
     setItemToEdit(product);
-  };
-
-  const handleSort = (by: string) => {
-    let order = "asc";
-
-    if (sort.by === by) {
-      order = sort.order === "asc" ? "desc" : "asc";
-    }
-
-    setSort({ by: by, order: order });
   };
 
   return (
@@ -71,18 +60,10 @@ const ProductList = () => {
         <div className="admin-table">
           <div className="table-head sortable-table">
             <span></span>
-            <span className="sortable-column" onClick={() => handleSort("id")}>
-              Id {sort.by === "id" && <FontAwesomeIcon icon={sort.order === "asc" ? faArrowUp : faArrowDown} />}
-            </span>
-            <span className="sortable-column" onClick={() => handleSort("name")}>
-              Name {sort.by === "name" && <FontAwesomeIcon icon={sort.order === "asc" ? faArrowUp : faArrowDown} />}
-            </span>
-            <span className="sortable-column" onClick={() => handleSort("stock")}>
-              Stock {sort.by === "stock" && <FontAwesomeIcon icon={sort.order === "asc" ? faArrowUp : faArrowDown} />}
-            </span>
-            <span className="sortable-column" onClick={() => handleSort("price")}>
-              Price {sort.by === "price" && <FontAwesomeIcon icon={sort.order === "asc" ? faArrowUp : faArrowDown} />}
-            </span>
+            <SortableColumn title="Id" value="id" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Name" value="name" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Stock" value="stock" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Price" value="price" sortOptions={sort} handleSort={handleSort} />
             <span>Status</span>
             <span>Actions</span>
           </div>

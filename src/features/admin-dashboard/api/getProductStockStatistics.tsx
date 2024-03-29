@@ -20,7 +20,7 @@ export const useProductStockStatistics = ({ config }: UseProductStockStatistics)
     ...config,
     queryKey: ["products", "product-stock-stats"],
     queryFn: () => getProductStockStatistics(),
-    staleTime: 5 * 60 * 1000,
+    // staleTime: 5 * 60 * 1000,
   });
 
   const labels: (string | string[])[] = [];

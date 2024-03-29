@@ -10,11 +10,12 @@ import { useState } from "react";
 import { CategoryDetails } from "../../../types";
 import CategoryModal from "./CategoryModal";
 import { useCategories } from "../../../api/getCategories";
+import { SortableColumn } from "../../../components/SortableColumn";
 
 const perPageOptions = [10, 20, 50, 100];
 
 const CategoryList = () => {
-  const { page, perPage, filterLink, setPage, setPerPage, setSearch } = useFilters();
+  const { page, perPage, sort, filterLink, setPage, setPerPage, setSearch, handleSort } = useFilters();
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<CategoryDetails | null>(null);
 
@@ -45,10 +46,10 @@ const CategoryList = () => {
         </div>
         <div className="admin-table">
           <div className="table-head">
-            <span>ID</span>
-            <span>Name</span>
-            <span>Products</span>
-            <span>Packages</span>
+            <SortableColumn title="Id" value="id" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Name" value="name" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Products" value="products" sortOptions={sort} handleSort={handleSort} />
+            <SortableColumn title="Packages" value="packages" sortOptions={sort} handleSort={handleSort} />
             <span>Status</span>
             <span>Actions</span>
           </div>
