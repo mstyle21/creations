@@ -62,8 +62,26 @@ const CategoryList = () => {
                   <div className="table-row" key={category.id}>
                     <span>{category.id}</span>
                     <span>{category.name}</span>
-                    <span>{category.products.length}</span>
-                    <span>{category.packages.length}</span>
+                    <span className="info-popup-container">
+                      {category.products.length}
+                      {category.products.length > 0 && (
+                        <div className="info-popup">
+                          {category.products.map((product) => {
+                            return <p key={product.id}>{product.name}</p>;
+                          })}
+                        </div>
+                      )}
+                    </span>
+                    <span className="info-popup-container">
+                      {category.packages.length}
+                      {category.packages.length > 0 && (
+                        <div className="info-popup">
+                          {category.packages.map((packageDetails) => {
+                            return <p key={packageDetails.id}>{packageDetails.name}</p>;
+                          })}
+                        </div>
+                      )}
+                    </span>
                     <span style={{ fontWeight: "bold", color: category.status === "active" ? "green" : "red" }}>
                       {capitalize(category.status)}
                     </span>

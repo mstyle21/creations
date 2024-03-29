@@ -13,6 +13,8 @@ import ProductModal from "./ProductModal";
 import { DEFAULT_IMAGE, stockColor } from "../../../utils";
 import { useProducts } from "../api/getProducts";
 import { SortableColumn } from "../../../components/SortableColumn";
+import { useAllCategories } from "../../../api/getAllCategories";
+import ReactSelect from "react-select";
 
 const perPageOptions = [10, 20, 50, 100];
 
@@ -22,6 +24,12 @@ const ProductList = () => {
   const { page, perPage, sort, filterLink, setPage, setPerPage, setSearch, handleSort } = useFilters();
 
   const { products, count, pages, error, loading, refreshData } = useProducts({ filters: filterLink });
+
+  // const { categoryList } = useAllCategories({});
+  let categoryOptions: { label: string; value: number }[] = [];
+  // if (categoryList && categoryList.length > 0) {
+  //   categoryOptions = categoryList.map((category) => ({ label: category.name, value: category.id }));
+  // }
 
   const handleCloseModal = (refresh = false) => {
     setShowModal(false);
@@ -47,6 +55,27 @@ const ProductList = () => {
         <div className="admin-toolbar">
           <PerPageFilter perPageOptions={perPageOptions} onChange={setPerPage} />
           <SearchFilter onChange={setSearch} />
+          {categoryOptions.length > 0 && (
+            <ReactSelect
+              isMulti
+              options={categoryOptions}
+              placeholder="Categories"
+              styles={{
+                container: (baseStyles) => ({
+                  ...baseStyles,
+                  width: "250px",
+                }),
+                indicatorSeparator: (baseStyles) => ({
+                  ...baseStyles,
+                  display: "none",
+                }),
+                menu: (baseStyles) => ({
+                  ...baseStyles,
+                  zIndex: 5,
+                }),
+              }}
+            />
+          )}
           <Button
             className="btn-success"
             onClick={() => {

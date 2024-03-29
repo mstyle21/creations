@@ -604,6 +604,28 @@ footer .container {
   height: 400px;
 }
 
+.info-popup-container {
+  position: relative;
+  cursor: pointer;
+}
+.info-popup-container:hover .info-popup {
+  display: block;
+}
+.info-popup {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 60%;
+  padding: 5px 30px;
+  border: 1px solid lightgrey;
+  box-shadow: 0 0 5px lightgrey;
+  background-color: white;
+  width: max-content;
+}
+.info-popup > p {
+  margin: 0;
+}
+
 .manage-product-img-list,
 .manage-package-img-list {
   display: flex;

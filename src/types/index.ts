@@ -13,7 +13,7 @@ export type CategoryDetails = {
   name: string;
   status: "active" | "inactive";
   products: ProductDetails[];
-  packages: [];
+  packages: PackageDetails[];
 };
 export type ProductDetails = {
   id: number;
