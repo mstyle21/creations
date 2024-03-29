@@ -569,7 +569,7 @@ footer .container {
 .table-head {
   font-weight: bold;
 }
-.sortable-table span {
+.sortable-column {
   cursor: pointer;
 }
 .table-body {

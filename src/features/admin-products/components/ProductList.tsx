@@ -71,16 +71,16 @@ const ProductList = () => {
         <div className="admin-table">
           <div className="table-head sortable-table">
             <span></span>
-            <span onClick={() => handleSort("id")}>
+            <span className="sortable-column" onClick={() => handleSort("id")}>
               Id {sort.by === "id" && <FontAwesomeIcon icon={sort.order === "asc" ? faArrowUp : faArrowDown} />}
             </span>
-            <span onClick={() => handleSort("name")}>
+            <span className="sortable-column" onClick={() => handleSort("name")}>
               Name {sort.by === "name" && <FontAwesomeIcon icon={sort.order === "asc" ? faArrowUp : faArrowDown} />}
             </span>
-            <span onClick={() => handleSort("stock")}>
+            <span className="sortable-column" onClick={() => handleSort("stock")}>
               Stock {sort.by === "stock" && <FontAwesomeIcon icon={sort.order === "asc" ? faArrowUp : faArrowDown} />}
             </span>
-            <span onClick={() => handleSort("price")}>
+            <span className="sortable-column" onClick={() => handleSort("price")}>
               Price {sort.by === "price" && <FontAwesomeIcon icon={sort.order === "asc" ? faArrowUp : faArrowDown} />}
             </span>
             <span>Status</span>

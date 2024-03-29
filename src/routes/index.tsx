@@ -4,6 +4,7 @@ import { ProtectedRoute } from "../components/ProtectedRoute";
 import { productDetailsLoader } from "../features/products/loaders/productDetailsLoader";
 import { packageDetailsLoader } from "../features/packages/loaders/packageDetailsLoader";
 import { lazy } from "react";
+import { NotFound } from "../components/NotFound";
 
 const Home = lazy(() => import("../features/home/routes/Home"));
 const Products = lazy(() => import("../features/products/routes/Products"));
@@ -131,9 +132,7 @@ const routes: RouteObject[] = [
       },
       {
         path: "*",
-        Component: () => {
-          return <>404</>;
-        },
+        element: <NotFound />,
       },
     ],
   },
