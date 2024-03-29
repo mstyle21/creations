@@ -1,15 +1,5 @@
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ChartData,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  ChartOptions,
-} from "chart.js";
+import { Chart as ChartJS, ChartData, BarElement, Title, Tooltip, Legend, CategoryScale, LinearScale, ChartOptions } from "chart.js";
 import { usePackageStockStatistics } from "../api/getPackageStockStatistics";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
@@ -45,9 +35,11 @@ const PackageStockStatistics = () => {
     animation: {
       delay: (context) => {
         let delay = 0;
+
         if (context.type === "data" && context.mode === "default") {
-          delay = context.dataIndex * 300 + context.datasetIndex * 100;
+          delay = context.dataIndex * 20;
         }
+
         return delay;
       },
     },
