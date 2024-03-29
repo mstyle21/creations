@@ -28,17 +28,12 @@ const CategoryList = () => {
 
   const handleCloseModal = () => setShowModal(false);
 
-  const handlePerPageChange = (perPage: number) => {
-    setPerPage(perPage);
-    setPage(1);
-  };
-
   return (
     <>
       <div className="admin-table-container">
         {!isLoading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
         <div className="admin-toolbar">
-          <PerPageFilter perPageOptions={perPageOptions} onChange={handlePerPageChange} />
+          <PerPageFilter perPageOptions={perPageOptions} selectedValue={perPage} onChange={setPerPage} />
           <SearchFilter onChange={setSearch} />
           <Button className="btn-success" onClick={() => handleOpenModal()}>
             Add new category

@@ -47,6 +47,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     formData.append("height", height.toString());
     formData.append("depth", depth.toString());
     formData.append("stock", stock.toString());
+    formData.append("materialWeight", materialWeight.toString());
     formData.append("price", price.toString());
     formData.append("oldPrice", oldPrice.toString());
     formData.append("status", active ? "active" : "inactive");

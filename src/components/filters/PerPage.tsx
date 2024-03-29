@@ -5,11 +5,12 @@ type PerPageFilterProps = {
   perPageOptions: number[];
   onChange: (page: number) => void;
   defaultValue?: string;
+  selectedValue?: number;
   style?: React.CSSProperties;
   className?: string;
 };
 
-const PerPageFilter = ({ defaultValue, perPageOptions, onChange, style, className }: PerPageFilterProps) => {
+const PerPageFilter = ({ defaultValue, selectedValue, perPageOptions, onChange, style, className }: PerPageFilterProps) => {
   return (
     <Form.Select
       onChange={(e) => {
@@ -18,6 +19,7 @@ const PerPageFilter = ({ defaultValue, perPageOptions, onChange, style, classNam
       className={`per-page-selector ${className ?? ""}`}
       style={style}
       defaultValue={defaultValue}
+      value={selectedValue}
     >
       {perPageOptions.map((option, index) => {
         return (

@@ -45,7 +45,7 @@ const PackageList = () => {
       <div className="admin-table-container">
         {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
         <div className="admin-toolbar">
-          <PerPageFilter perPageOptions={perPageOptions} onChange={setPerPage} />
+          <PerPageFilter perPageOptions={perPageOptions} selectedValue={perPage} onChange={setPerPage} />
           <SearchFilter onChange={setSearch} />
           <Button
             className="btn-success"

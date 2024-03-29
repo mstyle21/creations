@@ -2,7 +2,7 @@ import { useState } from "react";
 import { refreshToken } from "../features/auth/api/login";
 import { TOKEN_EXPIRE_SOON, TTokenStatus, TOKEN_EXPIRED, TOKEN_VALID } from "../types";
 
-export const TOKEN_KEY = import.meta.env.VITE_BACKEND_URL;
+export const TOKEN_KEY = import.meta.env.VITE_LS_TOKEN_KEY;
 export const INVALID_TOKEN_MSG = "Token expired or invalid!";
 const TOKEN_EXPIRE_RANGE = 10 * 60; //MINUTES * SECONDS
 
