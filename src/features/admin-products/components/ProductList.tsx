@@ -25,11 +25,13 @@ const ProductList = () => {
 
   const { products, count, pages, error, loading, refreshData } = useProducts({ filters: filterLink });
 
-  // const { categoryList } = useAllCategories({});
+  const { categoryList } = useAllCategories({});
   let categoryOptions: { label: string; value: number }[] = [];
-  // if (categoryList && categoryList.length > 0) {
-  //   categoryOptions = categoryList.map((category) => ({ label: category.name, value: category.id }));
-  // }
+  if (categoryList && categoryList.length > 0) {
+    categoryOptions = categoryList.map((category) => ({ label: category.name, value: category.id }));
+  }
+
+  categoryOptions = [];
 
   const handleCloseModal = (refresh = false) => {
     setShowModal(false);
