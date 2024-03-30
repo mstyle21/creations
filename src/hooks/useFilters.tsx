@@ -75,15 +75,23 @@ const saveUserPrefs = (type: "perPage" | "sort", value: number | SORTER) => {
   const userPrefsStored = localStorage.getItem(USER_PREFS_KEY);
   const currentPage: string = window.location.pathname.replace("/", "");
 
-  let userPrefs: USER_PREFS = {
-    [currentPage]: {
-      perPage: 10,
-      sort: defaultSort,
-    },
+  const pageDefaultPrefs = {
+    perPage: 10,
+    sort: defaultSort,
   };
 
-  if (userPrefsStored !== null) {
+  let userPrefs: USER_PREFS;
+
+  if (userPrefsStored === null) {
+    userPrefs = {
+      [currentPage]: pageDefaultPrefs,
+    };
+  } else {
     userPrefs = JSON.parse(userPrefsStored);
+
+    if (!userPrefs[currentPage]) {
+      userPrefs[currentPage] = pageDefaultPrefs;
+    }
   }
 
   userPrefs[currentPage] = {
