@@ -9,7 +9,7 @@ import { useFilters } from "../../../hooks/useFilters";
 import { useState } from "react";
 import { CategoryDetails } from "../../../types";
 import CategoryModal from "./CategoryModal";
-import { useCategories } from "../../../api/getCategories";
+import { useGetCategories } from "../../../api/categories/getCategories";
 import { SortableColumn } from "../../../components/SortableColumn";
 
 const perPageOptions = [10, 20, 50, 100];
@@ -19,7 +19,7 @@ const CategoryList = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<CategoryDetails | null>(null);
 
-  const { categories, count, pages, error, isLoading } = useCategories({ filters: filterLink });
+  const { categories, count, pages, error, isLoading } = useGetCategories({ filters: filterLink });
 
   const handleOpenModal = (itemToEdit = null) => {
     setItemToEdit(itemToEdit);

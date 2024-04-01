@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFilters } from "../../../hooks/useFilters";
-import { usePackages } from "../api/getPackages";
+import { useGetPackages } from "../../../api/packages/getPackages";
 import { capitalize } from "lodash";
 import { Button } from "react-bootstrap";
 import LoadingSpinner from "../../../components/LoadingSpinner";
@@ -21,7 +21,7 @@ const PackageList = () => {
   const [itemToEdit, setItemToEdit] = useState<PackageDetails | null>(null);
   const { page, perPage, filterLink, sort, setPage, setPerPage, setSearch, handleSort } = useFilters();
 
-  const { packages, count, pages, error, loading, refreshData } = usePackages({ filters: filterLink });
+  const { packages, count, pages, error, loading, refreshData } = useGetPackages({ filters: filterLink });
 
   const handleCloseModal = (refresh = false) => {
     setShowModal(false);

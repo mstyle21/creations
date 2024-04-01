@@ -1,7 +1,7 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { CategoryDetails, GeneralModalProps } from "../../../types";
 import { useManageCategory } from "../hooks/useManageCategory";
-import { useSaveCategory } from "../api/saveCategory";
+import { useSaveCategory } from "../../../api/categories/saveCategory";
 
 const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
   const { name, active, errors, setName, setActive, setErrors, resetValues } = useManageCategory(itemToEdit);

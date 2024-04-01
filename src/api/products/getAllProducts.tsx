@@ -1,21 +1,16 @@
-import { QueryClientConfig, useQuery } from "@tanstack/react-query";
-import { axiosInstance } from "../services/AxiosService";
-import { ProductDetails } from "../types";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "../../services/AxiosService";
+import { CustomQueryConfig, ProductDetails } from "../../types";
 
 export const getAllProducts = async () => {
   return axiosInstance.get<ProductDetails[]>(`/products/all`).then((response) => response.data);
 };
 
-type UseProductsProps = {
-  config?: QueryClientConfig;
-};
-
-export const useAllProducts = ({ config }: UseProductsProps) => {
+export const useGetAllProducts = ({ config }: { config?: CustomQueryConfig }) => {
   const { data, isLoading, error } = useQuery({
-    ...config,
     queryKey: ["products"],
     queryFn: () => getAllProducts(),
-    staleTime: 5 * 60 * 1000,
+    ...config,
   });
 
   const productList = data ?? [];

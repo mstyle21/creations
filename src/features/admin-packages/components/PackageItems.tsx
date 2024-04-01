@@ -1,4 +1,4 @@
-import { useAllProducts } from "../../../api/getAllProducts";
+import { useGetAllProducts } from "../../../api/products/getAllProducts";
 import { PackageItem, PackageProductReducerAction } from "../../../types";
 import { FloatingLabel, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,7 +18,7 @@ const PackageItems = ({ packageItems, dispatchItems }: PackageItemsProps) => {
   const [itemId, setItemId] = useState(0);
   const [quantity, setQuantity] = useState<number | "">("");
   const [validated, setValidated] = useState(false);
-  const { productList, error, isLoading } = useAllProducts({});
+  const { productList, error, isLoading } = useGetAllProducts({});
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <div className="alert alert-danger">{error.message}</div>;
@@ -107,11 +107,7 @@ const PackageItems = ({ packageItems, dispatchItems }: PackageItemsProps) => {
           >
             <img
               style={{ height: "50px" }}
-              src={
-                item.image
-                  ? `${BACKEND_URL}/products/${item.productId}/${THUMBNAIL_PREFIX}${item.image}`
-                  : DEFAULT_IMAGE
-              }
+              src={item.image ? `${BACKEND_URL}/products/${item.productId}/${THUMBNAIL_PREFIX}${item.image}` : DEFAULT_IMAGE}
             />
             <span>{item.name}</span>
             <input

@@ -1,6 +1,6 @@
 import { Accordion, Form } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
-import { useAllCategories } from "../api/getAllCategories";
+import { useGetAllCategories } from "../api/categories/getAllCategories";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
 export const STRING_SEPARATOR = ",";
@@ -35,7 +35,7 @@ const ProductFilters = () => {
   const selectedCategories = queryParams.get(CATEGORIES_KEY)?.split(",") ?? [];
   const selectedType = queryParams.get(TYPE_KEY) ?? "";
   const selectedAvailability = queryParams.get(AVAILABILITY_KEY) ?? "";
-  const { categoryList: categories } = useAllCategories({});
+  const { categoryList: categories } = useGetAllCategories({});
   const { width } = useWindowDimensions();
 
   const handleCategoryChange = (categoryId: string) => {

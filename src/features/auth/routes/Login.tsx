@@ -3,7 +3,7 @@ import PageBanner from "../../../components/PageBanner";
 import { Link, Navigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
-import { requestToken } from "../api/login";
+import { requestToken } from "../../../api/auth/login";
 import { routesConfig } from "../../../routes";
 
 const Login = () => {

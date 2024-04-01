@@ -2,10 +2,10 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, ChartData, BarElement, Title, Legend, CategoryScale, LinearScale, ChartOptions } from "chart.js";
 import { Tooltip } from "chart.js";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { useProductStockStatistics } from "../api/getProductStockStatistics";
+import { useGetProductStockStatistics } from "../../../api/dashboard/getProductStockStatistics";
 
 const ProductStockStatistics = () => {
-  const { labels, values, colors, loading, error } = useProductStockStatistics({});
+  const { labels, values, colors, loading, error } = useGetProductStockStatistics({});
 
   const chartData: ChartData<"bar"> = {
     labels: labels,

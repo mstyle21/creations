@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFilterParams } from "../../../hooks/useFilterParams";
-import { usePackages } from "../api/getPackages";
+import { useGetPackages } from "../api/getPackages";
 import ItemBox from "../../../components/ItemBox";
 
 type ListProps = {
@@ -10,7 +10,7 @@ type ListProps = {
 const List = ({ setPages }: ListProps) => {
   const { page, perPage, orderBy, categories, availability } = useFilterParams();
 
-  const { packages, pages } = usePackages({
+  const { packages, pages } = useGetPackages({
     page,
     perPage,
     orderBy,

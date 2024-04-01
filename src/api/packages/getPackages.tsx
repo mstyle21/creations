@@ -1,7 +1,6 @@
-import { AxiosRequestConfig } from "axios";
-import { axiosInstance } from "../../../services/AxiosService";
+import { axiosInstance } from "../../services/AxiosService";
 import { useQuery } from "@tanstack/react-query";
-import { ApiPaginatedResponse, PackageDetails } from "../../../types";
+import { ApiPaginatedResponse, CustomQueryConfig, PackageDetails } from "../../types";
 
 export const getPackages = async ({ filters }: { filters: string }) => {
   return axiosInstance.get<ApiPaginatedResponse<PackageDetails>>(`/packages?${filters}`).then((response) => response.data);
@@ -9,10 +8,10 @@ export const getPackages = async ({ filters }: { filters: string }) => {
 
 type UsePackagesProps = {
   filters: string;
-  config?: AxiosRequestConfig;
+  config?: CustomQueryConfig;
 };
 
-export const usePackages = ({ config, filters }: UsePackagesProps) => {
+export const useGetPackages = ({ config, filters }: UsePackagesProps) => {
   const {
     data,
     error,
@@ -22,7 +21,6 @@ export const usePackages = ({ config, filters }: UsePackagesProps) => {
     ...config,
     queryKey: ["packages-filtered", filters],
     queryFn: () => getPackages({ filters }),
-    // staleTime: 5 * 60 * 1000,
   });
 
   const packages = data?.items ?? [];

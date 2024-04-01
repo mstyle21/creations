@@ -3,6 +3,9 @@ export type ApiPaginatedResponse<T> = {
   count: number;
   pages: number;
 };
+export type CustomQueryConfig = {
+  staleTime: number;
+};
 export type GeneralModalProps<T> = {
   show: boolean;
   closeModal: (refresh?: boolean) => void;

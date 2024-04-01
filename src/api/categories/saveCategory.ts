@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "../../../services/AxiosService";
+import { axiosInstance } from "../../services/AxiosService";
 
 type CategoryDetails = {
   id?: number;

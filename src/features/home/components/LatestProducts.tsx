@@ -1,11 +1,11 @@
 import { Carousel, Row } from "react-bootstrap";
 import ItemBox from "../../../components/ItemBox";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { useLatestProducts } from "../api/getLatestProducts";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
+import { useGetLatestProducts } from "../../../api/products/getLatestProducts";
 
 const LatestProducts = () => {
-  const { data, isLoading } = useLatestProducts({});
+  const { data, isLoading } = useGetLatestProducts({ config: { staleTime: 5 * 60 * 1000 } });
   const { width } = useWindowDimensions();
 
   const latestProducts = [];

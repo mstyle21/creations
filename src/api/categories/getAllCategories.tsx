@@ -1,21 +1,16 @@
-import { QueryClientConfig, useQuery } from "@tanstack/react-query";
-import { axiosInstance } from "../services/AxiosService";
-import { GenericCategory } from "../types";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "../../services/AxiosService";
+import { CustomQueryConfig, GenericCategory } from "../../types";
 
 export const getAllCategories = async () => {
   return axiosInstance.get<GenericCategory[]>(`/categories/all`).then((response) => response.data);
 };
 
-type UseCategoriesProps = {
-  config?: QueryClientConfig;
-};
-
-export const useAllCategories = ({ config }: UseCategoriesProps) => {
+export const useGetAllCategories = ({ config }: { config?: CustomQueryConfig }) => {
   const { data, isLoading, error } = useQuery({
-    ...config,
     queryKey: ["categories"],
     queryFn: () => getAllCategories(),
-    staleTime: 5 * 60 * 1000,
+    ...config,
   });
 
   const categoryList = data ?? [];

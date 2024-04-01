@@ -11,9 +11,9 @@ import { useFilters } from "../../../hooks/useFilters";
 import { ProductDetails } from "../../../types";
 import ProductModal from "./ProductModal";
 import { DEFAULT_IMAGE, stockColor } from "../../../utils";
-import { useProducts } from "../api/getProducts";
+import { useProducts } from "../../../api/products/getProducts";
 import { SortableColumn } from "../../../components/SortableColumn";
-import { useAllCategories } from "../../../api/getAllCategories";
+import { useGetAllCategories } from "../../../api/categories/getAllCategories";
 import ReactSelect from "react-select";
 
 const perPageOptions = [10, 20, 50, 100];
@@ -25,7 +25,7 @@ const ProductList = () => {
 
   const { products, count, pages, error, loading, refreshData } = useProducts({ filters: filterLink });
 
-  const { categoryList } = useAllCategories({});
+  const { categoryList } = useGetAllCategories({});
   let categoryOptions: { label: string; value: number }[] = [];
   if (categoryList && categoryList.length > 0) {
     categoryOptions = categoryList.map((category) => ({ label: category.name, value: category.id }));

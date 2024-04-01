@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { axiosInstance } from "../../../services/AxiosService";
+import { axiosInstance } from "../../services/AxiosService";
 
 type RequestTokenProps = {
   email: string;

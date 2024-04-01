@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { refreshToken } from "../features/auth/api/login";
+import { refreshToken } from "../api/auth/login";
 import { TOKEN_EXPIRE_SOON, TTokenStatus, TOKEN_EXPIRED, TOKEN_VALID } from "../types";
 
 export const TOKEN_KEY = import.meta.env.VITE_LS_TOKEN_KEY;

@@ -1,7 +1,6 @@
-import { AxiosRequestConfig } from "axios";
-import { axiosInstance } from "../../../services/AxiosService";
+import { axiosInstance } from "../../services/AxiosService";
 import { useQuery } from "@tanstack/react-query";
-import { ApiPaginatedResponse, ProductDetails } from "../../../types";
+import { ApiPaginatedResponse, CustomQueryConfig, ProductDetails } from "../../types";
 
 export const getProducts = async ({ filters }: { filters: string }) => {
   return axiosInstance.get<ApiPaginatedResponse<ProductDetails>>(`/products?${filters}`).then((response) => response.data);
@@ -9,7 +8,7 @@ export const getProducts = async ({ filters }: { filters: string }) => {
 
 type UseProductsProps = {
   filters: string;
-  config?: AxiosRequestConfig;
+  config?: CustomQueryConfig;
 };
 
 export const useProducts = ({ config, filters }: UseProductsProps) => {
@@ -19,10 +18,9 @@ export const useProducts = ({ config, filters }: UseProductsProps) => {
     isLoading: loading,
     refetch: refreshData,
   } = useQuery({
-    ...config,
     queryKey: ["products-filtered", filters],
     queryFn: () => getProducts({ filters }),
-    // staleTime: 5 * 60 * 1000,
+    ...config,
   });
 
   const products = data?.items ?? [];

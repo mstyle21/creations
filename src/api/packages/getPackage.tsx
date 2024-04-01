@@ -1,6 +1,6 @@
-import { QueryClientConfig, useQuery } from "@tanstack/react-query";
-import { axiosInstance } from "../../../services/AxiosService";
-import { PackageDetails } from "../../../types";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "../../services/AxiosService";
+import { CustomQueryConfig, PackageDetails } from "../../types";
 
 export const getPackage = async (packageSlug: string) => {
   return axiosInstance.get<PackageDetails>(`/packages/${packageSlug}`).then((response) => response.data);
@@ -8,14 +8,13 @@ export const getPackage = async (packageSlug: string) => {
 
 type UsePackageProps = {
   packageSlug: string;
-  config?: QueryClientConfig;
+  config?: CustomQueryConfig;
 };
 
 export const usePackage = ({ packageSlug, config }: UsePackageProps) => {
   return useQuery({
     queryKey: ["package"],
     queryFn: () => getPackage(packageSlug),
-    staleTime: 5 * 60 * 1000,
     ...config,
   });
 };

@@ -6,7 +6,7 @@ import ProductImageUpload from "./ProductImageUpload";
 import { axiosInstance } from "../../../services/AxiosService";
 import { calculateApproximateCostPrice } from "../../../utils";
 import { CURRENCY_SIGN } from "../../../config";
-import { useAllCategories } from "../../../api/getAllCategories";
+import { useGetAllCategories } from "../../../api/categories/getAllCategories";
 import { AxiosError } from "axios";
 
 const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<ProductDetails>) => {
@@ -38,7 +38,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     resetValues,
   } = useManageProduct(itemToEdit);
 
-  const { categoryList, error, isLoading } = useAllCategories({});
+  const { categoryList, error, isLoading } = useGetAllCategories({});
 
   const handleSaveProduct = () => {
     const formData = new FormData();

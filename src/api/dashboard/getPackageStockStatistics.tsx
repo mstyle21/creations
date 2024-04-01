@@ -1,26 +1,21 @@
-import { QueryClientConfig, useQuery } from "@tanstack/react-query";
-import { axiosInstance } from "../../../services/AxiosService";
-import { PackageDetails } from "../../../types";
-import { stockColor } from "../../../utils";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "../../services/AxiosService";
+import { CustomQueryConfig, PackageDetails } from "../../types";
+import { stockColor } from "../../utils";
 
 export const getPackageStockStatistics = async () => {
   return axiosInstance.get<PackageDetails[]>("/packages/stats").then((response) => response.data);
 };
 
-type UsePackageStockStatisticsProps = {
-  config?: QueryClientConfig;
-};
-
-export const usePackageStockStatistics = ({ config }: UsePackageStockStatisticsProps) => {
+export const useGetPackageStockStatistics = ({ config }: { config?: CustomQueryConfig }) => {
   const {
     data,
     error,
     isLoading: loading,
   } = useQuery({
-    ...config,
     queryKey: ["packages", "package-stock-stats"],
     queryFn: () => getPackageStockStatistics(),
-    // staleTime: 5 * 60 * 1000,
+    ...config,
   });
 
   const labels: (string | string[])[] = [];

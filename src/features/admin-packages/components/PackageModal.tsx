@@ -1,7 +1,7 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
 import { GeneralModalProps, PackageDetails } from "../../../types";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { useAllCategories } from "../../../api/getAllCategories";
+import { useGetAllCategories } from "../../../api/categories/getAllCategories";
 import { useManagePackage } from "../hooks/useManagePackage";
 import { axiosInstance } from "../../../services/AxiosService";
 import PackageImageUpload from "./PackageImageUpload";
@@ -28,7 +28,7 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
     resetValues,
   } = useManagePackage(itemToEdit);
 
-  const { categoryList, error, isLoading } = useAllCategories({});
+  const { categoryList, error, isLoading } = useGetAllCategories({});
 
   const handleSavePackage = () => {
     const formData = new FormData();
