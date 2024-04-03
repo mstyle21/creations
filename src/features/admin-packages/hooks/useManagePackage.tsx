@@ -14,6 +14,7 @@ export const useManagePackage = (itemToEdit: PackageDetails | null) => {
   const [category, setCategory] = useState<number | "">("");
   const [products, dispatchProducts] = useReducer(packageProductsReducer, []);
   const [images, dispatchImages] = useReducer(packageImagesReducer, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setName(itemToEdit ? itemToEdit.name : "");
@@ -58,6 +59,7 @@ export const useManagePackage = (itemToEdit: PackageDetails | null) => {
     category,
     products,
     images,
+    isSubmitting,
     setName,
     setStock,
     setPrice,
@@ -66,6 +68,7 @@ export const useManagePackage = (itemToEdit: PackageDetails | null) => {
     setCategory,
     dispatchProducts,
     dispatchImages,
+    setIsSubmitting,
     resetValues,
   };
 };

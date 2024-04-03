@@ -2,9 +2,11 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { CategoryDetails, GeneralModalProps } from "../../../types";
 import { useManageCategory } from "../hooks/useManageCategory";
 import { useSaveCategory } from "../../../api/categories/saveCategory";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<CategoryDetails>) => {
-  const { name, active, errors, setName, setActive, setErrors, resetValues } = useManageCategory(itemToEdit);
+  const { name, active, errors, isSubmitting, setName, setActive, setErrors, setIsSubmitting, resetValues } = useManageCategory(itemToEdit);
   const saveCategory = useSaveCategory();
 
   const handleSaveCategory = (shouldCloseModal = false) => {
@@ -12,6 +14,9 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
       setErrors((prev) => ({ ...prev, name: "Name is required." }));
       return false;
     }
+
+    setIsSubmitting(true);
+
     const data: { id?: number; name: string; status: "active" | "inactive" } = {
       id: itemToEdit?.id,
       name: name,
@@ -25,9 +30,11 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
         if (shouldCloseModal) {
           closeModal();
         }
+        setIsSubmitting(false);
       },
       onError: (error) => {
         setErrors((prev) => ({ ...prev, axios: error.message }));
+        setIsSubmitting(false);
       },
     });
   };
@@ -63,12 +70,12 @@ const CategoryModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Categ
         </Form.Group>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
-        <Button variant="primary" onClick={() => handleSaveCategory(!!itemToEdit)}>
-          Save
+        <Button variant="primary" disabled={isSubmitting} onClick={() => handleSaveCategory(!!itemToEdit)}>
+          {isSubmitting ? <FontAwesomeIcon icon={faSpinner} pulse size="2x" /> : "Save"}
         </Button>
         {!itemToEdit && (
-          <Button variant="primary" onClick={() => handleSaveCategory(true)}>
-            Save and close
+          <Button variant="primary" disabled={isSubmitting} onClick={() => handleSaveCategory(true)}>
+            {isSubmitting ? <FontAwesomeIcon icon={faSpinner} pulse size="2x" /> : "Save and close"}
           </Button>
         )}
         <Button

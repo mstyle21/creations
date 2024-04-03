@@ -8,6 +8,8 @@ import { calculateApproximateCostPrice } from "../../../utils";
 import { CURRENCY_SIGN } from "../../../config";
 import { useGetAllCategories } from "../../../api/categories/getAllCategories";
 import { AxiosError } from "axios";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<ProductDetails>) => {
   const {
@@ -23,6 +25,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     categories,
     images,
     manageErrors,
+    isSubmitting,
     setName,
     setWidth,
     setHeight,
@@ -35,12 +38,15 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     setCategories,
     dispatchImages,
     setManageErrors,
+    setIsSubmitting,
     resetValues,
   } = useManageProduct(itemToEdit);
 
   const { categoryList, error, isLoading } = useGetAllCategories({});
 
   const handleSaveProduct = () => {
+    setIsSubmitting(true);
+
     const formData = new FormData();
     formData.append("name", name);
     formData.append("width", width.toString());
@@ -88,6 +94,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
         } else {
           setManageErrors(response.data.errors);
         }
+        setIsSubmitting(false);
       })
       .catch((error: AxiosError<ErrorResponse>) => {
         if (error.response?.data.error) {
@@ -102,6 +109,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
         } else {
           setManageErrors((prev) => [...prev, "Something went wrong!"]);
         }
+        setIsSubmitting(false);
       });
   };
 
@@ -252,8 +260,8 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
             <ProductImageUpload images={images} dispatchImages={dispatchImages} />
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleSaveProduct}>
-              Save
+            <Button variant="primary" onClick={handleSaveProduct} disabled={isSubmitting}>
+              {isSubmitting ? <FontAwesomeIcon icon={faSpinner} pulse size="2x" /> : "Save"}
             </Button>
             <Button
               variant="secondary"

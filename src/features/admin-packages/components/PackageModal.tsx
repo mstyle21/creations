@@ -6,6 +6,8 @@ import { useManagePackage } from "../hooks/useManagePackage";
 import { axiosInstance } from "../../../services/AxiosService";
 import PackageImageUpload from "./PackageImageUpload";
 import PackageItems from "./PackageItems";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<PackageDetails>) => {
   const {
@@ -17,6 +19,7 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
     category,
     products,
     images,
+    isSubmitting,
     setName,
     setStock,
     setPrice,
@@ -25,12 +28,15 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
     setCategory,
     dispatchProducts,
     dispatchImages,
+    setIsSubmitting,
     resetValues,
   } = useManagePackage(itemToEdit);
 
   const { categoryList, error, isLoading } = useGetAllCategories({});
 
   const handleSavePackage = () => {
+    setIsSubmitting(true);
+
     const formData = new FormData();
     formData.append("name", name);
     formData.append("stock", stock.toString());
@@ -55,6 +61,7 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
 
     const url = `/packages/${itemToEdit ? itemToEdit.id : ""}`;
 
+    //TODO: use mutation
     axiosInstance
       .request({
         method: itemToEdit ? "put" : "post",
@@ -69,9 +76,11 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
           resetValues();
           closeModal(true);
         }
+        setIsSubmitting(false);
       })
       .catch((error) => {
         console.error(error);
+        setIsSubmitting(false);
       });
   };
 
@@ -158,8 +167,8 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
             <PackageImageUpload images={images} dispatchImages={dispatchImages} />
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleSavePackage}>
-              Save
+            <Button variant="primary" onClick={handleSavePackage} disabled={isSubmitting}>
+              {isSubmitting ? <FontAwesomeIcon icon={faSpinner} pulse size="2x" /> : "Save"}
             </Button>
             <Button
               variant="secondary"

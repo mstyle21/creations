@@ -5,6 +5,7 @@ export const useManageCategory = (itemToEdit: CategoryDetails | null) => {
   const [name, setName] = useState("");
   const [active, setActive] = useState(true);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setName(itemToEdit ? itemToEdit.name : "");
@@ -17,5 +18,5 @@ export const useManageCategory = (itemToEdit: CategoryDetails | null) => {
     setErrors({});
   };
 
-  return { name, active, errors, setName, setActive, setErrors, resetValues };
+  return { name, active, errors, isSubmitting, setName, setActive, setErrors, setIsSubmitting, resetValues };
 };
