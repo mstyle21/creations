@@ -15,6 +15,7 @@ const Contact = lazy(() => import("../features/contact/routes/Contact"));
 const Login = lazy(() => import("../features/auth/routes/Login"));
 
 const Dashboard = lazy(() => import("../features/admin-dashboard/routes/Dashboard"));
+const Orders = lazy(() => import("../features/admin-orders/routes/Orders"));
 const Categories = lazy(() => import("../features/admin-categories/routes/Categories"));
 const ManageProduct = lazy(() => import("../features/admin-products/routes/Products"));
 const ManagePackage = lazy(() => import("../features/admin-packages/routes/Packages"));
@@ -32,6 +33,7 @@ export const routesConfig = {
   register: "/register",
   forgotPassword: "/forgot-password",
   dashboard: "/dashboard",
+  manageOrders: "/manage-orders",
   manageCategories: "/manage-categories",
   manageProducts: "/manage-products",
   managePackages: "/manage-packages",
@@ -45,6 +47,7 @@ export const USER_MENU_ITEMS = [
 ];
 export const ADMIN_MENU_ITEMS = [
   { path: routesConfig.dashboard, name: "Dashboard" },
+  { path: routesConfig.manageOrders, name: "Orders" },
   { path: routesConfig.manageCategories, name: "Categories" },
   { path: routesConfig.manageProducts, name: "Products" },
   { path: routesConfig.managePackages, name: "Packages" },
@@ -99,6 +102,15 @@ const routes: RouteObject[] = [
         element: (
           <ProtectedRoute allowedRoles={["admin"]}>
             <Dashboard />
+          </ProtectedRoute>
+        ),
+        errorElement: <Error />,
+      },
+      {
+        path: routesConfig.manageOrders,
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <Orders />
           </ProtectedRoute>
         ),
         errorElement: <Error />,

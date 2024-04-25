@@ -27,11 +27,7 @@ const Paginator = ({ page, pages, handlePageChange, style, className }: Paginato
 
   return (
     <Pagination style={{ ...style, gap: "10px" }} className={`${className ?? ""} paginator`}>
-      {page > 1 && (
-        <>
-          <Pagination.Prev onClick={() => handlePageChange(page - 1)} />
-        </>
-      )}
+      {page > 1 && <Pagination.Prev onClick={() => handlePageChange(page - 1)} />}
       <Pagination.Item active={page === 1} onClick={() => handlePageChange(1)}>
         1
       </Pagination.Item>
@@ -43,11 +39,7 @@ const Paginator = ({ page, pages, handlePageChange, style, className }: Paginato
           {pages}
         </Pagination.Item>
       )}
-      {page < pages && (
-        <>
-          <Pagination.Next onClick={() => handlePageChange(page + 1)} />
-        </>
-      )}
+      {page < pages && <Pagination.Next onClick={() => handlePageChange(page + 1)} />}
     </Pagination>
   );
 };

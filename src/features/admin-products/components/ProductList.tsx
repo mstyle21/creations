@@ -1,37 +1,64 @@
 import { capitalize } from "lodash";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import LoadingSpinner from "../../../components/LoadingSpinner";
-import Paginator from "../../../components/Paginator";
-import PaginatorInfo from "../../../components/PaginatorInfo";
-import PerPageFilter from "../../../components/filters/PerPage";
 import SearchFilter from "../../../components/filters/Search";
 import { BACKEND_URL, CURRENCY_SIGN, THUMBNAIL_PREFIX } from "../../../config";
 import { useFilters } from "../../../hooks/useFilters";
 import { ProductDetails } from "../../../types";
 import ProductModal from "./ProductModal";
 import { DEFAULT_IMAGE, stockColor } from "../../../utils";
-import { useProducts } from "../../../api/products/getProducts";
-import { SortableColumn } from "../../../components/SortableColumn";
+import { useGetProducts } from "../../../api/products/getProducts";
 import { useGetAllCategories } from "../../../api/categories/getAllCategories";
 import ReactSelect from "react-select";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
-const perPageOptions = [10, 20, 50, 100];
+const sortOptions = [
+  { label: "Nume", value: "name" },
+  { label: "Stoc", value: "stock" },
+  { label: "Pret", value: "price" },
+];
 
 const ProductList = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<ProductDetails | null>(null);
-  const { page, perPage, sort, filterLink, setPage, setPerPage, setSearch, handleSort } = useFilters();
-
-  const { products, count, pages, error, loading, refreshData } = useProducts({ filters: filterLink });
-
+  const { page, filters, setPage, setSearch, handleSort } = useFilters(8 * 4);
+  const [productList, setProductList] = useState<ProductDetails[]>([]);
+  const [hasMoreProducts, setHasMoreProducts] = useState(true);
+  const { products, pages, error, loading, refreshData } = useGetProducts({ filters });
   const { categoryList } = useGetAllCategories({});
+
   let categoryOptions: { label: string; value: number }[] = [];
+
   if (categoryList && categoryList.length > 0) {
     categoryOptions = categoryList.map((category) => ({ label: category.name, value: category.id }));
   }
-
   categoryOptions = [];
+
+  useEffect(() => {
+    if (!loading) {
+      if (page > 1 && products.length > 0) {
+        setProductList((prev) => [...prev, ...products]);
+      }
+      if (page === 1) {
+        setProductList(products);
+      }
+
+      setHasMoreProducts(page !== pages);
+    }
+
+    const handleScroll = () => {
+      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+      if (!loading && hasMoreProducts && scrollTop + clientHeight >= scrollHeight - 20) {
+        setPage((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [loading, hasMoreProducts]);
 
   const handleCloseModal = (refresh = false) => {
     setShowModal(false);
@@ -52,94 +79,106 @@ const ProductList = () => {
 
   return (
     <>
-      <div className="admin-table-container">
-        {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
-        <div className="admin-toolbar">
-          <PerPageFilter perPageOptions={perPageOptions} selectedValue={perPage} onChange={setPerPage} />
-          <SearchFilter onChange={setSearch} />
-          {categoryOptions.length > 0 && (
-            <ReactSelect
-              isMulti
-              options={categoryOptions}
-              placeholder="Categories"
-              styles={{
-                container: (baseStyles) => ({
-                  ...baseStyles,
-                  width: "250px",
-                }),
-                indicatorSeparator: (baseStyles) => ({
-                  ...baseStyles,
-                  display: "none",
-                }),
-                menu: (baseStyles) => ({
-                  ...baseStyles,
-                  zIndex: 5,
-                }),
-              }}
-            />
-          )}
-          <Button
-            className="btn-success"
-            onClick={() => {
-              setItemToEdit(null);
-              setShowModal(true);
+      {!loading && error && <p className="alert alert-danger text-center">Something went wrong!</p>}
+
+      <div className="admin-toolbar">
+        <SearchFilter onChange={setSearch} />
+        <ReactSelect
+          options={sortOptions}
+          placeholder="Sort"
+          onChange={(newValue) => {
+            if (newValue) {
+              handleSort(newValue.value);
+              setPage(1);
+            }
+          }}
+          styles={{
+            container: (baseStyles) => ({
+              ...baseStyles,
+              width: "250px",
+            }),
+            indicatorSeparator: (baseStyles) => ({
+              ...baseStyles,
+              display: "none",
+            }),
+            menu: (baseStyles) => ({
+              ...baseStyles,
+              zIndex: 5,
+            }),
+          }}
+        />
+        {categoryOptions.length > 0 && (
+          <ReactSelect
+            isMulti
+            options={categoryOptions}
+            placeholder="Categories"
+            styles={{
+              container: (baseStyles) => ({
+                ...baseStyles,
+                width: "250px",
+              }),
+              indicatorSeparator: (baseStyles) => ({
+                ...baseStyles,
+                display: "none",
+              }),
+              menu: (baseStyles) => ({
+                ...baseStyles,
+                zIndex: 5,
+              }),
             }}
-          >
-            Add new product
-          </Button>
-        </div>
-        <div className="admin-table">
-          <div className="table-head sortable-table">
-            <span></span>
-            <SortableColumn title="Id" value="id" sortOptions={sort} handleSort={handleSort} />
-            <SortableColumn title="Name" value="name" sortOptions={sort} handleSort={handleSort} />
-            <SortableColumn title="Stock" value="stock" sortOptions={sort} handleSort={handleSort} />
-            <SortableColumn title="Price" value="price" sortOptions={sort} handleSort={handleSort} />
-            <span>Status</span>
-            <span>Actions</span>
-          </div>
-          <div className="table-body">
-            {loading && <LoadingSpinner />}
-            {!loading && !error && products.length === 0 && <p className="text-center pt-3">No products found!</p>}
-            {products.length > 0 &&
-              products.map((product) => {
-                const imgSrc =
-                  product.images.length > 0
-                    ? `${BACKEND_URL}/products/${product.id}/${THUMBNAIL_PREFIX}${product.images[0].filename}`
-                    : DEFAULT_IMAGE;
-                return (
-                  <div className="table-row" key={product.id}>
-                    <span>
-                      <img height="50px" src={imgSrc} />
-                    </span>
-                    <span>{product.id}</span>
-                    <span>{product.name}</span>
-                    <span style={{ color: stockColor(product.stock), fontWeight: "bold" }}>{product.stock}</span>
-                    <span>
-                      {product.price / 100} {CURRENCY_SIGN}
-                    </span>
-                    <span style={{ fontWeight: "bold", color: product.status === "active" ? "green" : "red" }}>
+          />
+        )}
+        <Button
+          className="btn-success"
+          onClick={() => {
+            setItemToEdit(null);
+            setShowModal(true);
+          }}
+        >
+          Add new product
+        </Button>
+      </div>
+
+      <div className="admin-product-list-container">
+        {loading && <LoadingSpinner />}
+
+        {productList.length > 0 && (
+          <div className="admin-product-list">
+            {productList.map((product) => {
+              const imgSrc =
+                product.images.length > 0
+                  ? `${BACKEND_URL}/products/${product.id}/${THUMBNAIL_PREFIX}${product.images[0].filename}`
+                  : DEFAULT_IMAGE;
+
+              return (
+                <div
+                  className="admin-product-box"
+                  key={product.id}
+                  onDoubleClick={() => {
+                    handleEditProduct({ ...product });
+                  }}
+                >
+                  <div className="position-relative">
+                    <img className="admin-product-image" src={imgSrc} />
+                    <span className="admin-product-status" style={{ backgroundColor: product.status === "active" ? "green" : "red" }}>
                       {capitalize(product.status)}
                     </span>
-                    <span>
-                      <Button
-                        onClick={() => {
-                          handleEditProduct({ ...product });
-                        }}
-                      >
-                        Edit
-                      </Button>
+                    <span className="admin-product-price">
+                      {product.price / 100} {CURRENCY_SIGN}
                     </span>
                   </div>
-                );
-              })}
+
+                  <strong className="admin-product-name">
+                    {product.name}
+                    <span style={{ color: stockColor(product.stock), fontWeight: "bold" }}>({product.stock})</span>
+                  </strong>
+                </div>
+              );
+            })}
           </div>
-        </div>
-        <div className="admin-pagination">
-          <PaginatorInfo perPage={perPage} page={page} count={count} />
-          <Paginator page={page} pages={pages} handlePageChange={setPage} />
-        </div>
+        )}
       </div>
+
       <ProductModal show={showModal} closeModal={handleCloseModal} itemToEdit={itemToEdit} />
     </>
   );

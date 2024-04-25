@@ -98,7 +98,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
       })
       .catch((error: AxiosError<ErrorResponse>) => {
         if (error.response?.data.error) {
-          let msg = error.response.data.error;
+          const msg = error.response.data.error;
           if (Array.isArray(msg)) {
             msg.map((error) => {
               setManageErrors((prev) => [...prev, error.msg]);

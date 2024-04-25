@@ -2,23 +2,24 @@ import { axiosInstance } from "../../services/AxiosService";
 import { useQuery } from "@tanstack/react-query";
 import { ApiPaginatedResponse, CustomQueryConfig, ProductDetails } from "../../types";
 
-export const getProducts = async ({ filters }: { filters: string }) => {
-  return axiosInstance.get<ApiPaginatedResponse<ProductDetails>>(`/products?${filters}`).then((response) => response.data);
+type Filters = {};
+export const getProducts = async ({ filters }: { filters: Filters }) => {
+  return axiosInstance.get<ApiPaginatedResponse<ProductDetails>>("/products/", { params: filters }).then((response) => response.data);
 };
 
 type UseProductsProps = {
-  filters: string;
+  filters: Filters;
   config?: CustomQueryConfig;
 };
 
-export const useProducts = ({ config, filters }: UseProductsProps) => {
+export const useGetProducts = ({ config, filters }: UseProductsProps) => {
   const {
     data,
     error,
-    isLoading: loading,
+    isFetching: loading,
     refetch: refreshData,
   } = useQuery({
-    queryKey: ["products-filtered", filters],
+    queryKey: ["products-filtered", ...Object.values(filters)],
     queryFn: () => getProducts({ filters }),
     ...config,
   });

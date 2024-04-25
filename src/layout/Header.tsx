@@ -31,7 +31,7 @@ const Header = ({ menuItems }: HeaderProps) => {
 
   return (
     <header ref={headerRef}>
-      <div className="main-menu">
+      <div className={`main-menu ${user?.role === "admin" ? "admin-header" : ""}`}>
         <Navbar expand="lg" className="main-box" collapseOnSelect>
           <Container>
             <Link to={routesConfig.home} className="header-logo">
@@ -50,24 +50,19 @@ const Header = ({ menuItems }: HeaderProps) => {
                     </Nav.Item>
                   );
                 })}
-                {user ? (
-                  <Nav.Item>
-                    <Nav.Link
-                      as={Link}
-                      className="nav-link"
-                      to={routesConfig.home}
-                      onClick={() => logout()}
-                      eventKey={"/logout"}
-                    >
-                      Log out
-                    </Nav.Link>
-                  </Nav.Item>
-                ) : null
-                // <Nav.Item>
-                //   <Nav.Link as={Link} className="nav-link" to={routesConfig.login} eventKey={"/login"}>
-                //     Log in
-                //   </Nav.Link>
-                // </Nav.Item>
+                {
+                  user ? (
+                    <Nav.Item>
+                      <Nav.Link as={Link} className="nav-link" to={routesConfig.home} onClick={() => logout()} eventKey={"/logout"}>
+                        Log out
+                      </Nav.Link>
+                    </Nav.Item>
+                  ) : null
+                  // <Nav.Item>
+                  //   <Nav.Link as={Link} className="nav-link" to={routesConfig.login} eventKey={"/login"}>
+                  //     Log in
+                  //   </Nav.Link>
+                  // </Nav.Item>
                 }
               </Nav>
             </Navbar.Collapse>

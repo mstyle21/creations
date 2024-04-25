@@ -14,13 +14,44 @@ type USER_PREFS = {
 const USER_PREFS_KEY = import.meta.env.VITE_USER_PREFS;
 const defaultSort: SORTER = { by: "id", order: "desc" };
 
-export const useFilters = () => {
+export const useFilters = (defaultPerPage = 10) => {
   const userPrefs = getUserPrefs();
 
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(userPrefs ? userPrefs.perPage : 10);
+  const [perPage, setPerPage] = useState(userPrefs ? userPrefs.perPage : defaultPerPage);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SORTER>(userPrefs ? userPrefs.sort : defaultSort);
+
+  const saveUserPrefs = (type: "perPage" | "sort", value: number | SORTER) => {
+    const userPrefsStored = localStorage.getItem(USER_PREFS_KEY);
+    const currentPage: string = window.location.pathname.replace("/", "");
+
+    const pageDefaultPrefs = {
+      perPage: defaultPerPage,
+      sort: defaultSort,
+    };
+
+    let userPrefs: USER_PREFS;
+
+    if (userPrefsStored === null) {
+      userPrefs = {
+        [currentPage]: pageDefaultPrefs,
+      };
+    } else {
+      userPrefs = JSON.parse(userPrefsStored);
+
+      if (!userPrefs[currentPage]) {
+        userPrefs[currentPage] = pageDefaultPrefs;
+      }
+    }
+
+    userPrefs[currentPage] = {
+      ...userPrefs[currentPage],
+      [type]: value,
+    };
+
+    localStorage.setItem(USER_PREFS_KEY, JSON.stringify(userPrefs));
+  };
 
   const handlePerPageChange = (perPage: number) => {
     setPerPage(perPage);
@@ -45,13 +76,15 @@ export const useFilters = () => {
     saveUserPrefs("sort", sorter);
   };
 
-  let filterLink = `page=${page}&perPage=${perPage}`;
-  if (search !== "") {
-    filterLink += `&search=${search}`;
-  }
-  filterLink += `&sortBy=${sort.by}&order=${sort.order}`;
+  const filters = {
+    page,
+    perPage,
+    sortBy: sort.by,
+    order: sort.order,
+    search: search === "" ? undefined : search,
+  };
 
-  return { page, perPage, search, sort, filterLink, setPage, setPerPage: handlePerPageChange, setSearch: handleSearchChange, handleSort };
+  return { page, perPage, search, sort, filters, setPage, setPerPage: handlePerPageChange, setSearch: handleSearchChange, handleSort };
 };
 
 const getUserPrefs = () => {
@@ -69,35 +102,4 @@ const getUserPrefs = () => {
   }
 
   return null;
-};
-
-const saveUserPrefs = (type: "perPage" | "sort", value: number | SORTER) => {
-  const userPrefsStored = localStorage.getItem(USER_PREFS_KEY);
-  const currentPage: string = window.location.pathname.replace("/", "");
-
-  const pageDefaultPrefs = {
-    perPage: 10,
-    sort: defaultSort,
-  };
-
-  let userPrefs: USER_PREFS;
-
-  if (userPrefsStored === null) {
-    userPrefs = {
-      [currentPage]: pageDefaultPrefs,
-    };
-  } else {
-    userPrefs = JSON.parse(userPrefsStored);
-
-    if (!userPrefs[currentPage]) {
-      userPrefs[currentPage] = pageDefaultPrefs;
-    }
-  }
-
-  userPrefs[currentPage] = {
-    ...userPrefs[currentPage],
-    [type]: value,
-  };
-
-  localStorage.setItem(USER_PREFS_KEY, JSON.stringify(userPrefs));
 };

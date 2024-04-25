@@ -19,9 +19,9 @@ const perPageOptions = [10, 20, 50, 100];
 const PackageList = () => {
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<PackageDetails | null>(null);
-  const { page, perPage, filterLink, sort, setPage, setPerPage, setSearch, handleSort } = useFilters();
+  const { page, perPage, filters, sort, setPage, setPerPage, setSearch, handleSort } = useFilters();
 
-  const { packages, count, pages, error, loading, refreshData } = useGetPackages({ filters: filterLink });
+  const { packages, count, pages, error, loading, refreshData } = useGetPackages({ filters });
 
   const handleCloseModal = (refresh = false) => {
     setShowModal(false);

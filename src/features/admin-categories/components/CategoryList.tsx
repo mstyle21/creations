@@ -15,11 +15,11 @@ import { SortableColumn } from "../../../components/SortableColumn";
 const perPageOptions = [10, 20, 50, 100];
 
 const CategoryList = () => {
-  const { page, perPage, sort, filterLink, setPage, setPerPage, setSearch, handleSort } = useFilters();
+  const { page, perPage, sort, filters, setPage, setPerPage, setSearch, handleSort } = useFilters();
   const [showModal, setShowModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<CategoryDetails | null>(null);
 
-  const { categories, count, pages, error, isLoading } = useGetCategories({ filters: filterLink });
+  const { categories, count, pages, error, isLoading } = useGetCategories({ filters });
 
   const handleOpenModal = (itemToEdit = null) => {
     setItemToEdit(itemToEdit);
