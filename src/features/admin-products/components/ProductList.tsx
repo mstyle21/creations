@@ -208,6 +208,7 @@ const ProductList = () => {
                   onDoubleClick={() => {
                     handleEditProduct({ ...product });
                   }}
+                  style={isProductSelected(product) ? { filter: "drop-shadow(0 0 6px crimson)" } : {}}
                 >
                   <div className="position-relative">
                     <img className="admin-product-image" src={imgSrc} />
@@ -220,7 +221,10 @@ const ProductList = () => {
                     />
                     <span
                       className="admin-product-status"
-                      onClick={() => toggleProductStatus(product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleProductStatus(product);
+                      }}
                       style={{ backgroundColor: product.status === "active" ? "green" : "red" }}
                     >
                       {capitalize(product.status)}
