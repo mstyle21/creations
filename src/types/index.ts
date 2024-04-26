@@ -84,6 +84,7 @@ export type PackageItem = {
   productId: number;
   name: string;
   quantity: number;
+  stock: number;
   image: string | null;
 };
 export type PackageProductReducerAction =

@@ -1,5 +1,5 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import { GeneralModalProps, PackageDetails } from "../../../types";
+import { GeneralModalProps, PackageDetails, PackageItem } from "../../../types";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import { useGetAllCategories } from "../../../api/categories/getAllCategories";
 import { useManagePackage } from "../hooks/useManagePackage";
@@ -9,7 +9,8 @@ import PackageItems from "./PackageItems";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<PackageDetails>) => {
+type PackageModalProps = GeneralModalProps<PackageDetails> & { presetItems?: PackageItem[] };
+const PackageModal = ({ show, closeModal, itemToEdit, presetItems = [] }: PackageModalProps) => {
   const {
     name,
     stock,
@@ -30,9 +31,19 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
     dispatchImages,
     setIsSubmitting,
     resetValues,
-  } = useManagePackage(itemToEdit);
+  } = useManagePackage(itemToEdit, presetItems);
 
   const { categoryList, error, isLoading } = useGetAllCategories({});
+
+  const maxStock = products.reduce((result: number | null, item) => {
+    const maxItemStock = Math.floor(item.stock / item.quantity);
+
+    if (result === null || result > maxItemStock) {
+      return maxItemStock;
+    }
+
+    return result;
+  }, null);
 
   const handleSavePackage = () => {
     setIsSubmitting(true);
@@ -106,14 +117,19 @@ const PackageModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Packag
                 <Form.Control type="text" placeholder="Name..." value={name} onChange={(e) => setName(e.target.value)} />
               </FloatingLabel>
               <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
-                <FloatingLabel label="Stock">
-                  <Form.Control
-                    type="number"
-                    placeholder="Stock..."
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
-                  />
-                </FloatingLabel>
+                <div className="d-flex align-items-center gap-3">
+                  <FloatingLabel label="Stock">
+                    <Form.Control
+                      type="number"
+                      placeholder="Stock..."
+                      value={stock}
+                      onChange={(e) => setStock(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
+                    />
+                  </FloatingLabel>
+                  {maxStock && (
+                    <strong style={{ color: stock === "" ? "initial" : stock > maxStock ? "red" : "green" }}>({maxStock})</strong>
+                  )}
+                </div>
                 <Form.Group controlId="formCheck" className="m-auto">
                   <Form.Check
                     type="switch"

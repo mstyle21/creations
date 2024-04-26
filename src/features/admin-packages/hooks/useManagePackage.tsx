@@ -1,11 +1,11 @@
 import { useEffect, useReducer, useState } from "react";
-import { PackageDetails } from "../../../types";
+import { PackageDetails, PackageItem } from "../../../types";
 import { packageImagesReducer } from "../reducers/packageImagesReducer";
 import { packageProductsReducer } from "../reducers/packageProductsReducer";
 
 export const MAX_PACKAGE_IMAGES = 5;
 
-export const useManagePackage = (itemToEdit: PackageDetails | null) => {
+export const useManagePackage = (itemToEdit: PackageDetails | null, presetItems: PackageItem[] = []) => {
   const [name, setName] = useState("");
   const [stock, setStock] = useState<number | "">("");
   const [price, setPrice] = useState<number | "">("");
@@ -17,6 +17,18 @@ export const useManagePackage = (itemToEdit: PackageDetails | null) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    let dispatchPayload: PackageItem[] = [];
+    if (itemToEdit) {
+      dispatchPayload = itemToEdit.products.map((item) => ({
+        productId: item.product.id,
+        name: item.product.name,
+        quantity: item.quantity,
+        stock: item.product.stock,
+        image: item.product.images[0]?.filename ?? null,
+      }));
+    } else if (presetItems.length > 0) {
+      dispatchPayload = presetItems;
+    }
     setName(itemToEdit ? itemToEdit.name : "");
     setStock(itemToEdit ? itemToEdit.stock : "");
     setPrice(itemToEdit ? itemToEdit.price : "");
@@ -26,18 +38,11 @@ export const useManagePackage = (itemToEdit: PackageDetails | null) => {
     dispatchProducts({ type: "reset" });
     dispatchProducts({
       type: "set",
-      payload: itemToEdit
-        ? itemToEdit.products.map((item) => ({
-            productId: item.product.id,
-            name: item.product.name,
-            quantity: item.quantity,
-            image: item.product.images[0]?.filename ?? null,
-          }))
-        : [],
+      payload: dispatchPayload,
     });
     dispatchImages({ type: "reset" });
     dispatchImages({ type: "set", payload: itemToEdit ? itemToEdit.images : [] });
-  }, [itemToEdit]);
+  }, [itemToEdit, presetItems]);
 
   const resetValues = () => {
     setName("");

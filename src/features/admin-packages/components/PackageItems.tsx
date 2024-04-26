@@ -39,12 +39,12 @@ const PackageItems = ({ packageItems, dispatchItems }: PackageItemsProps) => {
     }
 
     if (selectedItem) {
-      console.log(selectedItem);
       dispatchItems({
         type: "add",
         payload: {
           quantity: quantity,
           productId: selectedItem.id,
+          stock: selectedItem.stock,
           name: selectedItem.name,
           image: selectedItem.images[0]?.filename ?? null,
         },

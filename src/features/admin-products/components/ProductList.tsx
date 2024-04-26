@@ -1,16 +1,20 @@
 import { capitalize } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import SearchFilter from "../../../components/filters/Search";
 import { BACKEND_URL, CURRENCY_SIGN, THUMBNAIL_PREFIX } from "../../../config";
 import { useFilters } from "../../../hooks/useFilters";
-import { ProductDetails } from "../../../types";
 import ProductModal from "./ProductModal";
 import { DEFAULT_IMAGE, stockColor } from "../../../utils";
 import { useGetProducts } from "../../../api/products/getProducts";
 import { useGetAllCategories } from "../../../api/categories/getAllCategories";
 import ReactSelect from "react-select";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import { useManageList } from "../hooks/useManageList";
+import { useSaveProduct } from "../../../api/products/saveProduct";
+import { ProductDetails } from "../../../types";
+import PackageModal from "../../admin-packages/components/PackageModal";
+import { useQuickPackage } from "../hooks/useQuickPackage";
 
 const sortOptions = [
   { label: "Nume", value: "name" },
@@ -19,20 +23,30 @@ const sortOptions = [
 ];
 
 const ProductList = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [itemToEdit, setItemToEdit] = useState<ProductDetails | null>(null);
+  const {
+    showModal,
+    itemToEdit,
+    productList,
+    hasMoreProducts,
+    categories,
+    setShowModal,
+    setItemToEdit,
+    setProductList,
+    setHasMoreProducts,
+    handleEditProduct,
+    setCategories,
+  } = useManageList();
+  const { quickPackage, showQuickPackageModal, handleBoxClick, setShowQuickPackageModal, isProductSelected } = useQuickPackage();
   const { page, filters, setPage, setSearch, handleSort } = useFilters(8 * 4);
-  const [productList, setProductList] = useState<ProductDetails[]>([]);
-  const [hasMoreProducts, setHasMoreProducts] = useState(true);
-  const { products, pages, error, loading, refreshData } = useGetProducts({ filters });
+  const productFilters = { ...filters, categories };
+  const { products, pages, error, loading, refreshData } = useGetProducts({ filters: productFilters });
   const { categoryList } = useGetAllCategories({});
+  const saveProduct = useSaveProduct();
 
   let categoryOptions: { label: string; value: number }[] = [];
-
   if (categoryList && categoryList.length > 0) {
     categoryOptions = categoryList.map((category) => ({ label: category.name, value: category.id }));
   }
-  categoryOptions = [];
 
   useEffect(() => {
     if (!loading) {
@@ -60,21 +74,49 @@ const ProductList = () => {
     };
   }, [loading, hasMoreProducts]);
 
+  const toggleProductStatus = (product: ProductDetails) => {
+    const formData = new FormData();
+
+    formData.append("id", product.id.toString());
+    formData.append("name", product.name);
+    formData.append("width", product.width.toString());
+    formData.append("height", product.height.toString());
+    formData.append("depth", product.depth.toString());
+    formData.append("stock", product.stock.toString());
+    formData.append("materialWeight", (product.materialWeight ?? "").toString());
+    formData.append("price", product.price.toString());
+    formData.append("oldPrice", (product.oldPrice ?? "").toString());
+    formData.append("status", product.status === "inactive" ? "active" : "inactive");
+
+    product.categories.forEach((category) => {
+      formData.append("categories", category.id.toString());
+    });
+
+    const imagesOrder: { [key: string]: number } = {};
+    product.images.forEach((image) => {
+      if (image.file !== undefined) {
+        imagesOrder[image.file.name] = image.order;
+      } else {
+        imagesOrder[image.filename] = image.order;
+      }
+    });
+    formData.append("imagesOrder", JSON.stringify(imagesOrder));
+
+    saveProduct.mutate(formData, {
+      onSuccess: () => {
+        refreshData();
+      },
+      onError: (error) => {
+        console.error(error);
+      },
+    });
+  };
+
   const handleCloseModal = (refresh = false) => {
     setShowModal(false);
     if (refresh) {
       refreshData();
     }
-  };
-
-  const handleEditProduct = (product: ProductDetails) => {
-    setShowModal(true);
-
-    product.images = product.images.map((image) => {
-      return { ...image, productId: product.id };
-    });
-
-    setItemToEdit(product);
   };
 
   return (
@@ -112,6 +154,12 @@ const ProductList = () => {
             isMulti
             options={categoryOptions}
             placeholder="Categories"
+            closeMenuOnSelect={false}
+            onChange={(newValues) => {
+              if (newValues) {
+                setCategories(newValues.map((item) => item.value));
+              }
+            }}
             styles={{
               container: (baseStyles) => ({
                 ...baseStyles,
@@ -154,13 +202,27 @@ const ProductList = () => {
                 <div
                   className="admin-product-box"
                   key={product.id}
+                  onClick={() => {
+                    handleBoxClick(product);
+                  }}
                   onDoubleClick={() => {
                     handleEditProduct({ ...product });
                   }}
                 >
                   <div className="position-relative">
                     <img className="admin-product-image" src={imgSrc} />
-                    <span className="admin-product-status" style={{ backgroundColor: product.status === "active" ? "green" : "red" }}>
+                    <input
+                      className="admin-product-quick-package-checkbox"
+                      type="checkbox"
+                      readOnly
+                      checked={isProductSelected(product)}
+                      value={product.id}
+                    />
+                    <span
+                      className="admin-product-status"
+                      onClick={() => toggleProductStatus(product)}
+                      style={{ backgroundColor: product.status === "active" ? "green" : "red" }}
+                    >
                       {capitalize(product.status)}
                     </span>
                     <span className="admin-product-price">
@@ -179,6 +241,20 @@ const ProductList = () => {
         )}
       </div>
 
+      <button
+        className="prim-btn quick-package-btn"
+        style={{ display: quickPackage.length > 0 ? "block" : "none" }}
+        onClick={() => setShowQuickPackageModal(true)}
+      >
+        Create package
+      </button>
+
+      <PackageModal
+        show={showQuickPackageModal}
+        closeModal={() => setShowQuickPackageModal(false)}
+        itemToEdit={null}
+        presetItems={[...quickPackage]}
+      />
       <ProductModal show={showModal} closeModal={handleCloseModal} itemToEdit={itemToEdit} />
     </>
   );

@@ -11,7 +11,7 @@ export const packageProductsReducer = (state: PackageItem[], action: PackageProd
     case "delete":
       return state.filter((item) => item.productId !== action.payload.productId);
     case "set":
-      return [...state, ...action.payload];
+      return [...action.payload];
     case "reset":
       return [];
     default:

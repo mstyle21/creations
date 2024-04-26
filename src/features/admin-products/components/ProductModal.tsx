@@ -1,15 +1,14 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import { ErrorResponse, GeneralModalProps, ProductDetails } from "../../../types";
+import { GeneralModalProps, ProductDetails } from "../../../types";
 import { useManageProduct } from "../hooks/useManageProduct";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import ProductImageUpload from "./ProductImageUpload";
-import { axiosInstance } from "../../../services/AxiosService";
 import { calculateApproximateCostPrice } from "../../../utils";
 import { CURRENCY_SIGN } from "../../../config";
 import { useGetAllCategories } from "../../../api/categories/getAllCategories";
-import { AxiosError } from "axios";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSaveProduct } from "../../../api/products/saveProduct";
 
 const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<ProductDetails>) => {
   const {
@@ -41,13 +40,16 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     setIsSubmitting,
     resetValues,
   } = useManageProduct(itemToEdit);
-
   const { categoryList, error, isLoading } = useGetAllCategories({});
+  const saveProduct = useSaveProduct();
 
   const handleSaveProduct = () => {
     setIsSubmitting(true);
 
     const formData = new FormData();
+    if (itemToEdit) {
+      formData.append("id", itemToEdit.id.toString());
+    }
     formData.append("name", name);
     formData.append("width", width.toString());
     formData.append("height", height.toString());
@@ -75,19 +77,8 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
 
     setManageErrors([]);
 
-    const url = `/products/${itemToEdit ? itemToEdit.id : ""}`;
-
-    //TODO: mutation
-    axiosInstance
-      .request({
-        method: itemToEdit ? "put" : "post",
-        url: url,
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
+    saveProduct.mutate(formData, {
+      onSuccess: (response) => {
         if (response.status === 201) {
           resetValues();
           closeModal(true);
@@ -95,10 +86,10 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
           setManageErrors(response.data.errors);
         }
         setIsSubmitting(false);
-      })
-      .catch((error: AxiosError<ErrorResponse>) => {
-        if (error.response?.data.error) {
-          const msg = error.response.data.error;
+      },
+      onError: (error: Error) => {
+        if (error.message) {
+          const msg = error.message;
           if (Array.isArray(msg)) {
             msg.map((error) => {
               setManageErrors((prev) => [...prev, error.msg]);
@@ -110,7 +101,8 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
           setManageErrors((prev) => [...prev, "Something went wrong!"]);
         }
         setIsSubmitting(false);
-      });
+      },
+    });
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
