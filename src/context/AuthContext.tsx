@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { User } from "../hooks/useAuth";
 
 interface IAuthContext {
@@ -13,3 +13,13 @@ export const AuthContext = createContext<IAuthContext>({
   login: () => {},
   logout: () => {},
 });
+
+export const useAuthContext = () => {
+  const authContext = useContext(AuthContext);
+
+  if (authContext === undefined) {
+    throw new Error("useAuthContext must be used with a AuthContext");
+  }
+
+  return authContext;
+};

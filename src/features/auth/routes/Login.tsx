@@ -1,8 +1,8 @@
 import { Col, Container, Row } from "react-bootstrap";
 import PageBanner from "../../../components/PageBanner";
 import { Link, Navigate } from "react-router-dom";
-import { useState, useContext } from "react";
-import { AuthContext } from "../../../context/AuthContext";
+import { useState } from "react";
+import { useAuthContext } from "../../../context/AuthContext";
 import { requestToken } from "../../../api/auth/login";
 import { routesConfig } from "../../../routes";
 
@@ -12,7 +12,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const isDisabled = !(email && password && password.length >= 6);
-  const { user, loginRedirect, login } = useContext(AuthContext);
+  const { user, loginRedirect, login } = useAuthContext();
 
   if (user) {
     const defaultRedirect = user.role === "admin" ? routesConfig.dashboard : routesConfig.home;

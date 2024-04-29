@@ -1,15 +1,14 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
 import { GeneralModalProps, PackageDetails, PackageItem } from "../../../types";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { useGetAllCategories } from "../../../api/categories/getAllCategories";
 import { useManagePackage } from "../hooks/useManagePackage";
-import { axiosInstance } from "../../../services/AxiosService";
 import PackageImageUpload from "./PackageImageUpload";
 import PackageItems from "./PackageItems";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type PackageModalProps = GeneralModalProps<PackageDetails> & { presetItems?: PackageItem[] };
+
 const PackageModal = ({ show, closeModal, itemToEdit, presetItems = [] }: PackageModalProps) => {
   const {
     name,
@@ -21,6 +20,10 @@ const PackageModal = ({ show, closeModal, itemToEdit, presetItems = [] }: Packag
     products,
     images,
     isSubmitting,
+    isLoading,
+    error,
+    categoryList,
+    maxStock,
     setName,
     setStock,
     setPrice,
@@ -29,71 +32,9 @@ const PackageModal = ({ show, closeModal, itemToEdit, presetItems = [] }: Packag
     setCategory,
     dispatchProducts,
     dispatchImages,
-    setIsSubmitting,
+    handleSavePackage,
     resetValues,
   } = useManagePackage(itemToEdit, presetItems);
-
-  const { categoryList, error, isLoading } = useGetAllCategories({});
-
-  const maxStock = products.reduce((result: number | null, item) => {
-    const maxItemStock = Math.floor(item.stock / item.quantity);
-
-    if (result === null || result > maxItemStock) {
-      return maxItemStock;
-    }
-
-    return result;
-  }, null);
-
-  const handleSavePackage = () => {
-    setIsSubmitting(true);
-
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("stock", stock.toString());
-    formData.append("price", price.toString());
-    formData.append("oldPrice", oldPrice.toString());
-    formData.append("status", active ? "active" : "inactive");
-    formData.append("category", category.toString());
-    formData.append("products", JSON.stringify(products));
-
-    const imagesOrder: { [key: string]: number } = {};
-
-    images.forEach((image) => {
-      if (image.file !== undefined) {
-        formData.append("images", image.file, image.file.name);
-        imagesOrder[image.file.name] = image.order;
-      } else {
-        imagesOrder[image.filename] = image.order;
-      }
-    });
-
-    formData.append("imagesOrder", JSON.stringify(imagesOrder));
-
-    const url = `/packages/${itemToEdit ? itemToEdit.id : ""}`;
-
-    //TODO: use mutation
-    axiosInstance
-      .request({
-        method: itemToEdit ? "put" : "post",
-        url: url,
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        if (response.status === 201) {
-          resetValues();
-          closeModal(true);
-        }
-        setIsSubmitting(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setIsSubmitting(false);
-      });
-  };
 
   return (
     <Modal show={show} onHide={closeModal} dialogClassName="modal-fullscreen">
@@ -183,7 +124,7 @@ const PackageModal = ({ show, closeModal, itemToEdit, presetItems = [] }: Packag
             <PackageImageUpload images={images} dispatchImages={dispatchImages} />
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleSavePackage} disabled={isSubmitting}>
+            <Button variant="primary" onClick={() => handleSavePackage(closeModal)} disabled={isSubmitting}>
               {isSubmitting ? <FontAwesomeIcon icon={faSpinner} pulse size="2x" /> : "Save"}
             </Button>
             <Button

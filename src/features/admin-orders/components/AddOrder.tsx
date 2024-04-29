@@ -27,14 +27,7 @@ const defaultTypeOptions = [
   { label: "Figurina", value: "product" },
   { label: "Set figurine", value: "package" },
 ];
-const productDummyOptions = [
-  { label: "Figurina 1", value: "fig1" },
-  { label: "Figurina 2", value: "fig2" },
-];
-const packageDummyOptions = [
-  { label: "Set Figurina 1", value: "set_fig1" },
-  { label: "Set Figurina 2", value: "set_fig2" },
-];
+
 const AddOrderModal = ({ show, closeModal }: AddOrderModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isChoosingType, setIsChoosingType] = useState(true);
@@ -46,7 +39,7 @@ const AddOrderModal = ({ show, closeModal }: AddOrderModalProps) => {
       return false;
     }
     if (isChoosingType) {
-      setTypeOptions(item.value === "product" ? productDummyOptions : packageDummyOptions);
+      // setTypeOptions(item.value === "product" ? productOptions : packageOptions);
     } else {
       setTypeOptions(defaultTypeOptions);
       setSelectedItem(item);

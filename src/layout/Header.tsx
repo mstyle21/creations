@@ -1,8 +1,8 @@
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { AuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { routesConfig } from "../routes";
 
 type HeaderProps = {
@@ -10,7 +10,7 @@ type HeaderProps = {
 };
 
 const Header = ({ menuItems }: HeaderProps) => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useAuthContext();
   const headerRef = useRef<HTMLBodyElement>(null);
   const location = useLocation();
 

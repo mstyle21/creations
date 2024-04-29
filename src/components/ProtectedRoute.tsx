@@ -1,6 +1,5 @@
-import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { routesConfig } from "../routes";
 
 type ProtectedRouteProps = {
@@ -9,7 +8,7 @@ type ProtectedRouteProps = {
 };
 
 export const ProtectedRoute = ({ allowedRoles = [], children }: ProtectedRouteProps) => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthContext();
   const userRole = user?.role ?? "guest";
 
   if (allowedRoles.length && !allowedRoles.includes(userRole)) {

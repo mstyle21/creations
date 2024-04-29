@@ -88,6 +88,7 @@ export const useAuth = () => {
 
     return null;
   });
+
   const [loginRedirect, setLoginRedirect] = useState<string | null>(null);
 
   const login = (token: string): void => {
@@ -105,19 +106,21 @@ export const useAuth = () => {
   };
 
   const runCheckToken = async () => {
-    if (user) {
-      const tokenStatus = _getTokenStatus(user.token);
+    if (!user) {
+      return;
+    }
 
-      if (tokenStatus === TOKEN_EXPIRED) {
-        logout();
-      }
+    const tokenStatus = _getTokenStatus(user.token);
 
-      if (tokenStatus === TOKEN_EXPIRE_SOON) {
-        const newToken = await _refreshUserToken();
-        if (newToken) {
-          localStorage.setItem(TOKEN_KEY, newToken);
-          setUser(_getUserFromToken(newToken));
-        }
+    if (tokenStatus === TOKEN_EXPIRED) {
+      logout();
+    }
+
+    if (tokenStatus === TOKEN_EXPIRE_SOON) {
+      const newToken = await _refreshUserToken();
+      if (newToken) {
+        localStorage.setItem(TOKEN_KEY, newToken);
+        setUser(_getUserFromToken(newToken));
       }
     }
   };
