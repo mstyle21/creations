@@ -1,7 +1,7 @@
 import ItemBox from "../../../components/ItemBox";
-import { useProducts } from "../api/getProducts";
 import { useEffect } from "react";
 import { useFilterParams } from "../../../hooks/useFilterParams";
+import { useGetProductsAndPackages } from "../../../api/products/getProductsAndPackages";
 
 type ListProps = {
   setPages: (pages: number) => void;
@@ -10,13 +10,15 @@ type ListProps = {
 const List = ({ setPages }: ListProps) => {
   const { page, perPage, orderBy, categories, availability, type } = useFilterParams();
 
-  const { products, pages } = useProducts({
-    page,
-    perPage,
-    orderBy,
-    categories,
-    availability,
-    type,
+  const { products, pages } = useGetProductsAndPackages({
+    filters: {
+      page,
+      perPage,
+      orderBy,
+      categories,
+      availability,
+      type,
+    },
   });
 
   useEffect(() => setPages(pages), [pages, setPages]);

@@ -3,10 +3,10 @@ import { ImageReducerAction, PackageImage } from "../../../types";
 import { Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { axiosInstance } from "../../../services/AxiosService";
 import { previewImage, randomHash } from "../../../utils";
 import { BACKEND_URL, THUMBNAIL_PREFIX } from "../../../config";
 import { MAX_PACKAGE_IMAGES } from "../hooks/useManagePackage";
+import { useDeletePackageImage } from "../../../api/packages/deletePackageImage";
 
 type ManagePackageImageProps = {
   images: PackageImage[];
@@ -17,6 +17,7 @@ const PackageImageUpload = ({ images, dispatchImages }: ManagePackageImageProps)
   const [dragActive, setDragActive] = useState(false);
   const inputFile = useRef<HTMLInputElement>(null);
   const imgList = useRef<HTMLDivElement>(null);
+  const deletePackageImage = useDeletePackageImage();
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -33,14 +34,14 @@ const PackageImageUpload = ({ images, dispatchImages }: ManagePackageImageProps)
     e.stopPropagation();
     setDragActive(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    if (e.dataTransfer.files?.[0]) {
       handleUploadedFiles(e.dataTransfer.files);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files?.[0]) {
       handleUploadedFiles(e.target.files);
     }
   };
@@ -72,19 +73,30 @@ const PackageImageUpload = ({ images, dispatchImages }: ManagePackageImageProps)
   };
 
   const handleDeleteImage = (image: PackageImage) => {
-    if (confirm("Are you sure you want to delete this image?")) {
-      //TODO: refactor to mutations
-      axiosInstance
-        .delete(`${BACKEND_URL}/packages/${image.packageId}/image/${image.id}`)
-        .then((response) => {
-          if (response.status === 204) {
-            handleRemoveImage(image);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    if (image.packageId === undefined) {
+      console.error("Missing product id.");
+      return false;
     }
+
+    if (!confirm("Are you sure you want to delete this image?")) {
+      return false;
+    }
+
+    const data = {
+      imageId: image.id.toString(),
+      packageId: image.packageId.toString(),
+    };
+
+    deletePackageImage.mutate(data, {
+      onSuccess: (response) => {
+        if (response.status === 204) {
+          handleRemoveImage(image);
+        }
+      },
+      onError: (error) => {
+        console.error(error);
+      },
+    });
   };
 
   const orderedImages = images.slice().sort((a, b) => a.order - b.order);

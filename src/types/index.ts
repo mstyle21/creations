@@ -4,7 +4,8 @@ export type ApiPaginatedResponse<T> = {
   pages: number;
 };
 export type CustomQueryConfig = {
-  staleTime: number;
+  staleTime?: number;
+  enabled?: boolean;
 };
 export type GeneralModalProps<T> = {
   show: boolean;
@@ -105,6 +106,7 @@ export type ProductFilters = {
   categories?: string[];
   availability?: string;
   type?: string;
+  status?: string;
 };
 
 export type ErrorResponse = {

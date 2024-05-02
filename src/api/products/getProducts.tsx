@@ -2,7 +2,9 @@ import { axiosInstance } from "../../services/AxiosService";
 import { useQuery } from "@tanstack/react-query";
 import { ApiPaginatedResponse, CustomQueryConfig, ProductDetails } from "../../types";
 
+//TODO: define filters for products
 type Filters = {};
+
 export const getProducts = async ({ filters }: { filters: Filters }) => {
   return axiosInstance.get<ApiPaginatedResponse<ProductDetails>>("/products/", { params: filters }).then((response) => response.data);
 };

@@ -669,6 +669,12 @@ footer .container {
   padding: 5px;
   border-radius: 5px;
 }
+.remove-image {
+  cursor: pointer;
+}
+.remove-image:hover {
+  color: red;
+}
 
 .table-head,
 .table-row {

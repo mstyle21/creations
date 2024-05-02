@@ -126,6 +126,7 @@ const PackageItems = ({ packageItems, dispatchItems }: PackageItemsProps) => {
               onClick={() => dispatchItems({ type: "delete", payload: item })}
               color="red"
               fontSize="20px"
+              cursor="pointer"
             />
           </div>
         ))}

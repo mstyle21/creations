@@ -2,7 +2,8 @@ import { faCirclePlus, faPlus, faSpinner } from "@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import ReactSelect, { SingleValue } from "react-select";
+import ReactSelect from "react-select";
+import { useGetProductsAndPackages } from "../../../api/products/getProductsAndPackages";
 
 const AddOrder = () => {
   const [showModal, setShowModal] = useState(false);
@@ -11,9 +12,10 @@ const AddOrder = () => {
 
   return (
     <>
-      <div style={{ display: "none" }} className="add-order-btn" onClick={() => setShowModal(true)}>
+      <div className="add-order-btn" onClick={() => setShowModal(true)}>
         <FontAwesomeIcon icon={faPlus} className="add-order-icon" />
       </div>
+
       <AddOrderModal show={showModal} closeModal={handleCloseModal} />
     </>
   );
@@ -23,30 +25,32 @@ type AddOrderModalProps = {
   show: boolean;
   closeModal: () => void;
 };
-const defaultTypeOptions = [
-  { label: "Figurina", value: "product" },
-  { label: "Set figurine", value: "package" },
-];
 
 const AddOrderModal = ({ show, closeModal }: AddOrderModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isChoosingType, setIsChoosingType] = useState(true);
-  const [typeOptions, setTypeOptions] = useState(defaultTypeOptions);
-  const [selectedItem, setSelectedItem] = useState<{ label: string; value: string } | null>(null);
+  const { products } = useGetProductsAndPackages({
+    filters: {
+      page: 1,
+      perPage: 1000,
+    },
+    config: {
+      enabled: show,
+    },
+  });
 
-  const handleTypeChange = (item: SingleValue<{ label: string; value: string }>) => {
-    if (item === null) {
-      return false;
-    }
-    if (isChoosingType) {
-      // setTypeOptions(item.value === "product" ? productOptions : packageOptions);
-    } else {
-      setTypeOptions(defaultTypeOptions);
-      setSelectedItem(item);
-    }
+  // const handleTypeChange = (item: SingleValue<{ label: string; value: string }>) => {
+  //   if (item === null) {
+  //     return false;
+  //   }
+  //   if (isChoosingType) {
+  //     // setTypeOptions(item.value === "product" ? productOptions : packageOptions);
+  //   } else {
+  //     setTypeOptions(defaultTypeOptions);
+  //     setSelectedItem(item);
+  //   }
 
-    setIsChoosingType((prev) => !prev);
-  };
+  //   setIsChoosingType((prev) => !prev);
+  // };
 
   const handleSaveOrder = () => {
     setIsSubmitting(true);
@@ -61,13 +65,11 @@ const AddOrderModal = ({ show, closeModal }: AddOrderModalProps) => {
         <div className="manage-order-item">
           <ReactSelect
             isSearchable
-            options={typeOptions}
-            placeholder={isChoosingType ? "Selecteaza tipul" : "Selecteaza un item"}
-            closeMenuOnSelect={!isChoosingType}
-            value={selectedItem}
+            options={products.map((item) => ({ label: item.name, value: `${item.type}_${item.id}` }))}
+            placeholder={"Selecteaza un item"}
             onChange={(newValue) => {
               if (newValue) {
-                handleTypeChange(newValue);
+                // handleTypeChange(newValue);
               }
             }}
             styles={{
