@@ -15,10 +15,22 @@ export const COLORS = [
   "#FF7F50",
   "#6A5ACD",
 ];
-export function stockColor(stock: number) {
-  const STOCK_REQUIREMENT = 40;
+export function stockColor(stock: number, production: number = 1) {
+  const STOCK_REQUIREMENT = 30;
+  const minRecommended = STOCK_REQUIREMENT * 0.5;
+  const weight = 1.5 - 0.1 * (production - 1);
+  const recommended = STOCK_REQUIREMENT * weight;
+  console.log(recommended, production);
 
-  return stock < STOCK_REQUIREMENT * 0.5 ? "red" : stock > STOCK_REQUIREMENT * 1.5 ? "green" : "orange";
+  if (stock < minRecommended) {
+    return "red";
+  }
+
+  if (stock > recommended) {
+    return "green";
+  }
+
+  return "orange";
 }
 
 export const PER_PAGE_OPTIONS: number[] = [15, 30, 60, 90];

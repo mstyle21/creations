@@ -12,6 +12,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
   const [stock, setStock] = useState<number | "">("");
   const [price, setPrice] = useState<number | "">("");
   const [oldPrice, setOldPrice] = useState<number | "">("");
+  const [production, setProduction] = useState<number | "">("");
   const [materialWeight, setMaterialWeight] = useState<number | "">("");
   const [active, setActive] = useState(true);
   const [categories, setCategories] = useState<number[]>([]);
@@ -27,6 +28,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setStock(itemToEdit ? itemToEdit.stock : "");
     setPrice(itemToEdit ? itemToEdit.price : "");
     setOldPrice(itemToEdit && itemToEdit.oldPrice ? itemToEdit.oldPrice : "");
+    setProduction(itemToEdit && itemToEdit.production ? itemToEdit.production : "");
     setMaterialWeight(itemToEdit && itemToEdit.materialWeight ? itemToEdit.materialWeight : "");
     setActive(itemToEdit ? itemToEdit.status === "active" : true);
     setCategories(itemToEdit ? itemToEdit.categories.map((item) => item.id) : []);
@@ -43,6 +45,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setStock("");
     setPrice("");
     setOldPrice("");
+    setProduction("");
     setMaterialWeight("");
     setActive(true);
     setCategories([]);
@@ -58,6 +61,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     stock,
     price,
     oldPrice,
+    production,
     active,
     materialWeight,
     categories,
@@ -71,6 +75,7 @@ export const useManageProduct = (itemToEdit: ProductDetails | null) => {
     setStock,
     setPrice,
     setOldPrice,
+    setProduction,
     setActive,
     setMaterialWeight,
     setCategories,

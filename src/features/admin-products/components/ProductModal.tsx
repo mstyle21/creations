@@ -19,6 +19,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     stock,
     price,
     oldPrice,
+    production,
     active,
     materialWeight,
     categories,
@@ -32,6 +33,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     setStock,
     setPrice,
     setOldPrice,
+    setProduction,
     setActive,
     setMaterialWeight,
     setCategories,
@@ -58,6 +60,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
     formData.append("materialWeight", materialWeight.toString());
     formData.append("price", price.toString());
     formData.append("oldPrice", oldPrice.toString());
+    formData.append("production", production.toString());
     formData.append("status", active ? "active" : "inactive");
 
     categories.forEach((category) => {
@@ -149,6 +152,67 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                 <Form.Control type="text" placeholder="Name..." value={name} onChange={(e) => setName(e.target.value)} />
               </FloatingLabel>
               <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+                <FloatingLabel label="Price">
+                  <Form.Control
+                    type="number"
+                    placeholder="Price..."
+                    step="0.01"
+                    value={price !== "" ? price / 100 : price}
+                    onChange={(e) => setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)}
+                  />
+                </FloatingLabel>
+                <FloatingLabel label="Stock">
+                  <Form.Control
+                    type="number"
+                    placeholder="Stock..."
+                    value={stock}
+                    onChange={(e) => setStock(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
+                  />
+                </FloatingLabel>
+                <Form.Group controlId="formCheck" className="m-auto">
+                  <Form.Check
+                    type="switch"
+                    label={active ? "Active" : "Inactive"}
+                    checked={active}
+                    onChange={() => setActive((prev) => !prev)}
+                  />
+                </Form.Group>
+              </div>
+              <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+                <FloatingLabel label="Old price">
+                  <Form.Control
+                    type="number"
+                    placeholder="Old price..."
+                    step="0.01"
+                    value={oldPrice !== "" ? oldPrice / 100 : oldPrice}
+                    onChange={(e) => setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)}
+                  />
+                </FloatingLabel>
+                <FloatingLabel label="Production">
+                  <Form.Control
+                    type="number"
+                    placeholder="Production..."
+                    value={production}
+                    onChange={(e) => setProduction(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
+                  />
+                </FloatingLabel>
+                <FloatingLabel label="Material weight (g)">
+                  <Form.Control
+                    type="number"
+                    placeholder="Material weight (g)..."
+                    value={materialWeight}
+                    onChange={(e) => setMaterialWeight(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
+                  />
+                </FloatingLabel>
+              </div>
+
+              {materialWeight && (
+                <div className="d-flex font-italic">
+                  Calculated price based on material weight: {calculateApproximateCostPrice(materialWeight)} {CURRENCY_SIGN}
+                </div>
+              )}
+
+              <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
                 <FloatingLabel label="Width">
                   <Form.Control
                     type="number"
@@ -174,57 +238,6 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
                     step="0.1"
                     value={depth}
                     onChange={(e) => setDepth(e.target.value === "" ? e.target.value : parseFloat(e.target.value))}
-                  />
-                </FloatingLabel>
-              </div>
-              <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
-                <FloatingLabel label="Stock">
-                  <Form.Control
-                    type="number"
-                    placeholder="Stock..."
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
-                  />
-                </FloatingLabel>
-                <FloatingLabel label="Material weight (g)">
-                  <Form.Control
-                    type="number"
-                    placeholder="Material weight (g)..."
-                    value={materialWeight}
-                    onChange={(e) => setMaterialWeight(e.target.value === "" ? e.target.value : parseInt(e.target.value))}
-                  />
-                </FloatingLabel>
-                <Form.Group controlId="formCheck" className="m-auto">
-                  <Form.Check
-                    type="switch"
-                    label={active ? "Active" : "Inactive"}
-                    checked={active}
-                    onChange={() => setActive((prev) => !prev)}
-                  />
-                </Form.Group>
-              </div>
-              {materialWeight && (
-                <div className="d-flex font-italic">
-                  Calculated price based on material weight: {calculateApproximateCostPrice(materialWeight)} {CURRENCY_SIGN}
-                </div>
-              )}
-              <div className="d-flex gap-3 align-items-center">
-                <FloatingLabel label="Price">
-                  <Form.Control
-                    type="number"
-                    placeholder="Price..."
-                    step="0.01"
-                    value={price !== "" ? price / 100 : price}
-                    onChange={(e) => setPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel label="Old price">
-                  <Form.Control
-                    type="number"
-                    placeholder="Old price..."
-                    step="0.01"
-                    value={oldPrice !== "" ? oldPrice / 100 : oldPrice}
-                    onChange={(e) => setOldPrice(e.target.value === "" ? e.target.value : parseFloat(e.target.value) * 100)}
                   />
                 </FloatingLabel>
               </div>

@@ -1,9 +1,12 @@
-import { faCirclePlus, faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faPlus, faSpinner, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import ReactSelect from "react-select";
-import { useGetProductsAndPackages } from "../../../api/products/getProductsAndPackages";
+import ReactSelect, { SingleValue } from "react-select";
+import { useGetAllProductsAndPackages } from "../../../api/products/getAllProductsAndPackages";
+import { orderItemsReducer } from "../reducers/orderItemsReducer";
+import { BACKEND_URL, THUMBNAIL_PREFIX } from "../../../config";
+import { DEFAULT_IMAGE } from "../../../utils";
 
 const AddOrder = () => {
   const [showModal, setShowModal] = useState(false);
@@ -12,7 +15,7 @@ const AddOrder = () => {
 
   return (
     <>
-      <div className="add-order-btn" onClick={() => setShowModal(true)}>
+      <div style={{ display: "none" }} className="add-order-btn" onClick={() => setShowModal(true)}>
         <FontAwesomeIcon icon={faPlus} className="add-order-icon" />
       </div>
 
@@ -28,29 +31,41 @@ type AddOrderModalProps = {
 
 const AddOrderModal = ({ show, closeModal }: AddOrderModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { products } = useGetProductsAndPackages({
-    filters: {
-      page: 1,
-      perPage: 1000,
-    },
+  const [selectedItem, setSelectedItem] = useState("");
+  const [validated, setValidated] = useState(false);
+  const [quantity, setQuantity] = useState<number | "">("");
+  const [items, dispatchItems] = useReducer(orderItemsReducer, []);
+  const { products } = useGetAllProductsAndPackages({
     config: {
       enabled: show,
     },
   });
 
-  // const handleTypeChange = (item: SingleValue<{ label: string; value: string }>) => {
-  //   if (item === null) {
-  //     return false;
-  //   }
-  //   if (isChoosingType) {
-  //     // setTypeOptions(item.value === "product" ? productOptions : packageOptions);
-  //   } else {
-  //     setTypeOptions(defaultTypeOptions);
-  //     setSelectedItem(item);
-  //   }
+  const handleItemSave = () => {
+    if (selectedItem === "" || quantity === "" || quantity < 1) {
+      setValidated(true);
+      return false;
+    }
 
-  //   setIsChoosingType((prev) => !prev);
-  // };
+    const [type, id] = selectedItem.split("_");
+    const itemFound = products.find((item) => item.type === type && item.id.toString() === id);
+
+    if (itemFound) {
+      dispatchItems({
+        type: "add",
+        payload: {
+          quantity: quantity,
+          id: itemFound.id,
+          name: itemFound.name,
+          type: itemFound.type,
+          image: itemFound.images[0]?.filename ?? null,
+        },
+      });
+      setSelectedItem("");
+      setQuantity("");
+      setValidated(false);
+    }
+  };
 
   const handleSaveOrder = () => {
     setIsSubmitting(true);
@@ -65,17 +80,27 @@ const AddOrderModal = ({ show, closeModal }: AddOrderModalProps) => {
         <div className="manage-order-item">
           <ReactSelect
             isSearchable
-            options={products.map((item) => ({ label: item.name, value: `${item.type}_${item.id}` }))}
+            options={Object.values(
+              products.reduce((result: { [key: string]: { label: string; options: { label: string; value: string }[] } }, item) => {
+                result[item.type] ??= {
+                  label: item.type === "product" ? "Figurine" : "Seturi",
+                  options: [],
+                };
+
+                result[item.type].options.push({
+                  label: item.name,
+                  value: `${item.type}_${item.id}`,
+                });
+
+                return result;
+              }, {})
+            )}
+            onChange={(e: SingleValue<{ label: string; value: string }>) => setSelectedItem(e?.value ?? "")}
             placeholder={"Selecteaza un item"}
-            onChange={(newValue) => {
-              if (newValue) {
-                // handleTypeChange(newValue);
-              }
-            }}
             styles={{
               container: (baseStyles) => ({
                 ...baseStyles,
-                border: "initial",
+                border: validated && selectedItem === "" ? "1px solid red" : "initial",
               }),
               control: (baseStyles) => ({
                 ...baseStyles,
@@ -91,10 +116,48 @@ const AddOrderModal = ({ show, closeModal }: AddOrderModalProps) => {
               }),
             }}
           />
-          <FloatingLabel label="Quantity">
-            <Form.Control type="number" onChange={() => {}} />
+          <FloatingLabel label="Quantity" style={{ border: validated && (quantity === 0 || quantity === "") ? "1px solid red" : "" }}>
+            <Form.Control type="number" onChange={(e) => setQuantity(e.target.value !== "" ? parseInt(e.target.value) : "")} />
           </FloatingLabel>
-          <FontAwesomeIcon onClick={() => {}} className="save-package-item" icon={faCirclePlus} size="2x" />
+          <FontAwesomeIcon onClick={handleItemSave} className="save-package-item" icon={faCirclePlus} size="2x" />
+        </div>
+        <div>
+          {items.map((item) => (
+            <div
+              key={item.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 2fr 100px 100px",
+                padding: "10px 0",
+                alignItems: "center",
+                justifyItems: "center",
+              }}
+            >
+              <img
+                style={{ height: "50px" }}
+                src={item.image ? `${BACKEND_URL}/${item.type}s/${item.id}/${THUMBNAIL_PREFIX}${item.image}` : DEFAULT_IMAGE}
+              />
+              <span>{item.name}</span>
+              <input
+                type="number"
+                value={item.quantity}
+                onChange={(e) => {
+                  const newQuantity = parseInt(e.target.value);
+                  if (!isNaN(newQuantity) && newQuantity > 0) {
+                    dispatchItems({ type: "edit", payload: { ...item, quantity: newQuantity } });
+                  }
+                }}
+                style={{ width: "80px", border: "none", borderBottom: "1px solid black", textAlign: "center" }}
+              />
+              <FontAwesomeIcon
+                icon={faTrashAlt}
+                onClick={() => dispatchItems({ type: "delete", payload: item })}
+                color="red"
+                fontSize="20px"
+                cursor="pointer"
+              />
+            </div>
+          ))}
         </div>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">

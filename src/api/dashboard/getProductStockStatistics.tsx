@@ -26,7 +26,7 @@ export const useGetProductStockStatistics = ({ config }: { config?: QueryClientC
     data.forEach((product) => {
       labels.push(product.name.length < 30 ? product.name : product.name.split(" "));
       values.push(product.stock);
-      colors.push(stockColor(product.stock));
+      colors.push(stockColor(product.stock, product.production));
     });
   }
 

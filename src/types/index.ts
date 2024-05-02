@@ -28,6 +28,7 @@ export type ProductDetails = {
   stock: number;
   price: number;
   oldPrice: number;
+  production: number;
   materialWeight: number;
   status: string;
   slug: string;
@@ -117,3 +118,15 @@ export const TOKEN_VALID = "valid";
 export const TOKEN_EXPIRED = "expired";
 export const TOKEN_EXPIRE_SOON = "expire-soon";
 export type TTokenStatus = "valid" | "expired" | "expire-soon";
+
+export type OrderItem = {
+  type: "product" | "package";
+  id: number;
+  name: string;
+  quantity: number;
+  image: string | null;
+};
+export type orderItemsReducerAction = {
+  type: "add" | "edit" | "delete";
+  payload: OrderItem;
+};

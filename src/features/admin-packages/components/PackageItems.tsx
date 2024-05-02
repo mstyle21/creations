@@ -84,7 +84,7 @@ const PackageItems = ({ packageItems, dispatchItems }: PackageItemsProps) => {
             }),
           }}
         />
-        <FloatingLabel label="Quantity" style={{ border: validated && quantity === 0 ? "1px solid red" : "" }}>
+        <FloatingLabel label="Quantity" style={{ border: validated && (quantity === 0 || quantity === "") ? "1px solid red" : "" }}>
           <Form.Control
             type="number"
             value={quantity}

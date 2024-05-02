@@ -236,7 +236,7 @@ const ProductList = () => {
 
                   <strong className="admin-product-name">
                     {product.name}
-                    <span style={{ color: stockColor(product.stock), fontWeight: "bold" }}>({product.stock})</span>
+                    <span style={{ color: stockColor(product.stock, product.production), fontWeight: "bold" }}>({product.stock})</span>
                   </strong>
                 </div>
               );
