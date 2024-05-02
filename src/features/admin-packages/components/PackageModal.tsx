@@ -37,7 +37,7 @@ const PackageModal = ({ show, closeModal, itemToEdit, presetItems = [] }: Packag
   } = useManagePackage(itemToEdit, presetItems);
 
   return (
-    <Modal show={show} onHide={closeModal} dialogClassName="modal-fullscreen">
+    <Modal show={show} onHide={closeModal} dialogClassName="modal-fullscreen" className="package-modal">
       <Modal.Header
         closeButton
         onHide={() => {

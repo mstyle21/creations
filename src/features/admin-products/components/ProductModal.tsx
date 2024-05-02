@@ -117,7 +117,7 @@ const ProductModal = ({ show, closeModal, itemToEdit }: GeneralModalProps<Produc
   };
 
   return (
-    <Modal show={show} onHide={closeModal} size="xl">
+    <Modal show={show} onHide={closeModal} size="xl" className="product-modal">
       <Modal.Header
         closeButton
         onHide={() => {
