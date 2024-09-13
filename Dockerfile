@@ -20,7 +20,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy the React build from the previous step
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
