@@ -1,0 +1,14 @@
+services:
+  app:
+    container_name: creations_react
+    image: creations_react_img
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - nginx_network
+
+networks:
+  nginx_network:
+    external: true
