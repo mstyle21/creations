@@ -7,8 +7,8 @@ services:
       context: .
       dockerfile: Dockerfile
     networks:
-      - nginx_network
+      - creations_network
 
 networks:
-  nginx_network:
+  creations_network:
     external: true
