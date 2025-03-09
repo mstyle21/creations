@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
     networks:
       - creations_network
+    volumes:
+      - ./../creations_volume/nginx/conf.d:/etc/nginx/conf.d
 
 networks:
   creations_network:
